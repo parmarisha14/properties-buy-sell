@@ -1,0 +1,85 @@
+.terms-section {
+    background: #f8f9fa;
+}
+
+.main-title {
+    font-size: 38px;
+    color: #1f4d44;
+}
+
+.section-title {
+    color: #1f4d44;
+    font-weight: 400;
+    margin-bottom: 15px;
+}
+
+
+.info-alert {
+    background: #eef5f3;
+    border-radius: 10px;
+    color: #1f4d44;
+}
+
+.info-icon {
+    font-size: 20px;
+}
+
+.warning-box {
+    background: #f1f6f5;
+    border-left: 4px solid #1f6f5c;
+    border-radius: 10px;
+}
+
+.warning-icon {
+    color: #1f6f5c;
+    font-size: 20px;
+}
+
+
+.custom-list li {
+    margin-bottom: 10px;
+    color: #4d4d4d;
+}
+
+
+.prohibited-list {
+    list-style: none;
+    padding: 0;
+}
+
+.prohibited-list li {
+    margin-bottom: 15px;
+    color: #4d4d4d;
+}
+
+.revision-alert {
+    background: #e9f0ee;
+    border-radius: 12px;
+    color: #1f4d44;
+}
+
+.contact-box {
+    background: #f1f6f5;
+    border-radius: 15px;
+}
+
+.contact-icon {
+    background: #1f6f5c;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 18px;
+}
+
+.contact-btn {
+    background: #1f6f5c;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    transition: 0.3s;
+}
+
+.contact-btn:hover {
+    background: #155c4c;
+}
