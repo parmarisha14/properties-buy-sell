@@ -9,7 +9,12 @@
   font-family: "Montserrat", sans-serif;
 }
 
-
+.logo-image{
+  width: 70px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
 .brand-logo {
   font-weight: 700;
   font-size: 22px;

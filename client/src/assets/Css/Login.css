@@ -1,0 +1,192 @@
+/* Page Background */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  padding: 20px;
+}
+
+/* Card */
+.login-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 400px;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Logo */
+.logo-circle {
+  width: 85px;
+  height: 85px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: #014874;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-logo-img {
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Titles */
+.title {
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* Role Buttons */
+.role-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.role-btn {
+  flex: 1;
+  height: 42px;
+  border: none;
+  border-radius: 8px;
+  background: #ffffffcc;
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.role-btn:hover {
+  background: #ffffff;
+}
+
+.active-role {
+  background: linear-gradient(90deg, #0077ff, #00c6ff);
+  color: #fff;
+}
+
+/* Form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-input {
+  height: 45px;
+  border-radius: 8px;
+  border: none;
+  padding: 0 15px;
+  outline: none;
+  font-size: 14px;
+}
+
+.form-input:focus {
+  box-shadow: 0 0 8px #00aaff;
+}
+
+/* Login Button */
+.login-btn {
+  height: 45px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #005ecb, #00a3cc);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Divider */
+.divider {
+  text-align: center;
+  margin: 20px 0;
+  position: relative;
+}
+
+.divider span {
+  background: transparent;
+  padding: 0 10px;
+  font-size: 13px;
+}
+
+.divider::before {
+  content: "";
+  height: 1px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.4);
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: -1;
+}
+
+/* Google Button */
+.google-btn {
+  height: 45px;
+  border-radius: 8px;
+  border: none;
+  background: #fff;
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.google-btn:hover {
+  background: #f1f1f1;
+  transform: scale(1.05);
+}
+
+/* Signup */
+.signup-text {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.signup-text a {
+  color: #fff;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 30px 20px;
+  }
+}

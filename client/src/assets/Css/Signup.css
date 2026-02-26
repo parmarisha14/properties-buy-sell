@@ -1,0 +1,104 @@
+/* Full Page Center Fix */
+.signup-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f7fa; /* light background */
+  padding: 20px;
+}
+
+/* Main Card */
+.register-card {
+  width: 100%;
+    /* Bigger Width */
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 60px 70px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Title */
+.signup-title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #2c7a7b;
+  margin-bottom: 45px;
+}
+
+/* Row Layout */
+.form-row {
+  display: flex;
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+/* Inputs */
+.form-row input {
+  flex: 1;
+  padding: 15px 22px;
+  border-radius: 50px;
+  border: 1.5px solid #cfe3ff;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.form-row input:focus {
+  border-color: #2c7a7b;
+  box-shadow: 0 0 6px rgba(44, 122, 123, 0.3);
+  outline: none;
+}
+
+/* Button */
+.signup-btn {
+  width: 60%;
+  display: block;
+  margin: 10px auto 0;
+  padding: 15px;
+  border-radius: 50px;
+  border: none;
+  background: #2c7a7b;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.signup-btn:hover {
+  transform: translateY(-3px);
+  background: #1f5e5f;
+}
+
+/* Login Text */
+.login-text {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 15px;
+}
+
+.login-text a {
+  color: #2c7a7b;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-text a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .signup-card {
+    padding: 35px 25px;
+  }
+
+  .signup-btn {
+    width: 100%;
+  }
+}

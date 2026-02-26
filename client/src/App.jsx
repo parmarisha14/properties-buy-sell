@@ -8,6 +8,10 @@ import Footer from "./components/Pages/Footer";
 import Terms from "./components/Pages/Terms";
 import Privacy from "./components/Pages/Privacy";
 import Blog from "./components/Pages/Blog";
+import Signup from "./components/auth/SignUpUser";
+import SignIn from "./components/auth/SignIn";
+import SignUpBroker from "./components/auth/SignUpBroker";
+
 
 const App = () => {
   return (
@@ -21,6 +25,9 @@ const App = () => {
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/signup-user" element={<Signup />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup-broker" element={<SignUpBroker />} />
       </Routes>
 
       <Footer />

@@ -1,13 +1,13 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "../../assets/Css/Header.css";
-
+import logo from "../../assets/Images/logo.jpg";
 const Header = () => {
   return (
     <nav className="navbar navbar-expand-lg custom-navbar sticky-top">
       <div className="container">
         <NavLink className="navbar-brand brand-logo" to="/">
-          TheProperty
+          <img src={logo} alt="Logo" className="logo-image" />
         </NavLink>
 
         <button
