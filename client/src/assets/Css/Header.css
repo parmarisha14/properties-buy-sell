@@ -10,8 +10,8 @@
 }
 
 .logo-image{
-  width: 70px;
-  height: 40px;
+  width: 150px;
+  height: 50px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -77,4 +77,17 @@
 .dropdown-item.active {
   color: #323b3b !important;
   font-weight: 600;
+}
+.profile-btn {
+  background: transparent;
+  border: none;
+  color: #2c7a7b;
+}
+
+.profile-btn:hover {
+  color: #245a52;
+}
+
+.dropdown-menu {
+  border-radius: 15px;
 }

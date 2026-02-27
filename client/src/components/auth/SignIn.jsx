@@ -1,81 +1,70 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
+import { HiUser, HiOfficeBuilding } from "react-icons/hi";
 import "../../assets/css/Login.css";
-import logo from "../../assets/images/logo.jpg";
 
 const SignIn = () => {
   const [role, setRole] = useState("user");
 
   return (
-    <div className="login-page">
-      <div className="login-card text-center">
+    <div className="login-wrapper">
+      <div className="login-card">
 
-        {/* Logo */}
-        <div className="logo-circle">
-          <img src={logo} alt="Logo" className="login-logo-img" />
-        </div>
-
-        {/* Title */}
-        <h4 className="title">Welcome Back</h4>
-        <p className="subtitle">
-          Login to your account to continue
+        <h2 className="login-title">Welcome Back</h2>
+        <p className="login-subtitle">
+          Sign in to continue to Sell & Buy Home
         </p>
 
-        {/* Role Selection Buttons */}
-        <div className="role-buttons">
+        {/* Role Toggle */}
+        <div className="role-toggle">
           <button
             type="button"
-            className={`role-btn ${role === "user" ? "active-role" : ""}`}
+            className={role === "user" ? "active" : ""}
             onClick={() => setRole("user")}
           >
-            User Login
+            <HiUser /> User
           </button>
 
           <button
             type="button"
-            className={`role-btn ${role === "broker" ? "active-role" : ""}`}
+            className={role === "broker" ? "active" : ""}
             onClick={() => setRole("broker")}
           >
-            Broker Login
+            <HiOfficeBuilding /> Broker
           </button>
         </div>
 
-        {/* Login Form */}
+        {/* Form */}
         <form className="login-form">
-          <input
-            type="email"
-            className="form-input"
-            placeholder="Enter your email"
-            required
-          />
+          
+          <div className="form-group">
+            <label>Email </label>
+            <input type="email" placeholder="Enter your email" required />
+          </div>
 
-          <input
-            type="password"
-            className="form-input"
-            placeholder="Enter your password"
-            required
-          />
+          <div className="form-group">
+            <label>Password</label>
+            <input type="password" placeholder="Enter your password" required />
+          </div>
 
           <button type="submit" className="login-btn">
             Login
           </button>
         </form>
 
-        {/* Google Login Only for USER */}
+        {/* Google Login Only for User */}
         {role === "user" && (
           <>
-            <div className="divider">
-              <span>OR</span>
-            </div>
+            <div className="divider text-center">OR</div>
 
-            <button type="button" className="google-btn">
-              <i className="fa-brands fa-google"></i>
+            <button className="google-btn">
+              <FcGoogle size={20} />
               Sign in with Google
             </button>
           </>
         )}
 
-        {/* Dynamic Signup Link */}
         <p className="signup-text">
           Don’t have an account?{" "}
           <Link to={role === "user" ? "/signup-user" : "/signup-broker"}>
