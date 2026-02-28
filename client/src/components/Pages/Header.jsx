@@ -104,7 +104,7 @@ const Header = () => {
           {/* Right Side (Same Get Started + Profile Icon Added) */}
           <div className="d-flex align-items-center gap-3">
 
-            <NavLink to="/register" className="get-started-btn">
+            <NavLink to="/signin" className="get-started-btn">
               Get Started
             </NavLink>
 
