@@ -11,6 +11,7 @@ import Blog from "./components/Pages/Blog";
 import Signup from "./components/auth/SignUpUser";
 import SignIn from "./components/auth/SignIn";
 import SignUpBroker from "./components/auth/SignUpBroker";
+import EditProfile from "./components/Pages/EditProfile";
 
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/signup-user" element={<Signup />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup-broker" element={<SignUpBroker />} />
+        <Route path="/edit-profile" element={<EditProfile />} />
       </Routes>
 
       <Footer />

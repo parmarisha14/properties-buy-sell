@@ -1,6 +1,28 @@
 const User = require("../models/UserModel");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
+
+// 🔹 Multer Storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+exports.upload = multer({ storage });
+
+// 🔹 Generate Token
+const generateToken = (user) => {
+  return jwt.sign(
+    { id: user._id, email: user.email },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
+};
 
 // ================= REGISTER =================
 exports.register = async (req, res) => {
@@ -9,22 +31,27 @@ exports.register = async (req, res) => {
 
     const exist = await User.findOne({ email });
     if (exist)
-      return res.status(400).json({ message: "Email already registered" });
+      return res.status(400).json({ message: "Email already exists" });
 
-    const hash = await bcrypt.hash(password, 10);
+    const hashed = await bcrypt.hash(password, 10);
 
-    await User.create({
+    const user = await User.create({
       fullName,
       email,
       dob,
       phone,
-      password: hash,
-      role: "user",
+      password: hashed,
     });
 
-    res.json({ message: "Registration Successful ✅" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    const token = generateToken(user);
+
+    res.status(201).json({
+      message: "Registration successful",
+      token,
+      user,
+    });
+  } catch {
+    res.status(500).json({ message: "Registration failed" });
   }
 };
 
@@ -35,24 +62,48 @@ exports.login = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user)
-      return res.status(400).json({ message: "Invalid Credentials" });
+      return res.status(401).json({ message: "Invalid credentials" });
 
     const match = await bcrypt.compare(password, user.password);
     if (!match)
-      return res.status(400).json({ message: "Invalid Credentials" });
+      return res.status(401).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign(
-      { id: user._id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+    const token = generateToken(user);
 
     res.json({
-      message: "Login Successful ✅",
+      message: "Login successful",
       token,
       user,
     });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch {
+    res.status(500).json({ message: "Login failed" });
   }
+};
+
+// ================= GET PROFILE =================
+exports.getProfile = async (req, res) => {
+  const user = await User.findById(req.user.id);
+  res.json(user);
+};
+
+// ================= UPDATE PROFILE =================
+exports.updateProfile = async (req, res) => {
+  const { fullName, phone, gender } = req.body;
+
+  const updateData = { fullName, phone, gender };
+
+  if (req.file) {
+    updateData.image = "uploads/" + req.file.filename;
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(
+    req.user.id,
+    updateData,
+    { new: true }
+  );
+
+  res.json({
+    message: "Profile updated successfully",
+    user: updatedUser,
+  });
 };

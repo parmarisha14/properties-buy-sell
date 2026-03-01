@@ -4,45 +4,55 @@ import axios from "axios";
 import "../../assets/css/Signup.css";
 
 const Signup = () => {
-
   const navigate = useNavigate();
 
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    dob: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+  });
+
   const [msg, setMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // ✅ Single handleChange for all inputs
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMsg("");
 
-    const fullName = e.target.fullName.value;
-    const email = e.target.email.value;
-    const dob = e.target.dob.value;
-    const phone = e.target.phone.value;
-    const password = e.target.password.value;
-    const confirmPassword = e.target.confirmPassword.value;
-
-    if (password !== confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       return setMsg("Passwords do not match ❌");
     }
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        {
-          fullName,
-          email,
-          dob,
-          phone,
-          password
-        }
-      );
+      setLoading(true);
 
-      setMsg(res.data.message);
+      await axios.post("http://localhost:5000/api/auth/register", {
+        fullName: formData.fullName.trim(),
+        email: formData.email.trim(),
+        dob: formData.dob,
+        phone: formData.phone,
+        password: formData.password,
+      });
+
+      setMsg("Registration Successful ✅");
 
       setTimeout(() => {
         navigate("/signin");
-      }, 1500);
+      }, 1200);
 
     } catch (error) {
-      setMsg("Registration Failed ❌");
+      setMsg(error.response?.data?.message || "Registration Failed ❌");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -51,7 +61,11 @@ const Signup = () => {
       <div className="register-card w-50">
         <h3 className="signup-title">Create Your Account</h3>
 
-        {msg && <p style={{ color: "red" }}>{msg}</p>}
+        {msg && (
+          <p style={{ color: msg.includes("Successful") ? "green" : "red" }}>
+            {msg}
+          </p>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="form-row">
@@ -59,6 +73,8 @@ const Signup = () => {
               type="text"
               name="fullName"
               placeholder="Full Name"
+              value={formData.fullName}
+              onChange={handleChange}
               required
             />
 
@@ -66,17 +82,27 @@ const Signup = () => {
               type="email"
               name="email"
               placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
               required
             />
           </div>
 
           <div className="form-row">
-            <input type="date" name="dob" required />
+            <input
+              type="date"
+              name="dob"
+              value={formData.dob}
+              onChange={handleChange}
+              required
+            />
 
             <input
               type="number"
               name="phone"
               placeholder="Phone Number"
+              value={formData.phone}
+              onChange={handleChange}
               required
             />
           </div>
@@ -86,6 +112,8 @@ const Signup = () => {
               type="password"
               name="password"
               placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
               required
             />
 
@@ -93,12 +121,14 @@ const Signup = () => {
               type="password"
               name="confirmPassword"
               placeholder="Confirm Password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
               required
             />
           </div>
 
-          <button className="signup-btn" type="submit">
-            Sign Up
+          <button className="signup-btn" type="submit" disabled={loading}>
+            {loading ? "Registering..." : "Sign Up"}
           </button>
         </form>
 
