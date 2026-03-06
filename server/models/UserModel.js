@@ -2,46 +2,18 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
-    fullName: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+    fullName: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    phone: String,
+    dob: Date,
+    password: { type: String, required: true },
 
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-      trim: true,
-    },
+    gender: String,
+    address: String,
 
-    phone: {
-      type: String,
-    },
-
-    dob: {
-      type: Date,
-    },
-
-    password: {
-      type: String,
-      required: function () {
-        // Google login wale user ke liye password required nahi
-        return !this.googleId;
-      },
-    },
-
-    // 🔐 Google Login Support
-    googleId: {
-      type: String,
-    },
-
-    // 🖼 Profile Image
     profileImage: {
       type: String,
-      default:
-        "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+      default: "default.jpg",
     },
 
     role: {
@@ -49,14 +21,8 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "broker", "admin"],
       default: "user",
     },
-
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
   },
   { timestamps: true }
 );
 
-const user= mongoose.model("User", userSchema);
-module.exports = user;
+module.exports = mongoose.model("User", userSchema);

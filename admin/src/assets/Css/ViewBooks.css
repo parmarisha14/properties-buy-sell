@@ -1,0 +1,21 @@
+.viewbook-wrapper {
+  padding: 30px;
+}
+
+.viewbook-card {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow-x: auto;
+}
+
+.viewbook-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f8fafc;
+}
+
+.viewbook-table {
+  width: 100%;
+  border-collapse: collapse;
+}

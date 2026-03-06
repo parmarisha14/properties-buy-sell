@@ -1,0 +1,96 @@
+.booking{
+  padding:60px 0;
+  background:#F8FAFC;
+  min-height:100vh;
+}
+
+/* Page Title */
+
+.page-title{
+  color:#1E3A5F;
+  font-weight:600;
+}
+
+.page-info{
+  color:#666;
+  margin-bottom:30px;
+}
+
+/* Summary Cards */
+
+.summary-box{
+  margin-bottom:30px;
+}
+
+.summary-card{
+  background:white;
+  padding:20px;
+  border-radius:8px;
+  text-align:center;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+.summary-card h5{
+  color:#555;
+}
+
+.summary-card h3{
+  color:#2563EB;
+  font-weight:bold;
+}
+
+/* Table Box */
+
+.table-box{
+  background:white;
+  padding:20px;
+  border-radius:8px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* Table */
+
+.booking-table thead{
+  background:#1E3A5F;
+  color:white;
+}
+
+.booking-table td{
+  vertical-align:middle;
+}
+
+/* Status */
+
+.status-pending{
+  color:#d97706;
+  font-weight:500;
+}
+
+.status-approved{
+  color:#16a34a;
+  font-weight:500;
+}
+
+/* Buttons */
+
+.btn-success{
+  background:#10B981;
+  border:none;
+}
+
+.btn-success:hover{
+  background:#059669;
+}
+
+.btn-danger{
+  background:#EF4444;
+  border:none;
+}
+
+.btn-danger:hover{
+  background:#dc2626;
+}
+.booking-wrapper{
+  max-width:1200px;
+  margin:auto;
+}

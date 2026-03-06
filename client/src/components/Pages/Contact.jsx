@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../assets/css/Contact.css";
 import {
   FaMapMarkerAlt,
@@ -10,6 +10,49 @@ import {
 } from "react-icons/fa";
 
 const Contact = () => {
+
+  const [formData, setFormData] = useState({});
+
+  const handleChange = (e) => {
+    setFormData({...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+
+  e.preventDefault(); 
+
+  try {
+
+    const res = await fetch("http://localhost:5000/api/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const data = await res.json();
+
+    console.log(data.message);
+
+    // form reset
+    setFormData({
+      name: "",
+      email: "",
+      subject: "",
+      message: ""
+    });
+
+  } catch (err) {
+
+    console.log(err.message);
+
+  }
+
+};
+
   return (
     <>
       
@@ -17,7 +60,6 @@ const Contact = () => {
         <div className="container">
           <div className="row g-4">
 
-            
             <div className="col-md-4">
               <div className="info-box">
                 <div className="icon-circle">
@@ -33,7 +75,6 @@ const Contact = () => {
               </div>
             </div>
 
-            
             <div className="col-md-4">
               <div className="info-box">
                 <div className="icon-circle">
@@ -41,15 +82,11 @@ const Contact = () => {
                 </div>
                 <div>
                   <h6>Email Address</h6>
-                  <p>
-                    info@example.com <br />
-                    contact@example.com
-                  </p>
+                  <p>primestaterealty@gmail.com</p>
                 </div>
               </div>
             </div>
 
-            
             <div className="col-md-4">
               <div className="info-box">
                 <div className="icon-circle">
@@ -69,7 +106,7 @@ const Contact = () => {
         </div>
       </section>
 
-      
+      {/* Map */}
       <section className="map-section">
         <iframe
           title="map"
@@ -78,40 +115,64 @@ const Contact = () => {
         ></iframe>
       </section>
 
-      
+      {/* Contact Form */}
       <section className="contact-form-section">
         <div className="container">
           <div className="contact-form-wrapper">
             <h3 className="text-center fw-bold mb-4">Get in Touch</h3>
 
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="row g-3">
 
                 <div className="col-md-6">
                   <div className="input-icon">
                     <FaUser />
-                    <input type="text" placeholder="First Name" />
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Full Name"
+                      value={formData.name}
+                      onChange={handleChange}
+                    />
                   </div>
                 </div>
 
                 <div className="col-md-6">
                   <div className="input-icon">
                     <FaEnvelope />
-                    <input type="email" placeholder="Email Address" />
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email Address"
+                      value={formData.email}
+                      onChange={handleChange}
+                    />
                   </div>
                 </div>
 
                 <div className="col-12">
                   <div className="input-icon">
                     <FaPaperPlane />
-                    <input type="text" placeholder="Subject" />
+                    <input
+                      type="text"
+                      name="subject"
+                      placeholder="Subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                    />
                   </div>
                 </div>
 
                 <div className="col-12">
                   <div className="input-icon textarea">
                     <FaCommentDots />
-                    <textarea rows="5" placeholder="Write Message..."></textarea>
+                    <textarea
+                      rows="5"
+                      name="message"
+                      placeholder="Write Message..."
+                      value={formData.message}
+                      onChange={handleChange}
+                    ></textarea>
                   </div>
                 </div>
 
@@ -127,6 +188,7 @@ const Contact = () => {
           </div>
         </div>
       </section>
+
     </>
   );
 };

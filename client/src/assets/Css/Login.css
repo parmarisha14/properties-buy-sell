@@ -1,13 +1,12 @@
-/* Background */
 .login-wrapper {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f6f9f9;   /* your requested bg */
+  background: #f6f9f9;
 }
 
-/* Card */
+
 .login-card {
   width: 100%;
   max-width: 420px;
@@ -18,7 +17,7 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* Title */
+
 .login-title {
   font-weight: 700;
   color: #2c7a7b;
@@ -30,7 +29,7 @@
   color: #555;
 }
 
-/* Role Toggle */
+
 .role-toggle {
   display: flex;
   border-radius: 50px;
@@ -58,7 +57,7 @@
   color: #fff;
 }
 
-/* Form */
+
 .login-form {
   text-align: left;
 }
@@ -88,13 +87,13 @@
   border-color: #2c7a7b;
 }
 
-/* Login Button */
+
 .login-btn {
   width: 100%;
   padding: 12px;
   border: none;
   border-radius: 8px;
-  background: #2c7a7b;   /* your requested button color */
+  background: #2c7a7b;
   color: #fff;
   font-weight: 600;
   cursor: pointer;
@@ -105,7 +104,7 @@
   background: #236566;
 }
 
-/* Divider */
+
 .divider {
   margin: 20px 0;
   font-size: 13px;
@@ -132,7 +131,7 @@
   right: 0;
 }
 
-/* Google */
+
 .google-btn {
   width: 100%;
   padding: 10px;
@@ -152,7 +151,7 @@
   background: #f2f2f2;
 }
 
-/* Signup */
+
 .signup-text {
   margin-top: 20px;
   font-size: 14px;

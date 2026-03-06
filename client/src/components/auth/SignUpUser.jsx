@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../assets/css/Signup.css";
 
-const Signup = () => {
+const SignUpUser = () => {
+
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -12,53 +13,70 @@ const Signup = () => {
     dob: "",
     phone: "",
     password: "",
-    confirmPassword: "",
+    confirmPassword: ""
   });
 
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // ✅ Single handleChange for all inputs
   const handleChange = (e) => {
+
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
     setMsg("");
 
     if (formData.password !== formData.confirmPassword) {
-      return setMsg("Passwords do not match ❌");
+      return setMsg("Passwords do not match");
     }
 
     try {
+
       setLoading(true);
 
-      await axios.post("http://localhost:5000/api/auth/register", {
-        fullName: formData.fullName.trim(),
-        email: formData.email.trim(),
-        dob: formData.dob,
-        phone: formData.phone,
-        password: formData.password,
-      });
+      const res = await axios.post(
+        "http://localhost:5000/api/user/register",
+        {
+          fullName: formData.fullName.trim(),
+          email: formData.email.trim(),
+          dob: formData.dob,
+          phone: formData.phone,
+          password: formData.password
+        }
+      );
 
-      setMsg("Registration Successful ✅");
+      setMsg("Registration Successful");
 
       setTimeout(() => {
         navigate("/signin");
       }, 1200);
 
     } catch (error) {
-      setMsg(error.response?.data?.message || "Registration Failed ❌");
+
+      setMsg(
+        error.response?.data?.message || "Registration Failed"
+      );
+
     } finally {
       setLoading(false);
     }
+
   };
 
   return (
     <div className="signup-wrapper">
+
       <div className="register-card w-50">
+
         <h3 className="signup-title">Create Your Account</h3>
 
         {msg && (
@@ -68,7 +86,9 @@ const Signup = () => {
         )}
 
         <form onSubmit={handleSubmit}>
+
           <div className="form-row">
+
             <input
               type="text"
               name="fullName"
@@ -86,9 +106,11 @@ const Signup = () => {
               onChange={handleChange}
               required
             />
+
           </div>
 
           <div className="form-row">
+
             <input
               type="date"
               name="dob"
@@ -98,16 +120,18 @@ const Signup = () => {
             />
 
             <input
-              type="number"
+              type="text"
               name="phone"
               placeholder="Phone Number"
               value={formData.phone}
               onChange={handleChange}
               required
             />
+
           </div>
 
           <div className="form-row">
+
             <input
               type="password"
               name="password"
@@ -125,19 +149,28 @@ const Signup = () => {
               onChange={handleChange}
               required
             />
+
           </div>
 
-          <button className="signup-btn" type="submit" disabled={loading}>
+          <button
+            className="signup-btn"
+            type="submit"
+            disabled={loading}
+          >
             {loading ? "Registering..." : "Sign Up"}
           </button>
+
         </form>
 
         <p className="login-text">
-          Already have an account? <Link to="/signin">Login</Link>
+          Already have an account ?
+          <Link to="/signin"> Login</Link>
         </p>
+
       </div>
+
     </div>
   );
 };
 
-export default Signup;
+export default SignUpUser;

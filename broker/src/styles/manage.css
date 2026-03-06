@@ -1,0 +1,100 @@
+.manage-property{
+  padding:60px 0;
+  background:#F8FAFC;
+  min-height:100vh;
+}
+
+/* Page Title */
+
+.page-title{
+  color:#1E3A5F;
+  font-weight:600;
+  text-align:center;
+}
+
+.page-info{
+  color:#666;
+  margin-bottom:30px;
+  text-align:center;
+}
+
+/* Property Card */
+
+.property-card{
+  border:none;
+  border-radius:10px;
+  overflow:hidden;
+  background:white;
+  box-shadow:0 5px 12px rgba(0,0,0,0.1);
+  transition:0.3s;
+}
+
+.property-card:hover{
+  transform:translateY(-5px);
+}
+
+.property-card img{
+  height:200px;
+  width:100%;
+  object-fit:cover;
+}
+
+.card-body{
+  padding:15px;
+}
+
+.property-card h5{
+  color:#1E3A5F;
+  margin-bottom:5px;
+}
+
+/* Price */
+
+.price{
+  font-weight:bold;
+  color:#2563EB;
+}
+
+/* Location */
+
+.location{
+  font-size:14px;
+  color:#777;
+}
+
+/* Status */
+
+.status{
+  font-size:13px;
+  margin-bottom:10px;
+}
+
+.status.pending{
+  color:#d97706;
+}
+
+.status.approved{
+  color:#16a34a;
+}
+
+/* Buttons */
+
+.edit-btn{
+  background:#2563EB;
+  color:white;
+  border:none;
+}
+
+.edit-btn:hover{
+  background:#1d4ed8;
+}
+
+.delete-btn{
+  background:#dc2626;
+  color:white;
+  border:none;
+}
+
+.delete-btn:hover{
+  background:#b91c1c;
+}

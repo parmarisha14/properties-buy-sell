@@ -120,11 +120,3 @@
   text-decoration: none;
 }
 
-@media(max-width: 900px){
-  .register-container {
-    flex-direction: column;
-  }
-  .divider {
-    display: none;
-  }
-}

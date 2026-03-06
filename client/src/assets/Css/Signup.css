@@ -1,25 +1,24 @@
-/* Full Page Center Fix */
 .signup-wrapper {
   min-height: 100vh;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f5f7fa; /* light background */
+  background: #f5f7fa;
   padding: 20px;
 }
 
-/* Main Card */
+
 .register-card {
   width: 100%;
-    /* Bigger Width */
+
   background: #ffffff;
   border-radius: 30px;
   padding: 60px 70px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
-/* Title */
+
 .signup-title {
   text-align: center;
   font-size: 32px;
@@ -28,14 +27,14 @@
   margin-bottom: 45px;
 }
 
-/* Row Layout */
+
 .form-row {
   display: flex;
   gap: 25px;
   margin-bottom: 30px;
 }
 
-/* Inputs */
+
 .form-row input {
   flex: 1;
   padding: 15px 22px;
@@ -51,7 +50,7 @@
   outline: none;
 }
 
-/* Button */
+
 .signup-btn {
   width: 60%;
   display: block;
@@ -71,7 +70,7 @@
   background: #1f5e5f;
 }
 
-/* Login Text */
+
 .login-text {
   text-align: center;
   margin-top: 25px;
@@ -86,19 +85,4 @@
 
 .login-text a:hover {
   text-decoration: underline;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .form-row {
-    flex-direction: column;
-  }
-
-  .signup-card {
-    padding: 35px 25px;
-  }
-
-  .signup-btn {
-    width: 100%;
-  }
 }

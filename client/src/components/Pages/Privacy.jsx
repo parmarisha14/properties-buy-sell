@@ -6,24 +6,21 @@ const Privacy = () => {
   return (
     <section className="privacy-section">
       <div className="container">
-
         <h2 className="section-title fs-1">Privacy Policy</h2>
         <p className="intro-text fs-5">
           At TheProperty, we value your trust. This Privacy Policy explains how
-          we collect, use, and protect your information when you use our
-          real estate platform for buying, selling, or renting properties.
+          we collect, use, and protect your information when you use our real
+          estate platform for buying, selling, or renting properties.
         </p>
 
-        {/* How We Use */}
         <h4 className="sub-heading fs-3">How We Use Your Information</h4>
         <p className="fs-5">
           We use your information to provide better real estate services,
           property recommendations, and secure transactions.
         </p>
 
-        {/* Primary Uses Card */}
         <div className="primary-card">
-          <h5 >Primary Uses</h5>
+          <h5>Primary Uses</h5>
           <ol className="fs-5">
             <li>Property buying and selling assistance</li>
             <li>Responding to customer inquiries</li>
@@ -32,7 +29,6 @@ const Privacy = () => {
           </ol>
         </div>
 
-        {/* Sharing Section */}
         <h4 className="sub-heading mt-5 fs-3">
           Information Sharing and Disclosure
         </h4>
@@ -42,7 +38,6 @@ const Privacy = () => {
           service improvement.
         </p>
 
-        {/* Highlight Box */}
         <div className="highlight-box">
           <FaShieldAlt className="highlight-icon" />
           <h5>We Never Sell Your Data</h5>
@@ -52,11 +47,10 @@ const Privacy = () => {
           </p>
         </div>
 
-        {/* Data Security */}
         <h4 className="sub-heading mt-5 fs-3">Data Security</h4>
         <p className="fs-5">
-          We implement advanced security measures to ensure your personal
-          and property-related information remains safe.
+          We implement advanced security measures to ensure your personal and
+          property-related information remains safe.
         </p>
 
         <div className="row security-cards">
@@ -80,7 +74,6 @@ const Privacy = () => {
             </div>
           </div>
         </div>
-
       </div>
     </section>
   );

@@ -1,0 +1,59 @@
+.inquiry {
+  padding: 60px 0;
+  background-color: #F8FAFC;
+}
+
+.inquiry h2 {
+  color: #1E3A5F;
+  font-weight: 600;
+}
+
+.page-info {
+  color: #64748B;
+  font-size: 15px;
+}
+
+/* Inquiry Card */
+
+.message-card {
+  border-radius: 10px;
+  padding: 22px;
+  background: white;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+  margin-bottom: 25px;
+  transition: 0.3s;
+}
+
+.message-card:hover {
+  transform: translateY(-4px);
+}
+
+.message-card h5 {
+  color: #1E3A5F;
+  margin-bottom: 10px;
+}
+
+.message-card p {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.question {
+  margin-top: 10px;
+  font-style: italic;
+  color: #475569;
+}
+
+/* Reply Button */
+
+.reply-btn {
+  background-color: #F59E0B;
+  border: none;
+  color: white;
+  padding: 6px 14px;
+  font-size: 14px;
+}
+
+.reply-btn:hover {
+  background-color: #d97706;
+}

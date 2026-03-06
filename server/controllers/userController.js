@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
 
-// 🔹 Multer Storage
+// ================= IMAGE UPLOAD =================
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
@@ -15,68 +15,81 @@ const storage = multer.diskStorage({
 
 exports.upload = multer({ storage });
 
-// 🔹 Generate Token
-const generateToken = (user) => {
-  return jwt.sign(
-    { id: user._id, email: user.email },
-    process.env.JWT_SECRET,
-    { expiresIn: "7d" }
-  );
-};
 
-// ================= REGISTER =================
 exports.register = async (req, res) => {
   try {
-    const { fullName, email, dob, phone, password } = req.body;
+    const { fullName, email, phone, dob, password } = req.body;
 
-    const exist = await User.findOne({ email });
-    if (exist)
+    const userExists = await User.findOne({ email });
+    if (userExists)
       return res.status(400).json({ message: "Email already exists" });
 
-    const hashed = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await User.create({
+    await User.create({
       fullName,
       email,
-      dob,
       phone,
-      password: hashed,
+      dob,
+      password: hashedPassword,
     });
 
-    const token = generateToken(user);
-
-    res.status(201).json({
-      message: "Registration successful",
-      token,
-      user,
-    });
-  } catch {
-    res.status(500).json({ message: "Registration failed" });
+    res.json({ message: "Registration Successful" });
+  } catch (err) {
+    res.status(500).json({ message: "Registration Failed" });
   }
 };
 
-// ================= LOGIN =================
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // ✅ Fixed Admin Login
+    if (email === "admin@gmail.com" && password === "admin123") {
+
+      const token = jwt.sign(
+        { role: "admin" },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+      );
+
+      return res.json({
+        token,
+        role: "admin",
+        user: {
+          fullName: "Admin",
+          email: "admin@gmail.com"
+        }
+      });
+    }
+
+    // ✅ Normal User/Broker Login
     const user = await User.findOne({ email });
-    if (!user)
-      return res.status(401).json({ message: "Invalid credentials" });
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
 
     const match = await bcrypt.compare(password, user.password);
-    if (!match)
-      return res.status(401).json({ message: "Invalid credentials" });
 
-    const token = generateToken(user);
+    if (!match) {
+      return res.status(400).json({ message: "Wrong password" });
+    }
+
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
     res.json({
-      message: "Login successful",
       token,
+      role: user.role,
       user,
     });
-  } catch {
-    res.status(500).json({ message: "Login failed" });
+
+  } catch (error) {
+    res.status(500).json({ message: "Login Failed" });
   }
 };
 
@@ -88,22 +101,64 @@ exports.getProfile = async (req, res) => {
 
 // ================= UPDATE PROFILE =================
 exports.updateProfile = async (req, res) => {
-  const { fullName, phone, gender } = req.body;
+  try {
+    
 
-  const updateData = { fullName, phone, gender };
+    const user = await User.findById(req.user.id);
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
 
-  if (req.file) {
-    updateData.image = "uploads/" + req.file.filename;
+ 
+    user.fullName = req.body.fullName || "";
+    user.email = req.body.email || "";
+    user.phone = req.body.phone || "";
+    user.dob = req.body.dob || null;
+    user.gender = req.body.gender || "";
+    user.address = req.body.address || "";
+
+    if (req.file) {
+      user.profileImage = req.file.filename;
+    }
+
+    await user.save();
+
+    res.json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Update Failed" });
   }
+};
 
-  const updatedUser = await User.findByIdAndUpdate(
-    req.user.id,
-    updateData,
-    { new: true }
-  );
+// ================= GET ALL USERS (ADMIN) =================
+exports.getAllUsers = async (req, res) => {
+  try {
 
-  res.json({
-    message: "Profile updated successfully",
-    user: updatedUser,
-  });
+    const users = await User.find().select("-password");
+
+    res.json({
+      success: true,
+      users,
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch users" });
+  }
+};
+
+
+// ================= DELETE USER =================
+exports.deleteUser = async (req, res) => {
+  try {
+
+    const user = await User.findByIdAndDelete(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "User deleted successfully" });
+
+  } catch (error) {
+    res.status(500).json({ message: "Delete failed" });
+  }
 };

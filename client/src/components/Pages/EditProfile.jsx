@@ -1,134 +1,214 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "../../assets/css/EditProfile.css";
 
 const EditProfile = () => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const [user, setUser] = useState({
     fullName: "",
     email: "",
-    mobile: "",
-    birthdate: "",
+    phone: "",
+    dob: "",
     address: "",
     gender: "",
+    profileImage: "",
   });
 
+  const [image, setImage] = useState(null);
+
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser) {
-      setUser(storedUser);
-    }
-  }, []);
+    const fetchProfile = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/auth/profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        setUser({
+          fullName: res.data.fullName || "",
+          email: res.data.email || "",
+          phone: res.data.phone || "",
+          dob: res.data.dob ? res.data.dob.split("T")[0] : "",
+          address: res.data.address || "",
+          gender: res.data.gender || "",
+          profileImage: res.data.profileImage || "",
+        });
+      } catch (error) {
+        navigate("/signin");
+      }
+    };
+
+    fetchProfile();
+  }, [token, navigate]);
 
   const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value || "",
+    });
   };
 
-  const handleSubmit = (e) => {
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem("user", JSON.stringify(user));
-    alert("Profile Updated Successfully ✅");
+
+    const formData = new FormData();
+    formData.append("fullName", user.fullName);
+    formData.append("email", user.email);
+    formData.append("phone", user.phone);
+    formData.append("dob", user.dob);
+    formData.append("address", user.address);
+    formData.append("gender", user.gender);
+
+    if (image) {
+      formData.append("profileImage", image);
+    }
+
+    try {
+      const res = await axios.put(
+        "http://localhost:5000/api/auth/profile",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      alert("Profile Updated ");
+
+      setUser({
+        ...res.data,
+        dob: res.data.dob ? res.data.dob.split("T")[0] : "",
+      });
+
+      navigate("/profile");
+    } catch (error) {
+      alert("Update Failed ");
+    }
   };
 
   return (
     <div className="edit-profile-wrapper">
-      <div className="profile-card">
+      <div className="edit-card">
+        <h3 className="edit-title">Edit Profile</h3>
 
-        <div className="profile-header">
+        {/* IMAGE PREVIEW */}
+        <div className="image-preview">
           <img
-            src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+            src={
+              image
+                ? URL.createObjectURL(image)
+                : user.profileImage
+                  ? `http://localhost:5000/uploads/${user.profileImage}`
+                  : "/default.png"
+            }
             alt="Profile"
           />
-          <h3>{user.fullName}</h3>
-          <p>{user.email}</p>
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div className="row g-3">
-
-            <div className="col-md-6">
+          <div className="form-row">
+            <div>
               <label>Full Name</label>
               <input
                 type="text"
                 name="fullName"
-                className="form-control"
-                value={user.fullName}
+                value={user.fullName || ""}
                 onChange={handleChange}
+                required
               />
             </div>
 
-            <div className="col-md-6">
+            <div>
               <label>Email</label>
               <input
                 type="email"
                 name="email"
-                className="form-control"
-                value={user.email}
+                value={user.email || ""}
                 onChange={handleChange}
+                required
               />
             </div>
+          </div>
 
-            <div className="col-md-6">
+          <div className="form-row">
+            <div>
               <label>Mobile</label>
               <input
                 type="text"
-                name="mobile"
-                className="form-control"
-                value={user.mobile}
+                name="phone"
+                value={user.phone || ""}
                 onChange={handleChange}
               />
             </div>
 
-            <div className="col-md-6">
+            <div>
               <label>Date of Birth</label>
               <input
                 type="date"
-                name="birthdate"
-                className="form-control"
-                value={user.birthdate}
+                name="dob"
+                value={user.dob || ""}
                 onChange={handleChange}
               />
             </div>
-
-            <div className="col-12">
-              <label>Address</label>
-              <textarea
-                name="address"
-                className="form-control"
-                rows="3"
-                value={user.address}
-                onChange={handleChange}
-              ></textarea>
-            </div>
-
-            <div className="col-md-6">
-              <label>Gender</label><br />
-              <input
-                type="radio"
-                name="gender"
-                value="Male"
-                checked={user.gender === "Male"}
-                onChange={handleChange}
-              /> Male
-
-              <input
-                type="radio"
-                name="gender"
-                value="Female"
-                className="ms-3"
-                checked={user.gender === "Female"}
-                onChange={handleChange}
-              /> Female
-            </div>
-
-            <div className="col-12 mt-3">
-              <button type="submit" className="btn-update w-100">
-                Update Profile
-              </button>
-            </div>
-
           </div>
-        </form>
 
+          <div>
+            <label>Address</label>
+            <textarea
+              name="address"
+              rows="3"
+              value={user.address || ""}
+              onChange={handleChange}
+            ></textarea>
+          </div>
+
+          <div className="gender-wrapper">
+            <label>Gender</label>
+            <div className="gender-options">
+              <label
+                className={`gender-card ${user.gender === "Male" ? "active" : ""}`}
+              >
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Male"
+                  checked={user.gender === "Male"}
+                  onChange={handleChange}
+                />
+                Male
+              </label>
+
+              <label
+                className={`gender-card ${user.gender === "Female" ? "active" : ""}`}
+              >
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Female"
+                  checked={user.gender === "Female"}
+                  onChange={handleChange}
+                />
+                Female
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label>Profile Image</label>
+            <input type="file" onChange={handleImageChange} />
+          </div>
+
+          <button type="submit" className="update-btn">
+            Update Profile
+          </button>
+        </form>
       </div>
     </div>
   );

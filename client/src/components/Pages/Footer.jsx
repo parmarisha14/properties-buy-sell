@@ -80,22 +80,19 @@ const Footer = () => {
               <div className="contact-item">
                 <FaMapMarkerAlt />
                 <span>
-                  2847 Maple Avenue
-                  <br />
-                  Los Angeles, CA 90210
-                  <br />
-                  United States
+                  Ruchi Harmony, Navsari
+                  Gujarat 396427
                 </span>
               </div>
 
               <div className="contact-item">
                 <FaPhoneAlt />
-                <span>+1 (555) 987-6543</span>
+                <span>9852684125</span>
               </div>
 
               <div className="contact-item">
                 <FaEnvelope />
-                <span>contact@example.com</span>
+                <span>primestaterealty@gmail.com</span>
               </div>
 
               <div className="social-icons mt-3">

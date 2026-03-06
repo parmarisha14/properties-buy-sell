@@ -6,46 +6,46 @@ import { HiUser, HiOfficeBuilding } from "react-icons/hi";
 import "../../assets/css/Login.css";
 
 const SignIn = () => {
-  const [role, setRole] = useState("user");
+  const [role, setRole] = useState("user"); 
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
+
   const handleLogin = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+    setMsg("");
 
-  const email = e.target.email.value;
-  const password = e.target.password.value;
+    const email = e.target.email.value.trim();
+    const password = e.target.password.value;
 
-  try {
-    const res = await axios.post(
-      "http://localhost:5000/api/auth/login",
-      { email, password, role }
-    );
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        { email, password } 
+      );
 
-    // ✅ Save Token
-    localStorage.setItem("token", res.data.token);
+      
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.role);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-    // ✅ Save Role
-    localStorage.setItem("role", res.data.role);
+      setMsg("Login Successful ");
 
-    // ✅ IMPORTANT: Save User Object
-    localStorage.setItem("user", JSON.stringify(res.data.user));
+      
+      setTimeout(() => {
+        if (res.data.role === "admin") {
+            window.location.href = "http://localhost:5174/admin-dashboard";
+        } 
+        else if (res.data.role === "broker") {
+           window.location.href = "http://localhost:5175/broker-dashboard";
+        } 
+        else {
+          navigate("/");
+        }
+      }, 800);
 
-    setMsg("Login Successful ✅");
-
-    setTimeout(() => {
-      if (res.data.role === "broker") {
-        navigate("/broker-dashboard");
-      } else {
-        navigate("/");
-      }
-      window.location.reload(); // 🔥 Refresh to update header
-    }, 1000);
-
-  } catch (error) {
-    setMsg(error.response?.data?.message || "Login Failed ❌");
-  }
-
- 
+    } catch (error) {
+      setMsg(error.message || "Login Failed ");
+    }
   };
 
   return (
@@ -57,9 +57,13 @@ const SignIn = () => {
           Sign in to continue to Sell & Buy Home
         </p>
 
-        {msg && <p style={{ color: "red" }}>{msg}</p>}
+        {msg && (
+          <p style={{ color: msg.includes("Successful") ? "green" : "red" }}>
+            {msg}
+          </p>
+        )}
 
-        {/* Role Toggle */}
+       
         <div className="role-toggle">
           <button
             type="button"
@@ -78,17 +82,27 @@ const SignIn = () => {
           </button>
         </div>
 
-        {/* Form */}
+       
         <form className="login-form" onSubmit={handleLogin}>
           
           <div className="form-group">
             <label>Email</label>
-            <input type="email" name="email" placeholder="Enter your email" required />
+            <input 
+              type="email" 
+              name="email" 
+              placeholder="Enter your email" 
+              required 
+            />
           </div>
 
           <div className="form-group">
             <label>Password</label>
-            <input type="password" name="password" placeholder="Enter your password" required />
+            <input 
+              type="password" 
+              name="password" 
+              placeholder="Enter your password" 
+              required 
+            />
           </div>
 
           <button type="submit" className="login-btn">

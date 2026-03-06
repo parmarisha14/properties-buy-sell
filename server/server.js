@@ -7,26 +7,28 @@ const routes = require("./routes");
 
 const app = express();
 
-// ✅ Connect DB
+
 connectDB();
 
-// ✅ CORS FIX
-app.use(
-  cors({
-    origin: "http://localhost:5173", // FRONTEND URL
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: [
+    "http://localhost:5173", // client
+    "http://localhost:5174"  // admin
+  ],
+  credentials: true
+}));
 
+// ✅ BODY PARSER FIX
 app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));   // ⭐ ADD THIS
 
 // ✅ Static folder
 app.use("/uploads", express.static("uploads"));
 
-// ✅ API Routes
+// ✅ Routes
 app.use("/api", routes);
 
-// ✅ Test route
 app.get("/", (req, res) => {
   res.send("API Running...");
 });

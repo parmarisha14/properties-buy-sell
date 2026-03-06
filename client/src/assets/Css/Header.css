@@ -56,8 +56,28 @@
 .get-started-btn:hover {
   background: #245a52;
 }
+.wishlist-icon {
+  width: 35px;
+  height: 35px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
 
-/* Remove Bootstrap default blue background */
+.wishlist-icon:hover {
+  background: #2c7a7b;
+  border-color: #2c7a7b;
+  color: white;
+}
+
+
+
 .dropdown-item:active,
 .dropdown-item.active,
 .dropdown-item:focus {

@@ -4,7 +4,8 @@ import {
   FaUserCircle,
   FaUserEdit,
   FaKey,
-  FaSignOutAlt
+  FaSignOutAlt,
+  FaHeart
 } from "react-icons/fa";
 
 import "../../assets/Css/Header.css";
@@ -13,15 +14,12 @@ import logo from "../../assets/Images/logo.png";
 const Header = () => {
 
   const navigate = useNavigate();
-
-  // ✅ Get logged-in user from localStorage
   const user = JSON.parse(localStorage.getItem("user"));
 
-  // ✅ Logout Function
   const handleLogout = () => {
     localStorage.removeItem("user");
     navigate("/signin");
-    window.location.reload(); // refresh navbar
+    window.location.reload();
   };
 
   return (
@@ -47,8 +45,9 @@ const Header = () => {
           id="navbarMenu"
         >
 
-          {/* Center Nav Links */}
+          {/* Menu Links */}
           <ul className="navbar-nav mb-2 mb-lg-0 nav-links mx-auto">
+
             <li className="nav-item">
               <NavLink className="nav-link custom-link" to="/">Home</NavLink>
             </li>
@@ -77,7 +76,6 @@ const Header = () => {
               <NavLink className="nav-link custom-link" to="/contact">Contact</NavLink>
             </li>
 
-            {/* Legal Dropdown */}
             <li className="nav-item dropdown">
               <NavLink
                 className="nav-link dropdown-toggle custom-link"
@@ -94,6 +92,7 @@ const Header = () => {
                     Terms & Conditions
                   </NavLink>
                 </li>
+
                 <li>
                   <NavLink className="dropdown-item" to="/privacy">
                     Privacy Policy
@@ -101,41 +100,61 @@ const Header = () => {
                 </li>
               </ul>
             </li>
+
           </ul>
 
           {/* Right Side */}
           <div className="d-flex align-items-center gap-3">
 
-            {/* ❌ Show only if NOT logged in */}
             {!user && (
               <NavLink to="/signin" className="get-started-btn">
                 Get Started
               </NavLink>
             )}
 
-            {/* ✅ Show only if logged in */}
             {user && (
               <>
-               
+
+                {/* Wishlist Icon */}
+                <NavLink to="/wishlist" className="wishlist-icon">
+                  <FaHeart size={18} />
+                </NavLink>
 
                 {/* Profile Dropdown */}
                 <div className="dropdown">
+
                   <button
                     className="btn profile-btn"
                     type="button"
                     data-bs-toggle="dropdown"
                   >
-                    <FaUserCircle size={28} />
+                    <FaUserCircle size={32} />
                   </button>
-                   {/* User Name */}
-                <span className="fw-bold  fs-6 text-dark">
-                  Hii, {user.fullName}
-                </span>
+
+                  <span className="fw-bold fs-6 text-dark ms-2">
+                    Hii, {user.fullName}
+                  </span>
+
                   <ul className="dropdown-menu dropdown-menu-end shadow">
+
+                    <li>
+                      <NavLink className="dropdown-item" to="/profile">
+                        <FaUserEdit className="me-2" />
+                        Profile
+                      </NavLink>
+                    </li>
+
                     <li>
                       <NavLink className="dropdown-item" to="/edit-profile">
                         <FaUserEdit className="me-2" />
                         Edit Profile
+                      </NavLink>
+                    </li>
+
+                    <li>
+                      <NavLink className="dropdown-item" to="/wishlist">
+                        <FaHeart className="me-2 text-danger" />
+                        Wishlist
                       </NavLink>
                     </li>
 
@@ -157,8 +176,10 @@ const Header = () => {
                         Logout
                       </button>
                     </li>
+
                   </ul>
                 </div>
+
               </>
             )}
 

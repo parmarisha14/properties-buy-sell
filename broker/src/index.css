@@ -1,0 +1,27 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background:#F8FAFC;
+  min-height:100vh;
+}
+
+#root{
+  width:100%;
+}
+
+/* Links */
+
+a{
+  text-decoration:none;
+}
+
+/* Button reset */
+
+button{
+  cursor:pointer;
+}
