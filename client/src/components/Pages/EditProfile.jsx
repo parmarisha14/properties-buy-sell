@@ -22,9 +22,12 @@ const EditProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/auth/profile", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          "http://localhost:5000/api/user/profile", // ✅ FIXED
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         setUser({
           fullName: res.data.fullName || "",
@@ -46,7 +49,7 @@ const EditProfile = () => {
   const handleChange = (e) => {
     setUser({
       ...user,
-      [e.target.name]: e.target.value || "",
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -71,16 +74,16 @@ const EditProfile = () => {
 
     try {
       const res = await axios.put(
-        "http://localhost:5000/api/auth/profile",
+        "http://localhost:5000/api/user/profile",
         formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
 
-      alert("Profile Updated ");
+      alert("Profile Updated");
 
       setUser({
         ...res.data,
@@ -89,7 +92,7 @@ const EditProfile = () => {
 
       navigate("/profile");
     } catch (error) {
-      alert("Update Failed ");
+      alert("Update Failed");
     }
   };
 
@@ -98,15 +101,14 @@ const EditProfile = () => {
       <div className="edit-card">
         <h3 className="edit-title">Edit Profile</h3>
 
-        {/* IMAGE PREVIEW */}
         <div className="image-preview">
           <img
             src={
               image
                 ? URL.createObjectURL(image)
                 : user.profileImage
-                  ? `http://localhost:5000/uploads/${user.profileImage}`
-                  : "/default.png"
+                ? `http://localhost:5000/uploads/${user.profileImage}`
+                : "/default.png"
             }
             alt="Profile"
           />
@@ -119,7 +121,7 @@ const EditProfile = () => {
               <input
                 type="text"
                 name="fullName"
-                value={user.fullName || ""}
+                value={user.fullName}
                 onChange={handleChange}
                 required
               />
@@ -130,7 +132,7 @@ const EditProfile = () => {
               <input
                 type="email"
                 name="email"
-                value={user.email || ""}
+                value={user.email}
                 onChange={handleChange}
                 required
               />
@@ -143,7 +145,7 @@ const EditProfile = () => {
               <input
                 type="text"
                 name="phone"
-                value={user.phone || ""}
+                value={user.phone}
                 onChange={handleChange}
               />
             </div>
@@ -153,7 +155,7 @@ const EditProfile = () => {
               <input
                 type="date"
                 name="dob"
-                value={user.dob || ""}
+                value={user.dob}
                 onChange={handleChange}
               />
             </div>
@@ -164,16 +166,19 @@ const EditProfile = () => {
             <textarea
               name="address"
               rows="3"
-              value={user.address || ""}
+              value={user.address}
               onChange={handleChange}
             ></textarea>
           </div>
 
           <div className="gender-wrapper">
             <label>Gender</label>
+
             <div className="gender-options">
               <label
-                className={`gender-card ${user.gender === "Male" ? "active" : ""}`}
+                className={`gender-card ${
+                  user.gender === "Male" ? "active" : ""
+                }`}
               >
                 <input
                   type="radio"
@@ -186,7 +191,9 @@ const EditProfile = () => {
               </label>
 
               <label
-                className={`gender-card ${user.gender === "Female" ? "active" : ""}`}
+                className={`gender-card ${
+                  user.gender === "Female" ? "active" : ""
+                }`}
               >
                 <input
                   type="radio"
