@@ -1,28 +1,21 @@
 const express = require("express");
 const router = express.Router();
-
 const {
   getProfile,
   updateProfile,
-  upload,
-  getAllUsers,
-  deleteUser,
   changePassword
-} = require("../controllers/userController");
+} = require("../controllers/authController");
 
+const upload = require("../middleware/upload");
 const { protect } = require("../middleware/authMiddleware");
 
-// ✅ Get logged-in user profile
+// ✅ GET Profile
 router.get("/profile", protect, getProfile);
 
-// ✅ Update profile with image
+// ✅ UPDATE Profile (with optional image)
 router.put("/profile", protect, upload.single("profileImage"), updateProfile);
 
-// ✅ Change password
+// ✅ CHANGE PASSWORD
 router.put("/change-password", protect, changePassword);
-
-// ✅ Admin routes
-router.get("/all", getAllUsers);
-router.delete("/delete/:id", deleteUser);
 
 module.exports = router;

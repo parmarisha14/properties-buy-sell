@@ -1,32 +1,51 @@
 require("dotenv").config();
-
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
+const session = require("express-session");
 const connectDB = require("./config/db");
 const routes = require("./routes");
 
 const app = express();
 
-
+// MongoDB
 connectDB();
 
+// CORS - Allow credentials from both ports
 app.use(cors({
   origin: [
-    "http://localhost:5173", // client
-    "http://localhost:5174"  // admin
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175"
   ],
-  credentials: true
+  credentials: true,
+ 
 }));
 
-// ✅ BODY PARSER FIX
+// body parser
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(express.urlencoded({ extended: true }));   // ⭐ ADD THIS
+// SESSION - CRITICAL FIX: Add domain: ".localhost"
+app.use(
+  session({
+    secret: "realestate-secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false,
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: 1000 * 60 * 60 * 24,
+      
+    }
+  })
+);
 
-// ✅ Static folder
-app.use("/uploads", express.static("uploads"));
+// uploads
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// ✅ Routes
+// routes
 app.use("/api", routes);
 
 app.get("/", (req, res) => {

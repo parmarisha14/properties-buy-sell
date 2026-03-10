@@ -1,185 +1,137 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
-import { FcGoogle } from "react-icons/fc";
 import { HiUser, HiOfficeBuilding } from "react-icons/hi";
 import "../../assets/css/Login.css";
 
-const SignIn = () => {
+// Allow cookies for cross-origin requests
+axios.defaults.withCredentials = true;
 
+const SignIn = () => {
   const [role, setRole] = useState("user");
   const [msg, setMsg] = useState("");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setMsg("");
 
     const email = e.target.email.value.trim();
     const password = e.target.password.value;
 
     try {
+      const res = await axios.post("http://localhost:5000/api/auth/login", {
+        email,
+        password,
+        role
+      });
 
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        {
-          email,
-          password,
-          role
-        }
-      );
+      const user = res.data.user;
 
-      const userObj = res.data?.user || {};
-      const userRole = res.data?.role || "user";   // ✅ backend role
+      if (!user) {
+        setMsg("Invalid credentials");
+        setLoading(false);
+        return;
+      }
 
-      const userData = {
-        fullName: userObj.fullName || userObj.name || "User",
-        email: userObj.email || "",
-        phone: userObj.phone || "",
-        dob: userObj.dob || "",
-        role: userRole,   // ✅ fixed
-        _id: userObj._id || ""
-      };
+      setMsg("Login successful");
 
-      // ✅ Save data
-      localStorage.setItem("token", res.data?.token || "");
-      localStorage.setItem("role", userRole);   // ✅ fixed
-      localStorage.setItem("user", JSON.stringify(userData));
+      // Redirect based on role
+      if (user.role === "broker") {
+        // Redirect to broker dashboard app (5175)
+        window.location.href = "http://localhost:5175/dashboard";
+      } else if (user.role === "admin") {
+        window.location.href = "http://localhost:5173/admin/dashboard";
+      } else {
+        // normal user stays in public app
+        window.location.href = "/";
+      }
 
-      // update header instantly
-      window.dispatchEvent(new Event("storage"));
-
-      setMsg("Login Successful");
-
-      setTimeout(() => {
-
-        // ✅ redirect using backend role
-        if (userRole === "admin") {
-          window.location.href = "http://localhost:5174/admin-dashboard";
-        }
-
-        else if (userRole === "broker") {
-          window.location.href = "http://localhost:5175/broker-dashboard";
-        }
-
-        else {
-          navigate("/");
-        }
-
-      }, 500);
-
-    } catch (error) {
-
-      const errMsg =
-        error.response?.data?.message ||
-        error.message ||
-        "Login Failed";
-
-      setMsg(errMsg);
-
+    } catch (err) {
+      console.error("Login error:", err);
+      setMsg(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-
     <div className="login-wrapper">
-
       <div className="login-card">
-
         <h2 className="login-title">Welcome Back</h2>
-
-        <p className="login-subtitle">
-          Sign in to continue to Sell & Buy Home
-        </p>
+        <p className="login-subtitle">Sign in to continue</p>
 
         {msg && (
-          <p style={{ color: msg.includes("Successful") ? "green" : "red" }}>
+          <p style={{
+            color: msg.includes("successful") ? "green" : "red",
+            textAlign: "center",
+            marginTop: "10px"
+          }}>
             {msg}
           </p>
         )}
 
         <div className="role-toggle">
-
           <button
             type="button"
             className={role === "user" ? "active" : ""}
             onClick={() => setRole("user")}
+            disabled={loading}
           >
-            <HiUser /> User
+            <HiUser /> User/Admin
           </button>
 
           <button
             type="button"
             className={role === "broker" ? "active" : ""}
             onClick={() => setRole("broker")}
+            disabled={loading}
           >
             <HiOfficeBuilding /> Broker
           </button>
-
         </div>
 
         <form className="login-form" onSubmit={handleLogin}>
-
           <div className="form-group">
-
-            <label htmlFor="email">Email</label>
-
+            <label>Email</label>
             <input
               type="email"
-              id="email"
               name="email"
-              placeholder="Enter your email"
+              placeholder="Enter email"
               required
+              disabled={loading}
             />
-
           </div>
 
           <div className="form-group">
-
-            <label htmlFor="password">Password</label>
-
+            <label>Password</label>
             <input
               type="password"
-              id="password"
               name="password"
-              placeholder="Enter your password"
+              placeholder="Enter password"
               required
+              disabled={loading}
             />
-
           </div>
 
-          <button type="submit" className="login-btn">
-            Login
+          <button
+            type="submit"
+            className="login-btn"
+            disabled={loading}
+          >
+            {loading ? "Logging in..." : "Login"}
           </button>
-
         </form>
 
-        {role === "user" && (
-          <>
-            <div className="divider text-center">OR</div>
-
-            <button className="google-btn">
-              <FcGoogle size={20} /> Sign in with Google
-            </button>
-          </>
-        )}
-
         <p className="signup-text">
-
-          Don’t have an account?
-
-          <Link
-            to={role === "user" ? "/signup-user" : "/signup-broker"}
-          >
+          Don't have an account?{" "}
+          <Link to={role === "user" ? "/signup-user" : "/signup-broker"}>
             Sign Up
           </Link>
-
         </p>
-
       </div>
-
     </div>
-
   );
 };
 

@@ -1,0 +1,134 @@
+/* Layout */
+
+.app-layout{
+  display:flex;
+  min-height:100vh;
+  background:#f5f7fa;
+}
+
+/* Sidebar */
+
+.sidebar{
+  width:250px;
+  height:100vh;
+  background:#1E3A5F;
+  color:white;
+  padding:25px 20px;
+  position:fixed;
+  display:flex;
+  flex-direction:column;
+  overflow-y:auto;
+}
+
+/* Sidebar title */
+
+.sidebar-title{
+  font-size:22px;
+  font-weight:700;
+  text-align:center;
+  margin-bottom:30px;
+  border-bottom:1px solid rgba(255,255,255,0.2);
+  padding-bottom:12px;
+}
+
+/* Menu */
+
+.sidebar-menu{
+  list-style:none;
+  padding:0;
+  margin:0;
+  flex:1;
+}
+
+.sidebar-menu li{
+  margin-bottom:8px;
+}
+
+/* Links */
+
+.sidebar-menu a{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  border-radius:6px;
+  text-decoration:none;
+  color:#e6edf5;
+  font-size:15px;
+  transition:all 0.3s ease;
+}
+
+/* Hover */
+
+.sidebar-menu a:hover{
+  background:#2C5D87;
+  color:white;
+}
+
+/* Active NavLink */
+
+.sidebar-menu a.active{
+  background:#2C5D87;
+  color:white;
+}
+
+/* Divider */
+
+.sidebar-divider{
+  margin-top:20px;
+  margin-bottom:10px;
+  font-size:13px;
+  color:#cbd5e1;
+  text-transform:uppercase;
+}
+
+/* Logout */
+
+.logout-btn{
+  width:100%;
+  text-align:left;
+  padding:10px 14px;
+  border:none;
+  background:none;
+  color:#e6edf5;
+  border-radius:6px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  transition:all 0.3s ease;
+}
+
+.logout-btn:hover{
+  background:#dc3545;
+  color:white;
+}
+
+/* Main Content */
+
+.main-content{
+  margin-left:250px;
+  width:100%;
+  padding:25px;
+}
+
+/* Profile */
+
+.sidebar-profile{
+  background:#16324d;
+  padding:12px;
+  border-radius:6px;
+  margin-bottom:20px;
+}
+
+.sidebar-profile h4{
+  margin:0;
+  font-size:16px;
+  color:white;
+}
+
+.sidebar-profile p{
+  margin:0;
+  font-size:13px;
+  color:#cbd5e1;
+}

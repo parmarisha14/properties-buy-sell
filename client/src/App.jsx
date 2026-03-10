@@ -8,7 +8,6 @@ import Footer from "./components/Pages/Footer";
 import Terms from "./components/Pages/Terms";
 import Privacy from "./components/Pages/Privacy";
 import Blog from "./components/Pages/Blog";
-
 import SignIn from "./components/auth/SignIn";
 import SignUpBroker from "./components/auth/SignUpBroker";
 import EditProfile from "./components/Pages/EditProfile";
@@ -16,13 +15,15 @@ import Profile from "./components/Pages/Profile";
 import SignUpUser from "./components/auth/SignUpUser";
 import ChangePassword from "./components/Pages/ChangePassword";
 import Services from "./components/Pages/Services";
+import axios from "axios";
 
+// IMPORTANT: Allow cookies to be sent across requests
+axios.defaults.withCredentials = true;
 
 const App = () => {
   return (
     <>
       <Header />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -38,7 +39,6 @@ const App = () => {
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/services" element={<Services />} />
       </Routes>
-
       <Footer />
     </>
   );

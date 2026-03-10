@@ -3,10 +3,10 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../../assets/css/EditProfile.css";
 
+axios.defaults.withCredentials = true;
+
 const EditProfile = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-
   const [user, setUser] = useState({
     fullName: "",
     email: "",
@@ -14,100 +14,69 @@ const EditProfile = () => {
     dob: "",
     address: "",
     gender: "",
-    profileImage: "",
+    profileImage: ""
   });
-
   const [image, setImage] = useState(null);
 
+  // FETCH PROFILE
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:5000/api/user/profile", // ✅ FIXED
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
+        const res = await axios.get("http://localhost:5000/api/auth/profile");
         setUser({
-          fullName: res.data.fullName || "",
+          fullName: res.data.fullName || res.data.name || "",
           email: res.data.email || "",
           phone: res.data.phone || "",
           dob: res.data.dob ? res.data.dob.split("T")[0] : "",
           address: res.data.address || "",
           gender: res.data.gender || "",
-          profileImage: res.data.profileImage || "",
+          profileImage: res.data.profileImage || ""
         });
-      } catch (error) {
+      } catch (err) {
         navigate("/signin");
       }
     };
-
     fetchProfile();
-  }, [token, navigate]);
+  }, [navigate]);
 
-  const handleChange = (e) => {
-    setUser({
-      ...user,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
-  };
+  const handleChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
+  const handleImageChange = (e) => setImage(e.target.files[0]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("fullName", user.fullName);
-    formData.append("email", user.email);
-    formData.append("phone", user.phone);
-    formData.append("dob", user.dob);
-    formData.append("address", user.address);
-    formData.append("gender", user.gender);
-
-    if (image) {
-      formData.append("profileImage", image);
-    }
-
     try {
-      const res = await axios.put(
-        "http://localhost:5000/api/user/profile",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const formData = new FormData();
+      formData.append("fullName", user.fullName);
+      formData.append("email", user.email);
+      formData.append("phone", user.phone);
+      formData.append("dob", user.dob);
+      formData.append("address", user.address);
+      formData.append("gender", user.gender);
+      if (image) formData.append("userImage", image); // MUST match multer field name
 
-      alert("Profile Updated");
-
-      setUser({
-        ...res.data,
-        dob: res.data.dob ? res.data.dob.split("T")[0] : "",
+      await axios.put("http://localhost:5000/api/auth/profile", formData, {
+        withCredentials: true
       });
 
+      alert("Profile updated successfully");
       navigate("/profile");
-    } catch (error) {
-      alert("Update Failed");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update profile");
     }
   };
 
   return (
     <div className="edit-profile-wrapper">
       <div className="edit-card">
-        <h3 className="edit-title">Edit Profile</h3>
-
+        <h3>Edit Profile</h3>
         <div className="image-preview">
           <img
             src={
               image
                 ? URL.createObjectURL(image)
                 : user.profileImage
-                ? `http://localhost:5000/uploads/${user.profileImage}`
+                ? `http://localhost:5000/uploads/users/${user.profileImage}`
                 : "/default.png"
             }
             alt="Profile"
@@ -118,91 +87,38 @@ const EditProfile = () => {
           <div className="form-row">
             <div>
               <label>Full Name</label>
-              <input
-                type="text"
-                name="fullName"
-                value={user.fullName}
-                onChange={handleChange}
-                required
-              />
+              <input type="text" name="fullName" value={user.fullName} onChange={handleChange} required />
             </div>
-
             <div>
               <label>Email</label>
-              <input
-                type="email"
-                name="email"
-                value={user.email}
-                onChange={handleChange}
-                required
-              />
+              <input type="email" name="email" value={user.email} onChange={handleChange} required />
             </div>
           </div>
 
           <div className="form-row">
             <div>
               <label>Mobile</label>
-              <input
-                type="text"
-                name="phone"
-                value={user.phone}
-                onChange={handleChange}
-              />
+              <input type="text" name="phone" value={user.phone} onChange={handleChange} />
             </div>
-
             <div>
               <label>Date of Birth</label>
-              <input
-                type="date"
-                name="dob"
-                value={user.dob}
-                onChange={handleChange}
-              />
+              <input type="date" name="dob" value={user.dob} onChange={handleChange} />
             </div>
           </div>
 
           <div>
             <label>Address</label>
-            <textarea
-              name="address"
-              rows="3"
-              value={user.address}
-              onChange={handleChange}
-            ></textarea>
+            <textarea name="address" rows="3" value={user.address} onChange={handleChange}></textarea>
           </div>
 
           <div className="gender-wrapper">
             <label>Gender</label>
-
             <div className="gender-options">
-              <label
-                className={`gender-card ${
-                  user.gender === "Male" ? "active" : ""
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="gender"
-                  value="Male"
-                  checked={user.gender === "Male"}
-                  onChange={handleChange}
-                />
-                Male
+              <label className={`gender-card ${user.gender === "Male" ? "active" : ""}`}>
+                <input type="radio" name="gender" value="Male" checked={user.gender === "Male"} onChange={handleChange} /> Male
               </label>
-
-              <label
-                className={`gender-card ${
-                  user.gender === "Female" ? "active" : ""
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="gender"
-                  value="Female"
-                  checked={user.gender === "Female"}
-                  onChange={handleChange}
-                />
-                Female
+              <label className={`gender-card ${user.gender === "Female" ? "active" : ""}`}>
+                <input type="radio" name="gender" value="Female" checked={user.gender === "Female"} onChange={handleChange} /> Female
               </label>
             </div>
           </div>
@@ -212,9 +128,7 @@ const EditProfile = () => {
             <input type="file" onChange={handleImageChange} />
           </div>
 
-          <button type="submit" className="update-btn">
-            Update Profile
-          </button>
+          <button type="submit" className="update-btn">Update Profile</button>
         </form>
       </div>
     </div>

@@ -1,95 +1,155 @@
-import property1 from "../assets/images/villa.jpg";
-import property2 from "../assets/images/apartment.jpg";
-import property3 from "../assets/images/property3.jpg";
-import property4 from "../assets/images/property2.jpg";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
+import "../assets/Css/ManageProperty.css";
 
-import "../styles/manage.css";
+axios.defaults.withCredentials = true;
 
-export default function ManageProperty(){
-  return(
+const ManageProperty = () => {
 
-    <div className="manage-property">
+  const [properties, setProperties] = useState([]);
+  const navigate = useNavigate();
 
-      <div className="container">
+  useEffect(() => {
+    fetchProperties();
+  }, []);
 
-        <h2 className="page-title">Manage Properties</h2>
-        <p className="page-info">View, edit or delete your listed properties</p>
+  const fetchProperties = async () => {
+
+    try {
+
+      const res = await axios.get(
+        "http://localhost:5000/api/property/broker",
+        { withCredentials: true }
+      );
+
+      setProperties(res.data);
+
+    } catch (err) {
+
+      console.log("Fetch Error:", err);
+
+    }
+
+  };
+
+  const deleteProperty = async (id) => {
+
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this property?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+
+      await axios.delete(
+        `http://localhost:5000/api/property/delete/${id}`,
+        { withCredentials: true }
+      );
+
+      fetchProperties();
+
+    } catch (err) {
+
+      console.log("Delete Error:", err);
+
+    }
+
+  };
+
+  return (
+    <div className="app-layout">
+
+      <Sidebar />
+
+      <div className="main-content">
+
+        <h2 className="mb-4">Manage Properties</h2>
 
         <div className="row">
 
-          {/* Property 1 */}
-          <div className="col-md-3">
-            <div className="property-card">
-              <img src={property1} className="card-img-top"/>
+          {properties.length === 0 && (
+            <p>No properties found.</p>
+          )}
 
-              <div className="card-body">
-                <h5>Luxury Villa</h5>
-                <p className="price">₹85,00,000</p>
-                <p className="location">Ahmedabad</p>
-                <p className="status pending">Pending</p>
+          {properties.map((p) => (
 
-                <button className="btn edit-btn btn-sm me-2">Edit</button>
-                <button className="btn delete-btn btn-sm">Delete</button>
+            <div className="col-md-6 col-lg-4 mb-4" key={p._id}>
+
+              <div className="property-card shadow-sm p-3">
+
+                <img
+                  src={
+                    p.image
+                      ? `http://localhost:5000/uploads/properties/${p.image}`
+                      : "https://via.placeholder.com/300x200?text=No+Image"
+                  }
+                  alt={p.name}
+                  className="property-img"
+                />
+
+                <h5 className="mt-2">{p.name}</h5>
+
+                <p>₹ {p.price}</p>
+
+                <p>
+                  {p.location}, {p.city}, {p.state}
+                </p>
+
+                <p>
+                  Bedrooms: {p.bedroom} | Bathrooms: {p.bathroom}
+                </p>
+
+                <p>
+                  Area: {p.area} sq.ft | Year: {p.year}
+                </p>
+
+                <p>
+                  Type: {p.type}
+                </p>
+
+                <p>
+                  Features: {Array.isArray(p.features) ? p.features.join(", ") : ""}
+                </p>
+
+                <p>{p.description}</p>
+
+                <p>
+                  <b>Status:</b> {p.status}
+                </p>
+
+                <div className="d-flex gap-2">
+
+                  <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => navigate(`/edit-property/${p._id}`)}
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => deleteProperty(p._id)}
+                  >
+                    Delete
+                  </button>
+
+                </div>
+
               </div>
+
             </div>
-          </div>
 
-          {/* Property 2 */}
-          <div className="col-md-3">
-            <div className="property-card">
-              <img src={property2} className="card-img-top"/>
-
-              <div className="card-body">
-                <h5>Modern Apartment</h5>
-                <p className="price">₹45,00,000</p>
-                <p className="location">Surat</p>
-                <p className="status approved">Approved</p>
-
-                <button className="btn edit-btn btn-sm me-2">Edit</button>
-                <button className="btn delete-btn btn-sm">Delete</button>
-              </div>
-            </div>
-          </div>
-
-          {/* Property 3 */}
-          <div className="col-md-3">
-            <div className="property-card">
-              <img src={property3} className="card-img-top"/>
-
-              <div className="card-body">
-                <h5>Luxury Bungalow</h5>
-                <p className="price">₹1,20,00,000</p>
-                <p className="location">Vadodara</p>
-                <p className="status pending">Pending</p>
-
-                <button className="btn edit-btn btn-sm me-2">Edit</button>
-                <button className="btn delete-btn btn-sm">Delete</button>
-              </div>
-            </div>
-          </div>
-
-          {/* Property 4 */}
-          <div className="col-md-3">
-            <div className="property-card">
-              <img src={property4} className="card-img-top"/>
-
-              <div className="card-body">
-                <h5>City Flat</h5>
-                <p className="price">₹32,00,000</p>
-                <p className="location">Rajkot</p>
-                <p className="status approved">Approved</p>
-
-                <button className="btn edit-btn btn-sm me-2">Edit</button>
-                <button className="btn delete-btn btn-sm">Delete</button>
-              </div>
-            </div>
-          </div>
+          ))}
 
         </div>
 
       </div>
 
     </div>
+  );
+};
 
-  )
-}
+export default ManageProperty;

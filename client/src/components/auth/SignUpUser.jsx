@@ -13,30 +13,30 @@ const SignUpUser = () => {
     dob: "",
     phone: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
 
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // handle input change
   const handleChange = (e) => {
-
     const { name, value } = e.target;
 
     setFormData({
       ...formData,
       [name]: value
     });
-
   };
 
+  // form submit
   const handleSubmit = async (e) => {
-
     e.preventDefault();
     setMsg("");
 
     if (formData.password !== formData.confirmPassword) {
-      return setMsg("Passwords do not match");
+      setMsg("Passwords do not match");
+      return;
     }
 
     try {
@@ -44,23 +44,28 @@ const SignUpUser = () => {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:5000/api/user/register",
+        "http://localhost:5000/api/auth/register-user",
         {
-          fullName: formData.fullName.trim(),
-          email: formData.email.trim(),
+          fullName: formData.fullName,
+          email: formData.email,
           dob: formData.dob,
           phone: formData.phone,
           password: formData.password
+        },
+        {
+          withCredentials: true
         }
       );
 
-      setMsg("Registration Successful");
+      setMsg(res.data.message || "Registration Successful");
 
       setTimeout(() => {
         navigate("/signin");
       }, 1200);
 
     } catch (error) {
+
+      console.log(error);
 
       setMsg(
         error.response?.data?.message || "Registration Failed"
@@ -69,7 +74,6 @@ const SignUpUser = () => {
     } finally {
       setLoading(false);
     }
-
   };
 
   return (
@@ -163,8 +167,7 @@ const SignUpUser = () => {
         </form>
 
         <p className="login-text">
-          Already have an account ?
-          <Link to="/signin"> Login</Link>
+          Already have an account ? <Link to="/signin">Login</Link>
         </p>
 
       </div>

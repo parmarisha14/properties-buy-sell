@@ -1,46 +1,40 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "../../assets/css/ChangePassword.css";
 
+axios.defaults.withCredentials = true;
+
 const ChangePassword = () => {
-
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-
   const [form, setForm] = useState({
     currentPassword: "",
     newPassword: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
 
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if (form.newPassword !== form.confirmPassword)
+      return alert("Passwords do not match");
     try {
-
-      const token = localStorage.getItem("token");
-
       const res = await axios.put(
-        "http://localhost:5000/api/user/change-password",
-        form,
+        "http://localhost:5000/api/auth/change-password",
         {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
+          currentPassword: form.currentPassword,
+          newPassword: form.newPassword,
+        },
       );
-
       alert(res.data.message);
-
-    } catch (error) {
-      alert(error.response.data.message);
+      navigate("/profile");
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to change password");
     }
   };
 
@@ -49,16 +43,13 @@ const ChangePassword = () => {
       <div className="change-password-card">
         <h2 className="title">Change Password</h2>
         <p className="subtitle">Update your account password securely</p>
-
         <form onSubmit={handleSubmit}>
-
           <div className="input-group">
             <label>Current Password</label>
             <div className="password-field">
               <input
                 type={showPassword ? "text" : "password"}
                 name="currentPassword"
-                placeholder="Enter current password"
                 onChange={handleChange}
                 required
               />
@@ -77,7 +68,6 @@ const ChangePassword = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 name="newPassword"
-                placeholder="Enter new password"
                 onChange={handleChange}
                 required
               />
@@ -96,7 +86,6 @@ const ChangePassword = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 name="confirmPassword"
-                placeholder="Confirm new password"
                 onChange={handleChange}
                 required
               />
@@ -112,7 +101,6 @@ const ChangePassword = () => {
           <button type="submit" className="change-btn">
             Update Password
           </button>
-
         </form>
       </div>
     </div>

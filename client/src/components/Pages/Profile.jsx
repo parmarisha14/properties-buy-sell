@@ -1,32 +1,24 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../../assets/css/Profile.css";
+
+axios.defaults.withCredentials = true;
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  // FETCH PROFILE
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
-
-        if (!token) {
-          navigate("/signin");
-          return;
-        }
-
-        const res = await axios.get("http://localhost:5000/api/user/profile", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
+        const res = await axios.get("http://localhost:5000/api/auth/profile");
         setUser(res.data);
-      } catch (error) {
+      } catch (err) {
         navigate("/signin");
       }
     };
-
     fetchProfile();
   }, [navigate]);
 
@@ -35,18 +27,19 @@ const Profile = () => {
   return (
     <div className="container my-5">
       <div className="row justify-content-center">
+
+        {/* Left Column */}
         <div className="col-md-4 text-center">
           <div className="profile-card">
-           <img
-  src={
-    user.profileImage
-      ? `http://localhost:5000/uploads/${user.profileImage}`
-      : "http://localhost:5000/uploads/default.jpg"
-  }
-  alt="Profile"
-  className="profile-avatar"
-/>
-
+            <img
+              src={
+                user.profileImage
+                  ? `http://localhost:5000/uploads/users/${user.profileImage}`
+                  : "http://localhost:5000/uploads/default-user.png"
+              }
+              alt="Profile"
+              className="profile-avatar"
+            />
             <h4 className="profile-name">{user.fullName || "No Name"}</h4>
             <p className="profile-email">{user.email}</p>
 
@@ -75,35 +68,30 @@ const Profile = () => {
           </div>
         </div>
 
+        {/* Right Column */}
         <div className="col-md-8">
           <div className="profile-card card-details">
             <h5>Personal Details</h5>
 
             <p>
-              <span className="label-bold">Full Name:</span>{" "}
-              {user.fullName || "Not Provided"}
+              <span className="label-bold">Full Name:</span> {user.fullName || "Not Provided"}
             </p>
 
             <p>
-              <span className="label-bold">Mobile:</span>{" "}
-              {user.phone || "Not Provided"}
+              <span className="label-bold">Mobile:</span> {user.phone || "Not Provided"}
             </p>
 
             <p>
-              <span className="label-bold">Address:</span>{" "}
-              {user.address || "Not Provided"}
+              <span className="label-bold">Address:</span> {user.address || "Not Provided"}
             </p>
 
             <p>
-              <span className="label-bold">Gender:</span>{" "}
-              {user.gender || "Not Provided"}
+              <span className="label-bold">Gender:</span> {user.gender || "Not Provided"}
             </p>
 
             <p>
               <span className="label-bold">Date of Birth:</span>{" "}
-              {user.dob
-                ? new Date(user.dob).toLocaleDateString("en-GB")
-                : "Not Provided"}
+              {user.dob ? new Date(user.dob).toLocaleDateString("en-GB") : "Not Provided"}
             </p>
 
             <p>
@@ -111,6 +99,7 @@ const Profile = () => {
             </p>
           </div>
         </div>
+
       </div>
     </div>
   );
