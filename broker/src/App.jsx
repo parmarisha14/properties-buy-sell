@@ -9,6 +9,8 @@ import BookingManagement from "./pages/BookingManagement";
 import InquiryManagement from "./pages/InquiryManagement";
 import EditProperty from "./pages/EditProperty";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Profile from "./pages/Profile";
+import EditProfile from "./pages/EditProfile";
 
 const App = () => {
   return (
@@ -21,6 +23,8 @@ const App = () => {
         <Route path="/booking" element={<ProtectedRoute><BookingManagement /></ProtectedRoute>} />
         <Route path="/inquiry" element={<ProtectedRoute><InquiryManagement /></ProtectedRoute>} />
         <Route path="/edit-property/:id" element={<ProtectedRoute><EditProperty /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
       </Routes>
       <Footer />

@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
+
 const upload = require("../middleware/upload");
 const { protect } = require("../middleware/authMiddleware");
+
 const {
   signupUser,
   signupBroker,
@@ -12,6 +14,7 @@ const {
   logout
 } = require("../controllers/authController");
 
+
 // REGISTER
 router.post("/register-user", signupUser);
 router.post("/register-broker", signupBroker);
@@ -19,10 +22,12 @@ router.post("/register-broker", signupBroker);
 // LOGIN
 router.post("/login", signin);
 
-// PROFILE (Added /me endpoint for frontend compatibility)
+// PROFILE
 router.get("/profile", protect, getProfile);
-router.get("/me", protect, getProfile); // This is what frontend calls
-router.put("/profile", protect, upload.single("userImage"), updateUserProfile);
+router.get("/me", protect, getProfile);
+
+// UPDATE PROFILE
+router.put("/profile", protect, upload.single("image"), updateUserProfile);
 
 // CHANGE PASSWORD
 router.put("/change-password", protect, changePassword);

@@ -101,55 +101,143 @@ exports.signin = async (req, res) => {
   }
 };
 
-// ================= GET PROFILE (ME) =================
+// ================= GET PROFILE =================
 exports.getProfile = async (req, res) => {
-  try {
-    const sessionUser = req.session.user;
-    if (!sessionUser) return res.status(401).json({ message: "Not logged in" });
 
-    let user;
-    if (sessionUser.role === "user") {
-      user = await User.findById(sessionUser._id).select("-password");
-    } else if (sessionUser.role === "broker") {
-      user = await Broker.findById(sessionUser._id).select("-password");
-    } else if (sessionUser.role === "admin") {
-      return res.json({ fullName: "Admin", email: sessionUser.email, role: "admin" });
+  try {
+
+    const sessionUser = req.session.user;
+
+    if (!sessionUser) {
+      return res.status(401).json({ message: "Not logged in" });
     }
 
-    if (!user) return res.status(404).json({ message: "User not found" });
+    let user;
 
-    res.json({ ...user.toObject(), role: sessionUser.role });
-  } catch (err) {
-    res.status(500).json({ message: "Failed to fetch profile" });
+    if (sessionUser.role === "user") {
+
+      user = await User.findById(sessionUser._id).select("-password");
+
+    } else if (sessionUser.role === "broker") {
+
+      user = await Broker.findById(sessionUser._id).select("-password");
+
+    }
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      ...user.toObject(),
+      role: sessionUser.role
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: "Failed to fetch profile",
+      error: error.message
+    });
+
   }
+
 };
 
-// ================= UPDATE PROFILE =================
-exports.updateUserProfile = async (req, res) => {
-  try {
-    const userId = req.session.user._id;
-    if (!userId) return res.status(401).json({ message: "Not logged in" });
 
-    const updateData = req.body;
+
+exports.updateUserProfile = async (req, res) => {
+
+  try {
+
+    const userId = req.session.user._id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Not logged in" });
+    }
+
+    let updateData = req.body;
+
+
+    // ================= LANGUAGES =================
+
+    if (req.body.languages) {
+
+      if (typeof req.body.languages === "string") {
+        updateData.languages = req.body.languages.split(",");
+      }
+
+    }
+
+
+    // ================= BUSINESS HOURS =================
+
+    if (req.body.businessHours) {
+
+      try {
+        updateData.businessHours = JSON.parse(req.body.businessHours);
+      }
+      catch (err) {
+        console.log("Business Hours Parse Error:", err);
+      }
+
+    }
+
+
+    // ================= IMAGE =================
+
     if (req.file) {
-      if (req.session.user.role === "user") {
-        updateData.profileImage = req.file.filename;
-      } else {
+
+      if (req.session.user.role === "broker") {
         updateData.brokerImage = req.file.filename;
       }
+      else {
+        updateData.profileImage = req.file.filename;
+      }
+
     }
 
-    let user;
+
+    let updatedUser;
+
     if (req.session.user.role === "user") {
-      user = await User.findByIdAndUpdate(userId, updateData, { returnDocument: "after" });
-    } else {
-      user = await Broker.findByIdAndUpdate(userId, updateData, { returnDocument: "after" });
+
+      updatedUser = await User.findByIdAndUpdate(
+        userId,
+        updateData,
+        { returnDocument:"after" }
+      );
+
     }
 
-    res.json({ message: "Profile updated successfully", user });
-  } catch (err) {
-    res.status(500).json({ message: "Update failed", error: err.message });
+    else {
+
+      updatedUser = await Broker.findByIdAndUpdate(
+        userId,
+        updateData,
+        { returnDocument:"after" }
+      );
+
+    }
+
+    res.json({
+      message: "Profile updated successfully",
+      user: updatedUser
+    });
+
   }
+
+  catch (error) {
+
+    console.log("PROFILE UPDATE ERROR:", error);
+
+    res.status(500).json({
+      message: "Profile update failed",
+      error: error.message
+    });
+
+  }
+
 };
 
 // ================= CHANGE PASSWORD =================

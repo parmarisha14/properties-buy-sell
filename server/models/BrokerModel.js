@@ -33,6 +33,57 @@ const brokerSchema = new mongoose.Schema({
   role: {
     type: String,
     default: "broker"
+  },
+
+  brokerImage: {
+    type: String,
+    default: "default-broker.png"
+  },
+
+  gender: {
+    type: String
+  },
+
+  address: {
+    type: String
+  },
+
+  professionalSummary: {
+    type: String
+  },
+
+  quotes: {
+    type: String
+  },
+
+  experienceYears: {
+    type: Number
+  },
+
+  officeLocation: {
+    type: String
+  },
+
+  languages: [
+    {
+      type: String
+    }
+  ],
+
+  businessHours: {
+
+    mondayFriday: {
+      type: String
+    },
+
+    saturday: {
+      type: String
+    },
+
+    sunday: {
+      type: String
+    }
+
   }
 
 }, { timestamps: true });

@@ -1,6 +1,6 @@
 const multer = require("multer");
-const fs = require("fs");
 const path = require("path");
+const fs = require("fs");
 
 // create folder if not exist
 const ensureFolder = (folderPath) => {
@@ -13,17 +13,16 @@ const storage = multer.diskStorage({
 
   destination: (req, file, cb) => {
 
-    let baseFolder = path.join(__dirname, "../uploads");
-    let folder = baseFolder;
+    let folder = "uploads/properties";
 
-    if (file.fieldname === "image") {
-      folder = path.join(baseFolder, "properties");
-    } 
-    else if (file.fieldname === "userImage") {
-      folder = path.join(baseFolder, "users");
-    } 
-    else if (file.fieldname === "brokerImage") {
-      folder = path.join(baseFolder, "brokers");
+    // Broker profile image
+    if (file.fieldname === "image" && req.session.user.role === "broker") {
+      folder = "uploads/brokers";
+    }
+
+    // User profile image
+    if (file.fieldname === "image" && req.session.user.role === "user") {
+      folder = "uploads/users";
     }
 
     ensureFolder(folder);
@@ -32,7 +31,10 @@ const storage = multer.diskStorage({
   },
 
   filename: (req, file, cb) => {
-    const uniqueName = Date.now() + "-" + file.originalname.replace(/\s+/g, "_");
+
+    const uniqueName =
+      Date.now() + "-" + file.originalname.replace(/\s+/g, "_");
+
     cb(null, uniqueName);
   }
 
