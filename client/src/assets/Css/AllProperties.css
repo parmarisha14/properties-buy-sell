@@ -1,0 +1,52 @@
+.main-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* LEFT */
+.property-section {
+  flex: 3;
+}
+
+.property-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+/* RIGHT FILTER */
+.filter-section {
+  flex: 1;
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 12px;
+  height: fit-content;
+}
+
+.filter-section h3 {
+  margin-bottom: 15px;
+}
+
+.filter-section input,
+.filter-section select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.price {
+  display: flex;
+  gap: 10px;
+}
+
+.apply-btn {
+  width: 100%;
+  background: #0f766e;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+}

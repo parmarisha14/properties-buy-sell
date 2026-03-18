@@ -1,0 +1,115 @@
+.details-container {
+  padding: 30px;
+  background: #f5f7fa;
+}
+
+/* FIXED LOADING */
+.loading {
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* QUOTE CARD */
+.quote-card {
+  font-style: italic;
+  text-align: center;
+  background: #e0f7fa;
+  color: #00695c;
+  font-weight: 500;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  gap: 20px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  align-items: center;
+}
+
+.header img {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.role {
+  color: gray;
+}
+
+.location {
+  color: teal;
+  margin-top: 5px;
+}
+
+/* MAIN */
+.main {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.left {
+  flex: 2;
+}
+
+.right {
+  flex: 1;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+/* SERVICES */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.service-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #eef3f7;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.service-icon {
+  font-size: 22px;
+  color: teal;
+}
+
+/* CONTACT */
+.contact-item {
+  display: flex;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.icon {
+  font-size: 20px;
+  color: teal;
+}
+
+.whatsapp {
+  color: #25D366;
+}
+
+.label {
+  font-size: 13px;
+  color: gray;
+}
+
+.value {
+  font-size: 15px;
+  color: #333;
+  text-decoration: none;
+}

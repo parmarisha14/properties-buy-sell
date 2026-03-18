@@ -1,92 +1,133 @@
-.profile-page{
-display:flex;
-justify-content:center;
-padding:40px;
-background:#f4f6f9;
-min-height:100vh;
+/* Page Layout */
+.profile-page {
+  display: flex;
+  justify-content: center;
+  padding: 50px 20px;
+  background: #f4f6f9;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
 }
 
-.profile-card{
-width:750px;
-background:#fff;
-padding:30px;
-border-radius:12px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
+/* Card */
+.profile-card {
+  width: 750px;
+  background: #fff;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-.profile-header{
-text-align:center;
-margin-bottom:30px;
+/* Header */
+.profile-header {
+  text-align: center;
+  margin-bottom: 35px;
 }
 
-.profile-img{
-width:120px;
-height:120px;
-border-radius:50%;
-object-fit:cover;
-border:4px solid #3498db;
-margin-bottom:10px;
+.profile-img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #3498db;
+  margin-bottom: 15px;
 }
 
-.profile-role{
-color:#777;
-font-size:14px;
+.profile-name {
+  font-size: 24px;
+  color: #2c3e50;
+  margin-bottom: 5px;
 }
 
-.profile-section{
-margin-bottom:25px;
+.profile-role {
+  font-size: 14px;
+  color: #777;
+  letter-spacing: 1px;
 }
 
-.profile-section h3{
-margin-bottom:10px;
-color:#2c3e50;
-border-bottom:1px solid #eee;
-padding-bottom:5px;
+/* Sections */
+.profile-section {
+  margin-bottom: 25px;
 }
 
-.profile-section p{
-margin:5px 0;
-color:#555;
+.profile-section h3 {
+  margin-bottom: 12px;
+  color: #2c3e50;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 6px;
+  font-size: 18px;
 }
 
-.quote{
-font-style:italic;
-color:#888;
+.profile-section p {
+  margin: 5px 0;
+  color: #555;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.profile-buttons{
-display:flex;
-gap:15px;
-margin-top:20px;
+.contact-info p svg {
+  color: #3498db;
 }
 
-.btn-edit{
-background:#3498db;
-color:white;
-border:none;
-padding:10px 20px;
-border-radius:6px;
-cursor:pointer;
+/* Quote */
+.quote {
+  font-style: italic;
+  color: #888;
 }
 
-.btn-password{
-background:#e67e22;
-color:white;
-border:none;
-padding:10px 20px;
-border-radius:6px;
-cursor:pointer;
+/* Buttons */
+.profile-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 25px;
 }
 
-.btn-edit:hover{
-background:#2980b9;
+.btn-edit,
+.btn-password {
+  padding: 12px 25px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 15px;
 }
 
-.btn-password:hover{
-background:#d35400;
+.btn-edit {
+  background: #3498db;
+  color: #fff;
 }
 
-.loading{
-text-align:center;
-margin-top:100px;
+.btn-edit:hover {
+  background: #2980b9;
+}
+
+.btn-password {
+  background: #e67e22;
+  color: #fff;
+}
+
+.btn-password:hover {
+  background: #d35400;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  margin-top: 150px;
+  font-size: 22px;
+  color: #3498db;
+}
+
+/* Responsive */
+@media screen and (max-width: 800px) {
+  .profile-card {
+    width: 100%;
+    padding: 30px 20px;
+  }
+  .profile-section p {
+    font-size: 14px;
+  }
 }

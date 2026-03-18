@@ -20,7 +20,6 @@ const Footer = () => {
       <footer className="footer-section">
         <div className="container py-5">
           <div className="row">
-           
             <div className="col-lg-4 mb-4">
               <h3 className="footer-logo">TheProperty</h3>
               <p className="footer-text">
@@ -38,7 +37,6 @@ const Footer = () => {
               </div>
             </div>
 
-           
             <div className="col-lg-2 col-md-6 mb-4">
               <h5 className="footer-title">Company</h5>
               <ul className="footer-links">
@@ -60,7 +58,6 @@ const Footer = () => {
               </ul>
             </div>
 
-            
             <div className="col-lg-3 col-md-6 mb-4">
               <h5 className="footer-title">Services</h5>
               <ul className="footer-links">
@@ -73,16 +70,12 @@ const Footer = () => {
               </ul>
             </div>
 
-           
             <div className="col-lg-3 mb-4">
               <h5 className="footer-title">Get in Touch</h5>
 
               <div className="contact-item">
                 <FaMapMarkerAlt />
-                <span>
-                  Ruchi Harmony, Navsari
-                  Gujarat 396427
-                </span>
+                <span>Ruchi Harmony, Navsari Gujarat 396427</span>
               </div>
 
               <div className="contact-item">
@@ -116,7 +109,6 @@ const Footer = () => {
           </div>
         </div>
 
-        
         <div className="footer-bottom">
           <div className="container d-flex justify-content-between align-items-center">
             <p className="mb-0">

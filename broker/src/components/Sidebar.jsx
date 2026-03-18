@@ -6,8 +6,7 @@ import {
   FaCalendarCheck, FaEnvelope, FaUser,
   FaUserEdit, FaKey, FaSignOutAlt
 } from "react-icons/fa";
-import "../assets/Css/Sidebar.css"
-
+import "../assets/Css/Sidebar.css";
 
 axios.defaults.withCredentials = true;
 
@@ -15,12 +14,17 @@ const Sidebar = () => {
   const [broker, setBroker] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  
   const fetchBroker = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/auth/me");
-      if (res.data && res.data.role === "broker") setBroker(res.data);
-      else setBroker(null);
+      const user = res.data.user;
+
+      // ✅ Correct check
+      if (user && user.role === "broker") {
+        setBroker(user);
+      } else {
+        setBroker(null);
+      }
     } catch (err) {
       console.error("Fetch broker error:", err);
       setBroker(null);
@@ -35,7 +39,7 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:5000/api/auth/logout");
+      await axios.post("http://localhost:5000/api/auth/logout", {}, { withCredentials: true });
       setBroker(null);
       window.location.href = "http://localhost:5173/signin"; // back to public login
     } catch (err) {
@@ -52,8 +56,7 @@ const Sidebar = () => {
       {/* Profile */}
       {broker && (
         <div className="sidebar-profile">
-          
-          <h4>{broker.name}</h4>
+          <h4>{broker.fullName || broker.name}</h4>
           <p>{broker.email}</p>
         </div>
       )}
@@ -72,12 +75,14 @@ const Sidebar = () => {
             <li><NavLink to="/profile"><FaUser /> Profile</NavLink></li>
             <li><NavLink to="/edit-profile"><FaUserEdit /> Edit Profile</NavLink></li>
             <li><NavLink to="/change-password"><FaKey /> Change Password</NavLink></li>
-            <li><button className="logout-btn" onClick={handleLogout}><FaSignOutAlt /> Logout</button></li>
+            <li>
+              <button className="logout-btn" onClick={handleLogout}>
+                <FaSignOutAlt /> Logout
+              </button>
+            </li>
           </>
         ) : (
-          <>
-            <li>Please login from public site</li>
-          </>
+          <li>Please login from public site</li>
         )}
       </ul>
     </div>

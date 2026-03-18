@@ -1,0 +1,81 @@
+.privacy-section {
+    background: #f8f9fa;
+    padding: 80px 0;
+}
+
+.section-title {
+    font-size: 34px;
+    font-weight: 700;
+    color: #1f4d44;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+
+.intro-text {
+    color: #555;
+    margin-bottom: 30px;
+    line-height: 1.7;
+}
+
+.sub-heading {
+    color: #1f4d44;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+
+.primary-card {
+    background: #f4f7f6;
+    padding: 25px;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    margin-top: 20px;
+}
+
+.primary-card ol {
+    padding-left: 18px;
+}
+
+.primary-card li {
+    margin-bottom: 8px;
+}
+
+
+.highlight-box {
+    background: #2c7a7b;
+    color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    margin-top: 25px;
+}
+
+.highlight-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+
+.security-cards {
+    margin-top: 20px;
+}
+
+.security-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #e5e5e5;
+    transition: 0.3s;
+}
+
+.security-card:hover {
+    transform: translateY(-5px);
+}
+
+.security-icon {
+    font-size: 28px;
+    color: #2c7a7b;
+    margin-bottom: 10px;
+}

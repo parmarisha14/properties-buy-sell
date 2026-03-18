@@ -11,41 +11,38 @@ const app = express();
 // MongoDB
 connectDB();
 
-// CORS - Allow credentials from both ports
+// CORS - Allow credentials from multiple ports
 app.use(cors({
   origin: [
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "http://localhost:5175"
+    "http://localhost:5173", // public app
+    "http://localhost:5174", // admin app
+    "http://localhost:5175"  // broker app
   ],
   credentials: true,
- 
 }));
 
-// body parser
+// Body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// SESSION - CRITICAL FIX: Add domain: ".localhost"
-app.use(
-  session({
-    secret: "realestate-secret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: false,
-      httpOnly: true,
-      sameSite: "lax",
-      maxAge: 1000 * 60 * 60 * 24,
-      
-    }
-  })
-);
+// SESSION CONFIG
+app.use(session({
+  secret: "realestate-secret",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false,
+    httpOnly: true,
+    sameSite: "lax",
+    maxAge: 1000 * 60 * 60 * 24 // 1 day
+    // ❌ Remove domain
+  }
+}));
 
-// uploads
+// Static uploads
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// routes
+// Routes
 app.use("/api", routes);
 
 app.get("/", (req, res) => {
@@ -53,7 +50,6 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });

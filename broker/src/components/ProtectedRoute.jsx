@@ -23,7 +23,7 @@ const ProtectedRoute = ({ children }) => {
   }, []);
 
   if (loading) return <p>Loading...</p>;
-  if (!user) return <Navigate to="http://localhost:5173/signin" replace />;
+
 
   return children;
 };

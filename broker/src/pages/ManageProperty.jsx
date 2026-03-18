@@ -3,11 +3,19 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import "../assets/Css/ManageProperty.css";
+import {
+  FaBed,
+  FaBath,
+  FaRulerCombined,
+  FaCalendarAlt,
+  FaTags,
+  FaEdit,
+  FaTrash
+} from "react-icons/fa";
 
 axios.defaults.withCredentials = true;
 
 const ManageProperty = () => {
-
   const [properties, setProperties] = useState([]);
   const navigate = useNavigate();
 
@@ -16,138 +24,89 @@ const ManageProperty = () => {
   }, []);
 
   const fetchProperties = async () => {
-
     try {
-
       const res = await axios.get(
         "http://localhost:5000/api/property/broker",
         { withCredentials: true }
       );
-
-      setProperties(res.data);
-
+      setProperties(res.data.properties);
     } catch (err) {
-
       console.log("Fetch Error:", err);
-
     }
-
   };
 
   const deleteProperty = async (id) => {
-
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this property?"
-    );
-
-    if (!confirmDelete) return;
-
+    if (!window.confirm("Are you sure you want to delete this property?")) return;
     try {
-
-      await axios.delete(
-        `http://localhost:5000/api/property/delete/${id}`,
-        { withCredentials: true }
-      );
-
+      await axios.delete(`http://localhost:5000/api/property/delete/${id}`, { withCredentials: true });
       fetchProperties();
-
     } catch (err) {
-
       console.log("Delete Error:", err);
-
     }
+  };
 
+  const getStatusBadge = (status) => {
+    if (status === "approved") return "badge-approved";
+    if (status === "rejected") return "badge-rejected";
+    return "badge-pending";
   };
 
   return (
     <div className="app-layout">
-
       <Sidebar />
-
       <div className="main-content">
-
-        <h2 className="mb-4">Manage Properties</h2>
-
-        <div className="row">
-
-          {properties.length === 0 && (
-            <p>No properties found.</p>
-          )}
-
-          {properties.map((p) => (
-
-            <div className="col-md-6 col-lg-4 mb-4" key={p._id}>
-
-              <div className="property-card shadow-sm p-3">
-
-                <img
-                  src={
-                    p.image
-                      ? `http://localhost:5000/uploads/properties/${p.image}`
-                      : "https://via.placeholder.com/300x200?text=No+Image"
-                  }
-                  alt={p.name}
-                  className="property-img"
-                />
-
-                <h5 className="mt-2">{p.name}</h5>
-
-                <p>₹ {p.price}</p>
-
-                <p>
-                  {p.location}, {p.city}, {p.state}
-                </p>
-
-                <p>
-                  Bedrooms: {p.bedroom} | Bathrooms: {p.bathroom}
-                </p>
-
-                <p>
-                  Area: {p.area} sq.ft | Year: {p.year}
-                </p>
-
-                <p>
-                  Type: {p.type}
-                </p>
-
-                <p>
-                  Features: {Array.isArray(p.features) ? p.features.join(", ") : ""}
-                </p>
-
-                <p>{p.description}</p>
-
-                <p>
-                  <b>Status:</b> {p.status}
-                </p>
-
-                <div className="d-flex gap-2">
-
-                  <button
-                    className="btn btn-primary btn-sm"
-                    onClick={() => navigate(`/edit-property/${p._id}`)}
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => deleteProperty(p._id)}
-                  >
-                    Delete
-                  </button>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          ))}
-
+        <div className="page-header">
+          <h2>Manage Properties</h2>
+          <button className="add-btn" onClick={() => navigate("/add-property")}>+ Add Property</button>
         </div>
 
-      </div>
+        <div className="property-grid">
+          {properties.length === 0 && <p>No properties found.</p>}
 
+          {properties.map((p) => (
+            <div className="property-card" key={p._id}>
+              <img
+                src={p.image ? `http://localhost:5000/uploads/properties/${p.image}` : "https://via.placeholder.com/300x200"}
+                alt={p.name}
+                className="property-img"
+              />
+
+              <div className="property-body">
+                <div className="property-header">
+                  <h5>{p.name}</h5>
+                  <span className={`status-badge ${getStatusBadge(p.status)}`}>{p.status}</span>
+                </div>
+
+                <p className="property-price">₹ {p.price}</p>
+                <p className="property-location">{p.location}, {p.city}, {p.state}</p>
+
+                <div className="property-info">
+                  <span><FaBed /> {p.bedroom || 0}</span>
+                  <span><FaBath /> {p.bathroom || 0}</span>
+                  <span><FaRulerCombined /> {p.area || 0} sq.ft</span>
+                  <span><FaCalendarAlt /> {p.year || "N/A"}</span>
+                  <span><FaTags /> {p.type || "N/A"}</span>
+                </div>
+
+                {p.description && <p className="property-description">{p.description}</p>}
+
+                {p.features && p.features.length > 0 && (
+                  <div className="property-features">
+                    {p.features.map((f, i) => <span key={i} className="feature-badge">{f}</span>)}
+                  </div>
+                )}
+
+                {p.brokerId && <p className="property-broker">Broker: {p.brokerId.fullName || p.brokerId.name}</p>}
+
+                <div className="property-buttons">
+                  <button className="edit-btn" onClick={() => navigate(`/edit-property/${p._id}`)}><FaEdit /> Edit</button>
+                  <button className="delete-btn" onClick={() => deleteProperty(p._id)}><FaTrash /> Delete</button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

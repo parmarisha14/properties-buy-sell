@@ -16,8 +16,10 @@ import SignUpUser from "./components/auth/SignUpUser";
 import ChangePassword from "./components/Pages/ChangePassword";
 import Services from "./components/Pages/Services";
 import axios from "axios";
+import AllProperties from "./components/Pages/AllProperties"; // only this import
+import ExpertTeam from "./components/Pages/ExpertTeam";
+import BrokerDetails from "./components/Pages/BrokerDetails";
 
-// IMPORTANT: Allow cookies to be sent across requests
 axios.defaults.withCredentials = true;
 
 const App = () => {
@@ -37,7 +39,10 @@ const App = () => {
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/change-password" element={<ChangePassword />} />
+        <Route path="/properties" element={<AllProperties />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/agents" element={<ExpertTeam />} />
+        <Route path="/broker/:id" element={<BrokerDetails />} />
       </Routes>
       <Footer />
     </>

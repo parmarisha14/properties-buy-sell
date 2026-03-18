@@ -14,10 +14,7 @@ const Blog = () => {
     <section className="blog-section py-5">
       <div className="container">
         <div className="row g-4">
-
-          
           <div className="col-lg-3">
-
             <div className="blog-card small-card mb-4">
               <div className="blog-img">
                 <span className="badge bg-danger">Market</span>
@@ -44,7 +41,6 @@ const Blog = () => {
               </div>
             </div>
 
-            
             <div className="blog-card small-card">
               <div className="blog-img">
                 <span className="badge bg-info text-dark">Finance</span>
@@ -57,12 +53,9 @@ const Blog = () => {
                 </p>
               </div>
             </div>
-
           </div>
 
-          
           <div className="col-lg-6">
-
             <div className="blog-card featured-card mb-4">
               <img src={blog5} alt="featured" />
               <div className="blog-content">
@@ -74,23 +67,19 @@ const Blog = () => {
               </div>
             </div>
 
-            {/* NEW 2 - Featured Style */}
             <div className="blog-card featured-card">
               <img src={blog3} alt="construction" />
               <div className="blog-content">
                 <h2>Future of Smart Homes & Technology</h2>
                 <p className="fs-6">
-                  Explore automation, energy-saving systems, and modern
-                  smart home innovations shaping real estate.
+                  Explore automation, energy-saving systems, and modern smart
+                  home innovations shaping real estate.
                 </p>
               </div>
             </div>
-
           </div>
 
-          
           <div className="col-lg-3">
-
             <div className="blog-card small-card mb-4">
               <div className="blog-img">
                 <span className="badge bg-primary">Buying Tips</span>
@@ -117,7 +106,6 @@ const Blog = () => {
               </div>
             </div>
 
-           
             <div className="blog-card small-card">
               <div className="blog-img">
                 <span className="badge bg-secondary">Construction</span>
@@ -130,9 +118,7 @@ const Blog = () => {
                 </p>
               </div>
             </div>
-
           </div>
-
         </div>
       </div>
     </section>

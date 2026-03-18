@@ -41,77 +41,18 @@ const Home = () => {
               </h1>
 
               <p className="hero-text">
-                Browse thousands of verified listings from trusted agents. Find
-                your perfect home with modern amenities and great locations.
+                Browse thousands of verified property listings from trusted and
+                experienced agents across top locations. Whether you're looking
+                for a modern apartment, a luxury villa, or a budget-friendly
+                home, we have options tailored to your needs. Our platform
+                provides detailed property insights, high-quality images, and
+                virtual tours to help you make the right decision. With advanced
+                filters and smart recommendations, finding your dream home has
+                never been easier.
               </p>
-
-              <div className="search-box">
-                <div className="custom-field full">
-                  <label>Location</label>
-                  <select>
-                    <option>Select Location</option>
-                    <option>New York</option>
-                    <option>London</option>
-                    <option>Mumbai</option>
-                  </select>
-                </div>
-
-                <div className="row g-3">
-                  <div className="col-md-6">
-                    <div className="custom-field">
-                      <label>Property Type</label>
-                      <select>
-                        <option>House</option>
-                        <option>Apartment</option>
-                        <option>Villa</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="col-md-6">
-                    <div className="custom-field">
-                      <label>Price Range</label>
-                      <select>
-                        <option>Price Range</option>
-                        <option>$100k - $300k</option>
-                        <option>$300k - $600k</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="col-md-6">
-                    <div className="custom-field">
-                      <label>Bedrooms</label>
-                      <select>
-                        <option>Bedrooms</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3+</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="col-md-6">
-                    <div className="custom-field">
-                      <label>Bathrooms</label>
-                      <select>
-                        <option>Bathrooms</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3+</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <button className="search-btn w-100 mt-3">
-                  <FaSearch className="me-2" />
-                  Search Properties
-                </button>
-              </div>
             </div>
 
-            <div className="col-lg-6 position-relative">
+            <div className="col-lg-6 position-relative mt-5">
               <img src={Home2} alt="house" className="hero-image" />
 
               <div className="small-img-card">
@@ -317,7 +258,6 @@ const Home = () => {
             data-bs-interval="4000"
           >
             <div className="carousel-inner">
-              
               <div className="carousel-item active">
                 <div className="testimonial-card">
                   <div className="row align-items-center">
@@ -353,7 +293,6 @@ const Home = () => {
                 </div>
               </div>
 
-              
               <div className="carousel-item">
                 <div className="testimonial-card">
                   <div className="row align-items-center">
@@ -388,7 +327,6 @@ const Home = () => {
                 </div>
               </div>
 
-            
               <div className="carousel-item">
                 <div className="testimonial-card">
                   <div className="row align-items-center">
@@ -424,7 +362,6 @@ const Home = () => {
                 </div>
               </div>
 
-              
               <div className="carousel-item">
                 <div className="testimonial-card">
                   <div className="row align-items-center">
@@ -461,7 +398,6 @@ const Home = () => {
               </div>
             </div>
 
-            
             <div className="carousel-buttons mt-4">
               <button
                 className="carousel-btn"

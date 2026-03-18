@@ -31,56 +31,14 @@
 }
 
 
-.search-box {
-  background: #f5f6f7;
-  padding: 30px;
-  border-radius: 22px;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08);
-}
 
 
-.custom-field {
-  background: #f1f2f3;
-  border: 1px solid #e0e0e0;
-  border-radius: 14px;
-  padding: 12px 16px;
-  display: flex;
-  flex-direction: column;
-}
 
-.custom-field.full {
-  margin-bottom: 20px;
-}
 
-.custom-field label {
-  font-size: 13px;
-  color: #7a7a7a;
-  margin-bottom: 4px;
-}
 
-.custom-field select {
-  border: none;
-  background: transparent;
-  font-size: 16px;
-  font-weight: 500;
-  color: #333;
-  outline: none;
-}
 
-.search-btn {
-  background: #2f6f66;
-  color: white;
-  border: none;
-  padding: 15px;
-  border-radius: 14px;
-  font-weight: 600;
-  font-size: 16px;
-  transition: 0.3s;
-}
 
-.search-btn:hover {
-  background: #245a52;
-}
+
 
 .hero-image {
   width: 100%;
@@ -337,7 +295,7 @@
   padding: 10px 22px;
 }
 
-/* Section Styling */
+
 .testimonials-section {
   background: #f8f9fa;
 }
@@ -353,7 +311,7 @@
   margin-top: 10px;
 }
 
-/* Card Design */
+
 .testimonial-card {
   background: white;
   padding: 40px;
@@ -367,7 +325,7 @@
   color: #333;
 }
 
-/* Small Client Image */
+
 .client-small-img {
   width: 55px;
   height: 55px;
@@ -375,7 +333,7 @@
   object-fit: cover;
 }
 
-/* Main Image */
+
 .main-client-img {
   width: 75%;
   height: 400px;
@@ -383,7 +341,7 @@
   object-fit: cover;
 }
 
-/* Bottom Buttons */
+
 .carousel-buttons {
   display: flex;
   justify-content: center;

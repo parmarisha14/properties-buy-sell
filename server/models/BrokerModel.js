@@ -37,7 +37,7 @@ const brokerSchema = new mongoose.Schema({
 
   brokerImage: {
     type: String,
-    default: "default-broker.png"
+    default: "default.png"
   },
 
   gender: {

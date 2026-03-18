@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap');
 
 .custom-navbar {
   background: #ffffff !important;
@@ -9,12 +9,13 @@
   font-family: "Montserrat", sans-serif;
 }
 
-.logo-image{
+.logo-image {
   width: 150px;
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
 }
+
 .brand-logo {
   font-weight: 700;
   font-size: 22px;
@@ -25,25 +26,26 @@
   gap: 20px;
 }
 
+/* NAV LINKS */
 .custom-link {
   font-weight: 600;
   color: #323b3b !important;
-  transition: 0.3s;
   font-size: 15px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  transition: 0.3s;
 }
 
 .custom-link:hover {
+  background-color: #f1f5f5;
   color: #2c7a7b !important;
-  font-weight: 600;
 }
-
 
 .custom-link.active {
   color: #2c7a7b !important;
-  font-weight: 600;
 }
 
-
+/* BUTTON */
 .get-started-btn {
   background: #2c7a7b !important;
   color: white !important;
@@ -56,6 +58,8 @@
 .get-started-btn:hover {
   background: #245a52;
 }
+
+/* WISHLIST */
 .wishlist-icon {
   width: 35px;
   height: 35px;
@@ -73,31 +77,9 @@
 .wishlist-icon:hover {
   background: #2c7a7b;
   border-color: #2c7a7b;
-  color: white;
 }
 
-
-
-.dropdown-item:active,
-.dropdown-item.active,
-.dropdown-item:focus {
-  background-color: transparent !important;
-  box-shadow: none !important;
-
-}
-
-
-.dropdown-item:hover {
-  background-color: transparent !important;
-  color: #2c7a7b !important;
-  font-weight: 600;
-}
-
-
-.dropdown-item.active {
-  color: #323b3b !important;
-  font-weight: 600;
-}
+/* PROFILE */
 .profile-btn {
   background: transparent;
   border: none;
@@ -108,6 +90,25 @@
   color: #245a52;
 }
 
+/* DROPDOWN FIX */
 .dropdown-menu {
   border-radius: 15px;
+  padding: 10px;
+}
+
+.dropdown-item {
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f1f5f5 !important;
+  color: #2c7a7b !important;
+  font-weight: 600;
+}
+
+.dropdown-item:active,
+.dropdown-item:focus {
+  background-color: transparent !important;
+  box-shadow: none !important;
 }

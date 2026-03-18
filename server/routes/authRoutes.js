@@ -7,32 +7,50 @@ const { protect } = require("../middleware/authMiddleware");
 const {
   signupUser,
   signupBroker,
+  me,
   signin,
   getProfile,
   updateUserProfile,
   changePassword,
-  logout
+  logout,
+  getAllUsers,
+  getAllBrokers,
+  deleteUser,
+  deleteBroker,getSingleBroker
 } = require("../controllers/authController");
 
-
-// REGISTER
+// ================= REGISTER =================
 router.post("/register-user", signupUser);
 router.post("/register-broker", signupBroker);
+router.get("/me", me);
 
-// LOGIN
+// ================= LOGIN =================
 router.post("/login", signin);
 
-// PROFILE
+
+
+// ================= PROFILE =================
 router.get("/profile", protect, getProfile);
-router.get("/me", protect, getProfile);
 
-// UPDATE PROFILE
-router.put("/profile", protect, upload.single("image"), updateUserProfile);
+// ================= UPDATE PROFILE =================
+router.put(
+  "/profile",
+  protect,
+  upload.single("image"),
+  updateUserProfile
+);
 
-// CHANGE PASSWORD
+// ================= CHANGE PASSWORD =================
 router.put("/change-password", protect, changePassword);
 
-// LOGOUT
+// ================= LOGOUT =================
 router.post("/logout", logout);
+
+// ================= ADMIN APIs =================
+router.get("/all-users", getAllUsers);
+router.get("/all-brokers", getAllBrokers);
+router.get("/broker/:id", getSingleBroker);
+router.delete("/delete-user/:id", deleteUser);
+router.delete("/delete-broker/:id", deleteBroker);
 
 module.exports = router;

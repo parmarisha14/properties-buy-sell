@@ -35,7 +35,7 @@ const Profile = () => {
               src={
                 user.profileImage
                   ? `http://localhost:5000/uploads/users/${user.profileImage}`
-                  : "http://localhost:5000/uploads/default-user.png"
+                  : "http://localhost:5000/uploads/users/default.png"
               }
               alt="Profile"
               className="profile-avatar"

@@ -1,18 +1,18 @@
 const Property = require("../models/PropertyModel");
 
 
+// ===============================
+// ADD PROPERTY (Broker)
+// ===============================
+exports.addProperty = async (req, res) => {
 
-
-
-exports.addProperty = async (req,res)=>{
-
-  try{
+  try {
 
     const brokerId = req.session.user?._id;
 
-    if(!brokerId){
+    if (!brokerId) {
       return res.status(401).json({
-        message:"Broker login required"
+        message: "Broker login required"
       });
     }
 
@@ -32,8 +32,8 @@ exports.addProperty = async (req,res)=>{
 
     let features = req.body.features || [];
 
-    if(!Array.isArray(features)){
-      features=[features];
+    if (!Array.isArray(features)) {
+      features = [features];
     }
 
     const image = req.file ? req.file.filename : null;
@@ -53,59 +53,15 @@ exports.addProperty = async (req,res)=>{
       features,
       image,
       brokerId,
-      status:"pending"
+      status: "pending"
     });
 
     await property.save();
 
-    res.json({ message:"Property Added Successfully" });
-
-  }catch(err){
-
-    console.log(err);
-
-    res.status(500).json({
-      message:"Server Error"
+    res.json({
+      success: true,
+      message: "Property Added Successfully"
     });
-
-  }
-
-};
-
-
-// GET ALL PROPERTIES (ADMIN)
-exports.getProperties = async (req, res) => {
-  try {
-
-    const properties = await Property.find().populate("brokerId");
-
-    res.json(properties);
-
-  } catch (error) {
-
-    res.status(500).json({ message: "Server Error" });
-
-  }
-};
-
-
-// GET BROKER PROPERTIES (SESSION BASED)
-
-exports.getBrokerProperties = async (req, res) => {
-
-  try {
-
-    const brokerId = req.session.user?._id;
-
-    if (!brokerId) {
-      return res.status(401).json({
-        message: "Broker login required"
-      });
-    }
-
-    const properties = await Property.find({ brokerId });
-
-    res.json(properties);
 
   } catch (error) {
 
@@ -120,81 +76,48 @@ exports.getBrokerProperties = async (req, res) => {
 };
 
 
-// APPROVE PROPERTY
-exports.approveProperty = async (req, res) => {
 
+// ===============================
+// GET ALL PROPERTIES (ADMIN)
+// ===============================
+// ===============================
+// GET ALL PROPERTIES (ADMIN)
+// ===============================
+exports.getProperties = async (req, res) => {
   try {
+    const properties = await Property
+      .find()
+      .populate("brokerId", "name phone"); // ✅ Populate broker name & phone
 
-    await Property.findByIdAndUpdate(req.params.id, {
-      status: "approved"
+    res.json({
+      success: true,
+      properties
     });
 
-    res.json({ message: "Property Approved" });
-
   } catch (error) {
-
-    res.status(500).json({ message: "Server Error" });
-
-  }
-};
-
-
-// REJECT PROPERTY
-exports.rejectProperty = async (req, res) => {
-
-  try {
-
-    await Property.findByIdAndUpdate(req.params.id, {
-      status: "rejected"
+    console.log(error);
+    res.status(500).json({
+      message: "Server Error"
     });
-
-    res.json({ message: "Property Rejected" });
-
-  } catch (error) {
-
-    res.status(500).json({ message: "Server Error" });
-
   }
 };
 
 
-// GET APPROVED PROPERTIES (USER WEBSITE)
-exports.getApprovedProperties = async (req, res) => {
 
+// ===============================
+// GET BROKER PROPERTIES
+// ===============================
+// ===============================
+// GET BROKER PROPERTIES
+// ===============================
+// ===============================
+// GET BROKER PROPERTIES
+// ===============================
+// ===============================
+// GET BROKER PROPERTIES
+// ===============================
+exports.getBrokerProperties = async (req, res) => {
   try {
-
-    const properties = await Property.find({
-      status: "approved"
-    }).populate("brokerId");
-
-    res.json(properties);
-
-  } catch (error) {
-
-    res.status(500).json({ message: "Server Error" });
-
-  }
-};
-
-
-// DELETE PROPERTY
-exports.deleteProperty = async (req, res) => {
-
-  try {
-
-    await Property.findByIdAndDelete(req.params.id);
-
-    res.json({ message: "Property Deleted" });
-
-  } catch (error) {
-
-    res.status(500).json({ message: "Server Error" });
-
-  }
-};
-exports.updateProperty = async (req, res) => {
-  try {
-
     const brokerId = req.session.user?._id;
 
     if (!brokerId) {
@@ -202,6 +125,35 @@ exports.updateProperty = async (req, res) => {
         message: "Broker login required"
       });
     }
+
+    // ✅ Populate broker name & phone for each property
+    const properties = await Property
+      .find({ brokerId })
+      .populate("brokerId", "name phone image");
+
+    res.json({
+      success: true,
+      properties
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Server Error"
+    });
+  }
+};
+
+
+
+// ===============================
+// UPDATE PROPERTY
+// ===============================
+exports.updateProperty = async (req, res) => {
+
+  try {
+
+    const brokerId = req.session.user?._id;
 
     const property = await Property.findById(req.params.id);
 
@@ -242,19 +194,151 @@ exports.updateProperty = async (req, res) => {
       updatedData.image = req.file.filename;
     }
 
-    await Property.findByIdAndUpdate(req.params.id, updatedData);
+    await Property.findByIdAndUpdate(
+      req.params.id,
+      updatedData
+    );
 
     res.json({
-      message: "Property updated successfully"
+      message: "Property Updated Successfully"
     });
 
   } catch (error) {
-
-    console.log(error);
 
     res.status(500).json({
       message: "Server Error"
     });
 
   }
+
+};
+
+
+
+// ===============================
+// APPROVE PROPERTY (ADMIN)
+// ===============================
+exports.approveProperty = async (req, res) => {
+
+  try {
+
+    await Property.findByIdAndUpdate(
+      req.params.id,
+      { status: "approved" }
+    );
+
+    res.json({
+      message: "Property Approved"
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: "Server Error"
+    });
+
+  }
+
+};
+
+
+
+// ===============================
+// REJECT PROPERTY (ADMIN)
+// ===============================
+exports.rejectProperty = async (req, res) => {
+
+  try {
+
+    await Property.findByIdAndUpdate(
+      req.params.id,
+      { status: "rejected" }
+    );
+
+    res.json({
+      message: "Property Rejected"
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: "Server Error"
+    });
+
+  }
+
+};
+
+
+
+// ===============================
+// GET APPROVED PROPERTIES (USER WEBSITE)
+// ===============================
+// ===============================
+// GET APPROVED PROPERTIES (WEBSITE)
+// ===============================
+exports.getApprovedProperties = async (req, res) => {
+  try {
+
+    const properties = await Property
+      .find({ status: "approved" }) // ✅ only approved
+      .populate("brokerId", "name phone brokerImage"); // ✅ dynamic broker data
+
+    res.json({
+      success: true,
+      properties
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Server Error"
+    });
+  }
+};
+
+
+// ===============================
+// APPROVE PROPERTY
+// ===============================
+exports.approveProperty = async (req, res) => {
+  try {
+
+    await Property.findByIdAndUpdate(
+      req.params.id,
+      { status: "approved" }
+    );
+
+    res.json({
+      message: "Property Approved"
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Server Error"
+    });
+  }
+};
+
+
+// ===============================
+// DELETE PROPERTY
+// ===============================
+exports.deleteProperty = async (req, res) => {
+
+  try {
+
+    await Property.findByIdAndDelete(req.params.id);
+
+    res.json({
+      message: "Property Deleted Successfully"
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: "Server Error"
+    });
+
+  }
+
 };

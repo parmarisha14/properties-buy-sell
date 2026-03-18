@@ -6,60 +6,49 @@ import {
   FaClock,
   FaUser,
   FaPaperPlane,
-  FaCommentDots
+  FaCommentDots,
 } from "react-icons/fa";
 
 const Contact = () => {
-
   const [formData, setFormData] = useState({});
 
   const handleChange = (e) => {
-    setFormData({...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  e.preventDefault(); 
+    try {
+      const res = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-  try {
+      const data = await res.json();
 
-    const res = await fetch("http://localhost:5000/api/contact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(formData)
-    });
+      console.log(data.message);
 
-    const data = await res.json();
-
-    console.log(data.message);
-
-    // form reset
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: ""
-    });
-
-  } catch (err) {
-
-    console.log(err.message);
-
-  }
-
-};
+      // form reset
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
   return (
     <>
-      
       <section className="contact-info-section">
         <div className="container">
           <div className="row g-4">
-
             <div className="col-md-4">
               <div className="info-box">
                 <div className="icon-circle">
@@ -101,12 +90,10 @@ const Contact = () => {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* Map */}
       <section className="map-section">
         <iframe
           title="map"
@@ -123,7 +110,6 @@ const Contact = () => {
 
             <form onSubmit={handleSubmit}>
               <div className="row g-3">
-
                 <div className="col-md-6">
                   <div className="input-icon">
                     <FaUser />
@@ -181,14 +167,11 @@ const Contact = () => {
                     SEND MESSAGE
                   </button>
                 </div>
-
               </div>
             </form>
-
           </div>
         </div>
       </section>
-
     </>
   );
 };

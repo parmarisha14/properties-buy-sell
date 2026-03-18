@@ -1,43 +1,42 @@
 const multer = require("multer");
-const path = require("path");
 const fs = require("fs");
+const path = require("path");
 
-// create folder if not exist
+// Ensure folder exists
 const ensureFolder = (folderPath) => {
+  if (!folderPath) return; // ❗ prevent crash
+
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath, { recursive: true });
   }
 };
 
 const storage = multer.diskStorage({
-
   destination: (req, file, cb) => {
 
-    let folder = "uploads/properties";
+    let folder = "uploads/others"; // ✅ DEFAULT FIX
 
-    // Broker profile image
-    if (file.fieldname === "image" && req.session.user.role === "broker") {
-      folder = "uploads/brokers";
-    }
+    if (file.fieldname === "image") {
 
-    // User profile image
-    if (file.fieldname === "image" && req.session.user.role === "user") {
-      folder = "uploads/users";
+      if (req.originalUrl.includes("/property")) {
+        folder = "uploads/properties";
+      } 
+      else if (req.originalUrl.includes("/broker")) {
+        folder = "uploads/brokers";
+      } 
+      else if (req.originalUrl.includes("/user") || req.originalUrl.includes("/auth")) {
+        folder = "uploads/users";  // ✅ IMPORTANT FIX
+      }
     }
 
     ensureFolder(folder);
-
     cb(null, folder);
   },
 
   filename: (req, file, cb) => {
-
-    const uniqueName =
-      Date.now() + "-" + file.originalname.replace(/\s+/g, "_");
-
+    const uniqueName = Date.now() + "-" + file.originalname.replace(/\s+/g, "_");
     cb(null, uniqueName);
-  }
-
+  },
 });
 
 const upload = multer({ storage });

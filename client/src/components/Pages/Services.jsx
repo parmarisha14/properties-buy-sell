@@ -1,12 +1,20 @@
 import React from "react";
 import "../../assets/css/Services.css";
-import { FaHome, FaBuilding, FaSearch, FaHandshake, FaDollarSign, FaMapMarkedAlt } from "react-icons/fa";
+import {
+  FaHome,
+  FaBuilding,
+  FaSearch,
+  FaHandshake,
+  FaDollarSign,
+  FaMapMarkedAlt,
+} from "react-icons/fa";
 
 const Services = () => {
   return (
     <section className="services-section">
       <div className="container">
         <h2>Our Services</h2>
+
         <div className="services-container">
 
           <div className="service-card">
@@ -14,7 +22,10 @@ const Services = () => {
               <FaHome />
             </div>
             <h4>Residential Property Sales</h4>
-            <p>We help you buy and sell residential homes with ease and complete transparency.</p>
+            <p>
+              We assist you in buying and selling residential properties with
+              complete trust and transparency.
+            </p>
           </div>
 
           <div className="service-card">
@@ -22,7 +33,10 @@ const Services = () => {
               <FaBuilding />
             </div>
             <h4>Commercial Property</h4>
-            <p>Expert assistance in buying and selling offices, shops, and commercial spaces.</p>
+            <p>
+              Get expert help in dealing with offices, shops, and commercial
+              properties efficiently.
+            </p>
           </div>
 
           <div className="service-card">
@@ -30,7 +44,9 @@ const Services = () => {
               <FaSearch />
             </div>
             <h4>Property Search</h4>
-            <p>Find your dream property with our extensive listings and search tools.</p>
+            <p>
+              Search and discover your ideal property easily using our advanced tools.
+            </p>
           </div>
 
           <div className="service-card">
@@ -38,7 +54,10 @@ const Services = () => {
               <FaHandshake />
             </div>
             <h4>Consultation & Guidance</h4>
-            <p>We provide expert advice on property deals, legal procedures, and investment.</p>
+            <p>
+              Receive professional advice on property investment, legal process,
+              and decision making.
+            </p>
           </div>
 
           <div className="service-card">
@@ -46,7 +65,9 @@ const Services = () => {
               <FaDollarSign />
             </div>
             <h4>Property Valuation</h4>
-            <p>Get accurate property valuation and market insights for selling or buying.</p>
+            <p>
+              Know the exact value of your property with our accurate market analysis.
+            </p>
           </div>
 
           <div className="service-card">
@@ -54,7 +75,9 @@ const Services = () => {
               <FaMapMarkedAlt />
             </div>
             <h4>Location Assistance</h4>
-            <p>We help you select the best location for your property investments.</p>
+            <p>
+              Find the perfect location based on your needs, budget, and future growth.
+            </p>
           </div>
 
         </div>

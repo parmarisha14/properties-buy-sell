@@ -2,7 +2,6 @@ const User = require("../models/UserModel");
 const Broker = require("../models/BrokerModel");
 const bcrypt = require("bcrypt");
 
-// ================= USER REGISTER =================
 exports.signupUser = async (req, res) => {
   try {
     const { fullName, email, phone, dob, password } = req.body;
@@ -26,16 +25,17 @@ exports.signupUser = async (req, res) => {
       role: "user",
       profileImage: "default-user.png",
       gender: "",
-      address: ""
+      address: "",
     });
 
     res.status(201).json({ message: "User registered successfully", user });
   } catch (err) {
-    res.status(500).json({ message: "Registration failed", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Registration failed", error: err.message });
   }
 };
 
-// ================= BROKER REGISTER =================
 exports.signupBroker = async (req, res) => {
   try {
     const { name, email, phone, agency, rera, password } = req.body;
@@ -56,56 +56,61 @@ exports.signupBroker = async (req, res) => {
       role: "broker",
       brokerImage: "default-broker.png",
       gender: "",
-      address: ""
+      address: "",
     });
 
     res.status(201).json({ message: "Broker registered successfully", broker });
   } catch (err) {
-    res.status(500).json({ message: "Broker registration failed", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Broker registration failed", error: err.message });
   }
 };
 
-// ================= LOGIN =================
+// ========== SIGNIN ==========
 exports.signin = async (req, res) => {
   try {
     const { email, password, role } = req.body;
     if (!role) return res.status(400).json({ message: "Role is required" });
 
-    // Admin login
-    if (role === "admin") {
-      if (email === "admin@gmail.com" && password === "admin123") {
-        req.session.user = { fullName: "Admin", email, role: "admin" };
-        return res.json({ message: "Admin logged in successfully", user: req.session.user });
-      }
-      return res.status(400).json({ message: "Invalid admin credentials" });
-    }
-
     let user;
-    if (role === "user") user = await User.findOne({ email });
+    if (role === "user" || role === "admin")
+      user = await User.findOne({ email });
     if (role === "broker") user = await Broker.findOne({ email });
+
     if (!user) return res.status(400).json({ message: `${role} not found` });
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(400).json({ message: "Wrong password" });
 
+    // ✅ Save session
     req.session.user = {
       _id: user._id,
       fullName: user.fullName || user.name,
       email: user.email,
-      role
+      role,
     };
 
-    res.json({ message: "Login successful", user: req.session.user });
+    res.json({
+      success: true,
+      message: "Login successful",
+      user: req.session.user,
+    });
   } catch (err) {
     res.status(500).json({ message: "Login failed", error: err.message });
   }
 };
 
-// ================= GET PROFILE =================
+// ========== ME ==========
+exports.me = (req, res) => {
+  if (req.session.user) {
+    return res.json({ success: true, user: req.session.user });
+  }
+  return res.status(401).json({ success: false, message: "Not logged in" });
+};
+
 exports.getProfile = async (req, res) => {
-
   try {
-
     const sessionUser = req.session.user;
 
     if (!sessionUser) {
@@ -115,13 +120,9 @@ exports.getProfile = async (req, res) => {
     let user;
 
     if (sessionUser.role === "user") {
-
       user = await User.findById(sessionUser._id).select("-password");
-
     } else if (sessionUser.role === "broker") {
-
       user = await Broker.findById(sessionUser._id).select("-password");
-
     }
 
     if (!user) {
@@ -130,26 +131,42 @@ exports.getProfile = async (req, res) => {
 
     res.json({
       ...user.toObject(),
-      role: sessionUser.role
+      role: sessionUser.role,
     });
-
   } catch (error) {
-
     res.status(500).json({
       message: "Failed to fetch profile",
-      error: error.message
+      error: error.message,
     });
-
   }
-
 };
 
-
-
-exports.updateUserProfile = async (req, res) => {
-
+exports.getSingleBroker = async (req, res) => {
   try {
+    const broker = await Broker.findById(req.params.id);
 
+    if (!broker) {
+      return res.status(404).json({
+        success: false,
+        message: "Broker not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      broker,
+    });
+  } catch (error) {
+    console.log("GET SINGLE BROKER ERROR:", error);
+
+    res.status(500).json({
+      message: "Server Error",
+      error: error.message,
+    });
+  }
+};
+exports.updateUserProfile = async (req, res) => {
+  try {
     const userId = req.session.user._id;
 
     if (!userId) {
@@ -158,89 +175,56 @@ exports.updateUserProfile = async (req, res) => {
 
     let updateData = req.body;
 
-
-    // ================= LANGUAGES =================
-
     if (req.body.languages) {
-
       if (typeof req.body.languages === "string") {
         updateData.languages = req.body.languages.split(",");
       }
-
     }
-
-
-    // ================= BUSINESS HOURS =================
 
     if (req.body.businessHours) {
-
       try {
         updateData.businessHours = JSON.parse(req.body.businessHours);
-      }
-      catch (err) {
+      } catch (err) {
         console.log("Business Hours Parse Error:", err);
       }
-
     }
-
 
     // ================= IMAGE =================
 
     if (req.file) {
-
       if (req.session.user.role === "broker") {
         updateData.brokerImage = req.file.filename;
-      }
-      else {
+      } else {
         updateData.profileImage = req.file.filename;
       }
-
     }
-
 
     let updatedUser;
 
     if (req.session.user.role === "user") {
-
-      updatedUser = await User.findByIdAndUpdate(
-        userId,
-        updateData,
-        { returnDocument:"after" }
-      );
-
-    }
-
-    else {
-
-      updatedUser = await Broker.findByIdAndUpdate(
-        userId,
-        updateData,
-        { returnDocument:"after" }
-      );
-
+      updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+        returnDocument: "after",
+      });
+    } else {
+      updatedUser = await Broker.findByIdAndUpdate(userId, updateData, {
+        returnDocument: "after",
+      });
     }
 
     res.json({
       message: "Profile updated successfully",
-      user: updatedUser
+      user: updatedUser,
     });
-
-  }
-
-  catch (error) {
-
+  } catch (error) {
     console.log("PROFILE UPDATE ERROR:", error);
 
     res.status(500).json({
       message: "Profile update failed",
-      error: error.message
+      error: error.message,
     });
-
   }
-
 };
 
-// ================= CHANGE PASSWORD =================
 exports.changePassword = async (req, res) => {
   try {
     const userId = req.session.user._id;
@@ -255,14 +239,13 @@ exports.changePassword = async (req, res) => {
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // Check current password
     const match = await bcrypt.compare(currentPassword, user.password);
-    if (!match) return res.status(400).json({ message: "Current password wrong" });
+    if (!match)
+      return res.status(400).json({ message: "Current password wrong" });
 
     // Hash new password
     const hashed = await bcrypt.hash(newPassword, 10);
 
-    // Update
     user.password = hashed;
     await user.save();
 
@@ -272,23 +255,85 @@ exports.changePassword = async (req, res) => {
   }
 };
 
-// ================= LOGOUT =================
 exports.logout = (req, res) => {
   try {
-    // Destroy session
     req.session.destroy((err) => {
       if (err) {
         return res.status(500).json({ message: "Logout failed" });
       }
-      // Clear cookie
+
       res.clearCookie("connect.sid", {
         path: "/",
         domain: ".localhost",
-        httpOnly: true
+        httpOnly: true,
       });
       res.json({ message: "Logged out successfully" });
     });
   } catch (error) {
     res.status(500).json({ message: "Logout failed", error: error.message });
+  }
+};
+exports.getAllBrokers = async (req, res) => {
+  try {
+    const brokers = await Broker.find();
+
+    res.status(200).json({
+      success: true,
+      brokers,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+
+    res.status(200).json({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+exports.deleteUser = async (req, res) => {
+  await User.findByIdAndDelete(req.params.id);
+
+  res.json({ message: "User deleted" });
+};
+
+// DELETE BROKER + DELETE HIS PROPERTIES
+exports.deleteBroker = async (req, res) => {
+  try {
+    const brokerId = req.params.id;
+
+    // check broker
+    const broker = await Broker.findById(brokerId);
+
+    if (!broker) {
+      return res.status(404).json({
+        message: "Broker not found",
+      });
+    }
+
+    // delete only properties added by this broker
+    await Property.deleteMany({
+      brokerId: brokerId,
+    });
+
+    // delete broker
+    await Broker.findByIdAndDelete(brokerId);
+
+    res.json({
+      success: true,
+      message: "Broker and his properties deleted",
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: "Server Error",
+    });
   }
 };

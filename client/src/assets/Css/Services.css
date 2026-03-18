@@ -1,44 +1,58 @@
 .services-section {
-  padding: 80px 0;
-  background: #f8f9fa;
-  
+  padding: 80px 20px;
+  background: linear-gradient(to right, #f8f9fa, #eef2f3);
 }
+
+/* Heading */
 
 .services-section h2 {
   text-align: center;
-  font-size: 36px;
-  margin-bottom: 50px;
+  font-size: 38px;
+  margin-bottom: 60px;
   color: #2c7a7b;
   font-weight: 700;
+  letter-spacing: 1px;
 }
 
+/* Container */
+
 .services-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 30px;
-  justify-content: center;
+  align-items: stretch;
 }
+
+/* Card */
 
 .service-card {
   background: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-  flex: 1 1 280px;
-  max-width: 320px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   text-align: center;
-  padding: 40px 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 30px 20px;
+  transition: all 0.4s ease;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 280px;
 }
 
+/* Hover Effect */
+
 .service-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
+
+/* Icon */
 
 .service-icon {
   width: 70px;
   height: 70px;
-  background: #2c7a7b;
+  background: linear-gradient(135deg, #2c7a7b, #38b2ac);
   color: #fff;
   display: flex;
   justify-content: center;
@@ -46,21 +60,41 @@
   border-radius: 50%;
   margin: 0 auto 20px;
   font-size: 28px;
-  transition: background 0.3s ease;
+  transition: 0.3s ease;
 }
+
+/* Icon Hover */
 
 .service-card:hover .service-icon {
-  background: #1f5e5f;
+  transform: rotate(8deg) scale(1.1);
 }
 
+/* Title */
+
 .service-card h4 {
-  font-size: 22px;
-  margin-bottom: 15px;
-  color: #343a40;
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #2d3748;
+  font-weight: 600;
 }
+
+/* Text */
 
 .service-card p {
   font-size: 14px;
   color: #555;
   line-height: 1.6;
+  flex-grow: 1;
 }
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .services-section h2 {
+    font-size: 30px;
+  }
+
+  .service-card {
+    padding: 25px 15px;
+  }
+} 

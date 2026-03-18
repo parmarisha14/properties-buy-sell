@@ -1,0 +1,119 @@
+/* ============================= */
+/* Page Wrapper */
+/* ============================= */
+
+.view-wrapper{
+padding:25px;
+background:#f7fbff;
+min-height:100vh;
+margin-left:240px;
+box-sizing:border-box;
+}
+
+/* ============================= */
+/* Title */
+/* ============================= */
+
+.title{
+margin-bottom:20px;
+font-weight:700;
+font-size:22px;
+color:#092e42;
+}
+
+/* ============================= */
+/* Table */
+/* ============================= */
+
+.data-table{
+width:100%;
+border-collapse:collapse;
+background:#ffffff;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
+min-width:850px;
+}
+
+/* ============================= */
+/* Table Header */
+/* ============================= */
+
+.data-table thead{
+background:linear-gradient(90deg,#f0f9ff,#e6f6ff);
+}
+
+.data-table thead th{
+padding:12px 15px;
+font-size:14px;
+font-weight:600;
+color:#0f4968;
+text-align:left;
+border-bottom:1px solid #dbeafe;
+}
+
+
+
+.data-table td{
+padding:12px 15px;
+font-size:14px;
+color:#334155;
+border-bottom:1px solid #e2e8f0;
+}
+
+
+.data-table tbody tr{
+transition:0.2s;
+}
+
+.data-table tbody tr:hover{
+background:#f0f9ff;
+}
+
+.profile-img{
+width:45px;
+height:45px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #e6f6ff;
+}
+
+/* Image Column Center */
+
+.data-table td:nth-child(2){
+text-align:center;
+}
+
+/* ============================= */
+/* Buttons */
+/* ============================= */
+
+.delete-btn{
+background:#fecaca;
+color:#7f1d1d;
+border:none;
+padding:6px 12px;
+border-radius:6px;
+cursor:pointer;
+font-size:13px;
+transition:0.3s;
+}
+
+.delete-btn:hover{
+background:#fca5a5;
+}
+
+@media (max-width:768px){
+
+.view-wrapper{
+margin-left:60px;
+padding:20px;
+}
+
+.data-table th,
+.data-table td{
+padding:10px;
+font-size:13px;
+}
+
+}

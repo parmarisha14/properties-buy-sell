@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
 
     profileImage: {
       type: String,
-      default: "default.jpg",
+      default: "default.png",
     },
 
     role: {
@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("User", userSchema);

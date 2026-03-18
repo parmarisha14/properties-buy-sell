@@ -1,21 +1,74 @@
-.viewbook-wrapper {
-  padding: 30px;
+/* Wrapper */
+
+.viewbook-wrapper{
+  padding:30px;
+  margin-left:240px;   /* sidebar space */
+  background:#f0f9ff;
+  min-height:100vh;
 }
 
-.viewbook-card {
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  overflow-x: auto;
+/* Card */
+
+.viewbook-card{
+  background:#ffffff;
+  border-radius:12px;
+  box-shadow:0 4px 14px rgba(0,0,0,0.08);
+  overflow-x:auto;
 }
 
-.viewbook-header {
-  padding: 15px 20px;
-  border-bottom: 1px solid #e5e7eb;
-  background-color: #f8fafc;
+/* Header */
+
+.viewbook-header{
+  padding:16px 20px;
+  border-bottom:1px solid #bae6fd;
+  background:#e0f2fe;
+  font-weight:600;
+  color:#075985;
 }
 
-.viewbook-table {
-  width: 100%;
-  border-collapse: collapse;
+/* Table */
+
+.viewbook-table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+/* Table Head */
+
+.viewbook-table thead{
+  background:#f0f9ff;
+}
+
+.viewbook-table th{
+  padding:12px 15px;
+  text-align:left;
+  font-size:14px;
+  color:#075985;
+  border-bottom:1px solid #bae6fd;
+}
+
+/* Table Body */
+
+.viewbook-table td{
+  padding:12px 15px;
+  border-bottom:1px solid #e0f2fe;
+  color:#334155;
+  font-size:14px;
+}
+
+/* Row Hover */
+
+.viewbook-table tbody tr:hover{
+  background:#e0f2fe;
+}
+
+/* Responsive */
+
+@media (max-width:768px){
+
+.viewbook-wrapper{
+  margin-left:60px;
+  padding:20px;
+}
+
 }
