@@ -3,7 +3,7 @@ import "../../assets/Css/Terms.css";
 import {FaEnvelope,FaBell,} from "react-icons/fa";
 import { NavLink } from "react-router";
 
-function Terms() {
+const Terms = () => {
   return (
     <section className="terms-section py-5">
       <div className="container">

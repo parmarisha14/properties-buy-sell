@@ -8,8 +8,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import AddProperty from "./pages/AddProperty";
 import ManageProperty from "./pages/ManageProperty";
-import BookingManagement from "./pages/BookingManagement";
-import InquiryManagement from "./pages/InquiryManagement";
+
+
 import EditProperty from "./pages/EditProperty";
 
 import Profile from "./pages/Profile";
@@ -50,23 +50,9 @@ const App = () => {
           }
         />
 
-        <Route
-          path="/booking"
-          element={
-            <ProtectedRoute>
-              <BookingManagement />
-            </ProtectedRoute>
-          }
-        />
+        
 
-        <Route
-          path="/inquiry"
-          element={
-            <ProtectedRoute>
-              <InquiryManagement />
-            </ProtectedRoute>
-          }
-        />
+        
 
         <Route
           path="/edit-property/:id"

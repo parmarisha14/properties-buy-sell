@@ -7,7 +7,6 @@ import "../assets/Css/EditProperty.css";
 axios.defaults.withCredentials = true;
 
 const EditProperty = () => {
-
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -24,256 +23,226 @@ const EditProperty = () => {
     type: "",
     description: "",
     features: [],
-    image: null
+    image: null,
   });
 
   const [preview, setPreview] = useState(null);
+  const [featureInput, setFeatureInput] = useState("");
 
-  // ================= FETCH PROPERTY =================
   useEffect(() => {
-
     const fetchProperty = async () => {
-
       try {
-
         const res = await axios.get(
-          "http://localhost:5000/api/property/broker"
+          "http://localhost:5000/api/property/broker",
         );
 
-        const prop = res.data.find(
-          (p) => p._id.toString() === id
-        );
+        const prop = res.data.properties.find((p) => p._id === id);
 
-        if (prop) {
+        if (!prop) return;
 
-          const features = Array.isArray(prop.features)
-            ? prop.features
+        const featuresArray = Array.isArray(prop.features)
+          ? prop.features
+          : prop.features
+            ? prop.features.split(",").map((f) => f.trim())
             : [];
 
-          setProperty((prev) => ({
-            ...prev,
-            ...prop,
-            features,
-            image: null
-          }));
+        setProperty({
+          ...prop,
+          features: featuresArray,
+          image: null,
+        });
 
-          setPreview(
-            prop.image
-              ? `http://localhost:5000/uploads/${prop.image}`
-              : null
-          );
-
-        }
-
-      } catch (error) {
-        console.log("Fetch Error:", error);
+        setPreview(
+          prop.image ? `http://localhost:5000/uploads/${prop.image}` : null,
+        );
+      } catch (err) {
+        console.log(err);
       }
-
     };
 
     fetchProperty();
-
   }, [id]);
 
-  // ================= INPUT CHANGE =================
   const handleChange = (e) => {
-
     setProperty({
       ...property,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-
   };
 
-  // ================= FEATURES =================
-  const handleFeatures = (e) => {
+  const addFeature = () => {
+    const value = featureInput.trim();
+    if (!value) return;
 
-    const value = e.target.value;
+    setProperty((prev) => {
+      const exists = prev.features.some(
+        (f) => f.toLowerCase() === value.toLowerCase(),
+      );
 
-    setProperty({
-      ...property,
-      features: value.split(",").map((f) => f.trim())
+      if (exists) return prev;
+
+      return {
+        ...prev,
+        features: [...prev.features, value],
+      };
     });
 
+    setFeatureInput("");
   };
 
-  // ================= FILE =================
+  const handleAddFeature = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addFeature();
+    }
+  };
+
+  const removeFeature = (index) => {
+    setProperty((prev) => ({
+      ...prev,
+      features: prev.features.filter((_, i) => i !== index),
+    }));
+  };
+
   const handleFile = (e) => {
-
     const file = e.target.files[0];
-
     if (!file) return;
 
     setProperty({
       ...property,
-      image: file
+      image: file,
     });
 
     setPreview(URL.createObjectURL(file));
-
   };
 
-  // ================= UPDATE PROPERTY =================
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
     try {
-
       const formData = new FormData();
 
       Object.keys(property).forEach((key) => {
-
-        if (key === "image" && property.image) {
-
-          formData.append("image", property.image);
-
+        if (key === "image") {
+          if (property.image) formData.append("image", property.image);
         } else if (key === "features") {
-
-          formData.append(
-            "features",
-            property.features.join(",")
-          );
-
+          formData.append("features", property.features.join(","));
         } else {
-
           formData.append(key, property[key]);
-
         }
-
       });
 
       await axios.put(
         `http://localhost:5000/api/property/update/${id}`,
         formData,
         {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        }
+          headers: { "Content-Type": "multipart/form-data" },
+        },
       );
 
       alert("Property Updated Successfully");
-
       navigate("/manage");
-
-    } catch (error) {
-
-      console.log("Update Error:", error);
-
+    } catch (err) {
+      console.log(err);
       alert("Update Failed");
-
     }
-
   };
 
   return (
     <div className="app-layout">
-
       <Sidebar />
 
       <div className="main-content">
-
         <div className="edit-card">
-
           <h2>Edit Property</h2>
 
           <form onSubmit={handleSubmit} className="edit-form">
-
             <input
-              type="text"
               name="name"
-              value={property.name || ""}
+              value={property.name}
               onChange={handleChange}
               placeholder="Property Name"
             />
-
             <input
-              type="number"
               name="price"
-              value={property.price || ""}
+              value={property.price}
               onChange={handleChange}
               placeholder="Price"
             />
-
             <input
-              type="text"
               name="location"
-              value={property.location || ""}
+              value={property.location}
               onChange={handleChange}
               placeholder="Location"
             />
-
             <input
-              type="text"
               name="city"
-              value={property.city || ""}
+              value={property.city}
               onChange={handleChange}
               placeholder="City"
             />
-
             <input
-              type="text"
               name="state"
-              value={property.state || ""}
+              value={property.state}
               onChange={handleChange}
               placeholder="State"
             />
-
             <input
-              type="number"
               name="bedroom"
-              value={property.bedroom || ""}
+              value={property.bedroom}
               onChange={handleChange}
               placeholder="Bedrooms"
             />
-
             <input
-              type="number"
               name="bathroom"
-              value={property.bathroom || ""}
+              value={property.bathroom}
               onChange={handleChange}
               placeholder="Bathrooms"
             />
-
             <input
-              type="number"
               name="area"
-              value={property.area || ""}
+              value={property.area}
               onChange={handleChange}
               placeholder="Area"
             />
-
             <input
-              type="number"
               name="year"
-              value={property.year || ""}
+              value={property.year}
               onChange={handleChange}
               placeholder="Year Built"
             />
-
             <input
-              type="text"
               name="type"
-              value={property.type || ""}
+              value={property.type}
               onChange={handleChange}
               placeholder="Property Type"
             />
 
             <input
-              type="text"
-              value={
-                property.features
-                  ? property.features.join(",")
-                  : ""
-              }
-              onChange={handleFeatures}
-              placeholder="Features (Parking,Garden,Pool)"
+              value={featureInput}
+              onChange={(e) => setFeatureInput(e.target.value)}
+              onKeyDown={handleAddFeature}
+              placeholder="Type feature & press Enter"
             />
+
+            <button type="button" onClick={addFeature}>
+              Add Feature
+            </button>
+
+            <div className="feature-list">
+              {property.features.map((f, i) => (
+                <span key={i} className="feature-chip">
+                  {f}
+                  <button type="button" onClick={() => removeFeature(i)}>
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
 
             <textarea
               name="description"
-              value={property.description || ""}
+              value={property.description}
               onChange={handleChange}
               placeholder="Description"
             />
@@ -281,26 +250,13 @@ const EditProperty = () => {
             <input type="file" onChange={handleFile} />
 
             {preview && (
-              <img
-                src={preview}
-                alt="preview"
-                className="preview-img"
-                onError={(e) => {
-                  e.target.style.display = "none";
-                }}
-              />
+              <img src={preview} className="preview-img" alt="preview" />
             )}
 
-            <button type="submit">
-              Update Property
-            </button>
-
+            <button type="submit">Update Property</button>
           </form>
-
         </div>
-
       </div>
-
     </div>
   );
 };

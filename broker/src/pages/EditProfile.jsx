@@ -10,6 +10,7 @@ const EditProfile = () => {
 
   const [form, setForm] = useState({
     name: "",
+    email: "",
     phone: "",
     agency: "",
     rera: "",
@@ -29,17 +30,15 @@ const EditProfile = () => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
 
-  // ================= GET PROFILE =================
-
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/auth/profile")
-
       .then((res) => {
         const data = res.data;
 
         setForm({
           name: data.name || "",
+          email: data.email || "",
           phone: data.phone || "",
           agency: data.agency || "",
           rera: data.rera || "",
@@ -58,15 +57,16 @@ const EditProfile = () => {
 
         if (data.brokerImage) {
           setPreview(`http://localhost:5000/uploads/users/${data.brokerImage}`);
+        } else if (data.profileImage) {
+          setPreview(
+            `http://localhost:5000/uploads/users/${data.profileImage}`,
+          );
         }
       })
-
       .catch((err) => {
         console.log("Profile Fetch Error", err);
       });
   }, []);
-
-  // ================= INPUT CHANGE =================
 
   const handleChange = (e) => {
     setForm({
@@ -74,8 +74,6 @@ const EditProfile = () => {
       [e.target.name]: e.target.value,
     });
   };
-
-  // ================= BUSINESS HOURS =================
 
   const handleBusiness = (e) => {
     setForm({
@@ -87,8 +85,6 @@ const EditProfile = () => {
     });
   };
 
-  // ================= IMAGE =================
-
   const handleImage = (e) => {
     const file = e.target.files[0];
 
@@ -97,8 +93,6 @@ const EditProfile = () => {
       setPreview(URL.createObjectURL(file));
     }
   };
-
-  // ================= SUBMIT =================
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -121,7 +115,6 @@ const EditProfile = () => {
       await axios.put("http://localhost:5000/api/auth/profile", formData);
 
       alert("Profile Updated Successfully");
-
       navigate("/profile");
     } catch (error) {
       console.log(error);
@@ -151,6 +144,14 @@ const EditProfile = () => {
             value={form.name}
             onChange={handleChange}
             placeholder="Full Name"
+          />
+
+          <input
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="Email"
           />
 
           <input

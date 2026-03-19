@@ -5,18 +5,16 @@ import { useParams } from "react-router-dom";
 import {
   FaPhone,
   FaEnvelope,
-  FaWhatsapp,
-  FaMapMarkerAlt,
   FaBuilding,
   FaHome,
   FaGem,
-  FaChartLine
+  FaChartLine,
+  FaMapMarkerAlt,
 } from "react-icons/fa";
 
 import "../../assets/css/BrokerDetails.css";
 
 const BrokerDetails = () => {
-
   const { id } = useParams();
   const [broker, setBroker] = useState(null);
 
@@ -27,7 +25,7 @@ const BrokerDetails = () => {
   const fetchBroker = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/auth/broker/${id}`
+        `http://localhost:5000/api/auth/broker/${id}`,
       );
       setBroker(res.data.broker);
     } catch (err) {
@@ -39,8 +37,6 @@ const BrokerDetails = () => {
 
   return (
     <div className="details-container">
-
-      {/* HEADER */}
       <div className="header">
         <img
           src={`http://localhost:5000/uploads/users/${broker.brokerImage}`}
@@ -52,35 +48,31 @@ const BrokerDetails = () => {
           <p className="role">{broker.agency || "Real Estate Agent"}</p>
 
           <p className="location">
-            <FaMapMarkerAlt /> {broker.address || "Location not available"}
+            <FaMapMarkerAlt className="icon" />
+            {broker.address || "Location not available"}
           </p>
         </div>
       </div>
 
       <div className="main">
-
-        {/* LEFT */}
         <div className="left">
-
-          {/* QUOTES */}
           <div className="card quote-card">
             <p>"{broker.quotes || "No quote available"}"</p>
           </div>
 
-          {/* SUMMARY */}
           <div className="card">
             <h3>Professional Summary</h3>
             <p>{broker.professionalSummary || "No summary available."}</p>
           </div>
 
-          {/* SERVICES */}
           <div className="card">
             <h3>Service Areas & Expertise</h3>
 
             <div className="service-grid">
-
               <div className="service-box">
-                <FaBuilding className="service-icon" />
+                <div className="service-icon">
+                  <FaBuilding />
+                </div>
                 <div>
                   <h4>Downtown District</h4>
                   <p>High-rise condos and urban lofts</p>
@@ -88,7 +80,9 @@ const BrokerDetails = () => {
               </div>
 
               <div className="service-box">
-                <FaHome className="service-icon" />
+                <div className="service-icon">
+                  <FaHome />
+                </div>
                 <div>
                   <h4>Suburban Communities</h4>
                   <p>Family homes and neighborhoods</p>
@@ -96,7 +90,9 @@ const BrokerDetails = () => {
               </div>
 
               <div className="service-box">
-                <FaGem className="service-icon" />
+                <div className="service-icon">
+                  <FaGem />
+                </div>
                 <div>
                   <h4>Luxury Properties</h4>
                   <p>Premium estates and waterfront homes</p>
@@ -104,22 +100,19 @@ const BrokerDetails = () => {
               </div>
 
               <div className="service-box">
-                <FaChartLine className="service-icon" />
+                <div className="service-icon">
+                  <FaChartLine />
+                </div>
                 <div>
                   <h4>Investment Properties</h4>
                   <p>Commercial and rental opportunities</p>
                 </div>
               </div>
-
             </div>
           </div>
-
         </div>
 
-        {/* RIGHT */}
         <div className="right">
-
-          {/* CONTACT */}
           <div className="card">
             <h3>Let's Connect</h3>
 
@@ -142,28 +135,32 @@ const BrokerDetails = () => {
                 </a>
               </div>
             </div>
-
-            
           </div>
 
-          {/* BUSINESS HOURS */}
           <div className="card">
             <h3>Business Hours</h3>
-            <p><strong>Mon-Fri:</strong> {broker.businessHours?.mondayFriday || "N/A"}</p>
-            <p><strong>Saturday:</strong> {broker.businessHours?.saturday || "N/A"}</p>
-            <p><strong>Sunday:</strong> {broker.businessHours?.sunday || "Closed"}</p>
-          </div>
-
-          {/* OFFICE */}
-          <div className="card">
-            <h3>Office Location</h3>
             <p>
-              <FaMapMarkerAlt /> {broker.officeLocation || "Not available"}
+              <strong>Mon-Fri:</strong>{" "}
+              {broker.businessHours?.mondayFriday || "N/A"}
+            </p>
+            <p>
+              <strong>Saturday:</strong>{" "}
+              {broker.businessHours?.saturday || "N/A"}
+            </p>
+            <p>
+              <strong>Sunday:</strong>{" "}
+              {broker.businessHours?.sunday || "Closed"}
             </p>
           </div>
 
+          <div className="card">
+            <h3>Office Location</h3>
+            <p>
+              <FaMapMarkerAlt className="icon" />
+              {broker.officeLocation || "Not available"}
+            </p>
+          </div>
         </div>
-
       </div>
     </div>
   );

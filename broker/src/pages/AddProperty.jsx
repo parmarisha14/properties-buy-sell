@@ -31,7 +31,10 @@ const AddProperty = () => {
 
   const addFeature = () => {
     if (featureInput.trim() !== "") {
-      setProperty({ ...property, features: [...property.features, featureInput] });
+      setProperty({
+        ...property,
+        features: [...property.features, featureInput],
+      });
       setFeatureInput("");
     }
   };
@@ -50,7 +53,9 @@ const AddProperty = () => {
         }
       });
 
-      await axios.post("http://localhost:5000/api/property/add", formData, { withCredentials: true });
+      await axios.post("http://localhost:5000/api/property/add", formData, {
+        withCredentials: true,
+      });
       alert("Property Added Successfully");
 
       setProperty({
@@ -87,12 +92,24 @@ const AddProperty = () => {
 
           <div className="form-group">
             <label>Year Built *</label>
-            <input type="number" name="year" value={property.year} onChange={handleChange} placeholder="Ex: 2023" />
+            <input
+              type="number"
+              name="year"
+              value={property.year}
+              onChange={handleChange}
+              placeholder="Ex: 2023"
+            />
           </div>
 
           <div className="form-group">
             <label>Property Name *</label>
-            <input type="text" name="name" value={property.name} onChange={handleChange} placeholder="Ex: Sea View Villa" />
+            <input
+              type="text"
+              name="name"
+              value={property.name}
+              onChange={handleChange}
+              placeholder="Ex: Sea View Villa"
+            />
           </div>
 
           <div className="form-group">
@@ -109,49 +126,103 @@ const AddProperty = () => {
 
           <div className="form-group">
             <label>Price *</label>
-            <input type="number" name="price" value={property.price} onChange={handleChange} placeholder="Ex: 5000000" />
+            <input
+              type="number"
+              name="price"
+              value={property.price}
+              onChange={handleChange}
+              placeholder="Ex: 5000000"
+            />
           </div>
 
           <div className="form-group">
             <label>Location *</label>
-            <input type="text" name="location" value={property.location} onChange={handleChange} placeholder="Street/Area" />
+            <input
+              type="text"
+              name="location"
+              value={property.location}
+              onChange={handleChange}
+              placeholder="Street/Area"
+            />
           </div>
 
           <div className="form-group">
             <label>City *</label>
-            <input type="text" name="city" value={property.city} onChange={handleChange} placeholder="City Name" />
+            <input
+              type="text"
+              name="city"
+              value={property.city}
+              onChange={handleChange}
+              placeholder="City Name"
+            />
           </div>
 
           <div className="form-group">
             <label>State *</label>
-            <input type="text" name="state" value={property.state} onChange={handleChange} placeholder="State Name" />
+            <input
+              type="text"
+              name="state"
+              value={property.state}
+              onChange={handleChange}
+              placeholder="State Name"
+            />
           </div>
 
           <div className="form-group">
             <label>Bedroom *</label>
-            <input type="number" name="bedroom" value={property.bedroom} onChange={handleChange} placeholder="Ex: 3" />
+            <input
+              type="number"
+              name="bedroom"
+              value={property.bedroom}
+              onChange={handleChange}
+              placeholder="Ex: 3"
+            />
           </div>
 
           <div className="form-group">
             <label>Bathroom *</label>
-            <input type="number" name="bathroom" value={property.bathroom} onChange={handleChange} placeholder="Ex: 2" />
+            <input
+              type="number"
+              name="bathroom"
+              value={property.bathroom}
+              onChange={handleChange}
+              placeholder="Ex: 2"
+            />
           </div>
 
           <div className="form-group">
             <label>Area (sqft)</label>
-            <input type="number" name="area" value={property.area} onChange={handleChange} placeholder="Ex: 1200" />
+            <input
+              type="number"
+              name="area"
+              value={property.area}
+              onChange={handleChange}
+              placeholder="Ex: 1200"
+            />
           </div>
 
           <div className="form-group full">
             <label>Description</label>
-            <textarea name="description" value={property.description} onChange={handleChange} placeholder="Write a short description of the property..." />
+            <textarea
+              name="description"
+              value={property.description}
+              onChange={handleChange}
+              placeholder="Write a short description of the property..."
+            />
           </div>
 
           <div className="form-group full">
             <label>Property Features</label>
             <div className="feature-box">
-              <input type="text" value={featureInput} onChange={(e) => setFeatureInput(e.target.value)} placeholder="Ex: Swimming Pool" />
-              <button type="button" onClick={addFeature}>Add</button>
+              <input
+                type="text"
+                value={featureInput}
+                onChange={(e) => setFeatureInput(e.target.value)}
+                placeholder="Ex: Swimming Pool"
+              />
+              <button type="button" onClick={addFeature}>
+                Add
+              </button>
             </div>
             <ul className="feature-list">
               {property.features.map((f, i) => (

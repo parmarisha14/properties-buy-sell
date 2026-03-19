@@ -1,29 +1,35 @@
 .property-card {
   background: #fff;
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: 0.3s ease;
 }
 
-/* IMAGE */
+.property-card:hover {
+  transform: translateY(-5px);
+}
+
+
 .property-image {
   position: relative;
 }
 
 .property-image img {
   width: 100%;
-  height: 220px;
+  height: 230px;
   object-fit: cover;
 }
 
-/* TAGS */
+
 .tag {
   position: absolute;
   top: 10px;
-  padding: 5px 10px;
+  padding: 6px 12px;
   font-size: 12px;
   border-radius: 6px;
   color: #fff;
+  font-weight: 500;
 }
 
 .featured {
@@ -36,18 +42,21 @@
   background: #0f766e;
 }
 
-/* DETAILS */
+
 .property-details {
-  padding: 15px;
+  padding: 16px;
 }
 
 .price {
   color: #0f766e;
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 20px;
 }
 
 .title {
-  margin: 5px 0;
+  margin: 6px 0;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .location {
@@ -55,29 +64,42 @@
   font-size: 14px;
 }
 
-/* INFO */
+
 .info {
   display: flex;
-  gap: 15px;
-  margin: 10px 0;
+  justify-content: space-between;
+  margin: 12px 0;
   font-size: 14px;
 }
 
-/* AGENT */
+
 .agent {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 10px;
+  gap: 12px;
+  margin-top: 12px;
 }
 
 .agent img {
-  width: 80px;
-  height: 80px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
+  object-fit: cover; /* ✅ important fix */
+  border: 2px solid #0f766e;
 }
 
-/* BUTTON */
+.agent h6 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.agent p {
+  margin: 0;
+  font-size: 13px;
+  color: #555;
+}
+
+
 .view-btn {
   width: 100%;
   margin-top: 15px;
@@ -86,4 +108,11 @@
   color: white;
   border: none;
   border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.view-btn:hover {
+  background: #0d5c56;
 }

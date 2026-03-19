@@ -29,7 +29,7 @@ const ChangePassword = () => {
       await axios.put(
         "http://localhost:5000/api/auth/change-password",
         { currentPassword, newPassword },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       alert("Password changed successfully!");
       setCurrentPassword("");
@@ -46,7 +46,6 @@ const ChangePassword = () => {
       <div className="change-password-card">
         <h2>Change Password</h2>
         <form onSubmit={handleSubmit}>
-          {/* Current Password */}
           <div className="input-group">
             <HiLockClosed className="icon" />
             <input
@@ -57,7 +56,6 @@ const ChangePassword = () => {
             />
           </div>
 
-          {/* New Password */}
           <div className="input-group">
             <HiKey className="icon" />
             <input
@@ -68,7 +66,6 @@ const ChangePassword = () => {
             />
           </div>
 
-          {/* Confirm Password */}
           <div className="input-group">
             <HiKey className="icon" />
             <input

@@ -5,42 +5,81 @@ import axios from "axios";
 
 const SignUpBroker = () => {
   const navigate = useNavigate();
-  const [formData,setFormData] = useState({
-    name:"",
-    email:"",
-    phone:"",
-    agency:"",
-    rera:"",
-    password:"",
-    reraConfirm:false
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    agency: "",
+    rera: "",
+    password: "",
+    reraConfirm: false
   });
 
-  const handleChange = (e)=>{
-    const {name,value,type,checked} = e.target;
-    setFormData({...formData, [name]: type === "checkbox" ? checked : value});
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value
+    });
   };
 
-  const handleSubmit = async(e)=>{
-    e.preventDefault();
-    if(!formData.name){
-      alert("Full Name is required");
-      return;
-    }
-    if(!formData.reraConfirm){
-      alert("Please confirm your RERA registration");
-      return;
+  const validate = () => {
+    let newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Full Name is required";
+    } else if (formData.name.length < 3) {
+      newErrors.name = "Name must be at least 3 characters";
     }
 
-    try{
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      newErrors.email = "Invalid email format";
+    }
+
+    if (!formData.phone) {
+      newErrors.phone = "Phone is required";
+    } else if (!/^[0-9]{10}$/.test(formData.phone)) {
+      newErrors.phone = "Phone must be 10 digits";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    if (!formData.rera) {
+      newErrors.rera = "RERA number is required";
+    }
+
+    if (!formData.reraConfirm) {
+      newErrors.reraConfirm = "You must confirm RERA registration";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validate()) return;
+
+    try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/register-broker", // ✅ fixed endpoint
+        "http://localhost:5000/api/auth/register-broker",
         formData,
-        { withCredentials: true } // session cookie if backend uses session
+        { withCredentials: true }
       );
+
       alert(res.data.message);
       navigate("/signin");
-    }catch(err){
-      console.log(err.response?.data); // log actual error from backend
+    } catch (err) {
       alert(err.response?.data?.message || "Registration Failed");
     }
   };
@@ -59,34 +98,50 @@ const SignUpBroker = () => {
           <h3>Create Broker Account</h3>
 
           <form onSubmit={handleSubmit}>
+
             <div className="input-group">
-              <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required/>
+              <input type="text" name="name" placeholder="Full Name"
+                value={formData.name} onChange={handleChange}/>
+              <span className="error">{errors.name}</span>
             </div>
 
             <div className="input-group">
-              <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required/>
+              <input type="email" name="email" placeholder="Email"
+                value={formData.email} onChange={handleChange}/>
+              <span className="error">{errors.email}</span>
             </div>
 
             <div className="input-group">
-              <input type="text" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required/>
+              <input type="text" name="phone" placeholder="Phone Number"
+                value={formData.phone} onChange={handleChange}/>
+              <span className="error">{errors.phone}</span>
             </div>
 
             <div className="input-group">
-              <input type="text" name="agency" placeholder="Agency Name" value={formData.agency} onChange={handleChange}/>
+              <input type="text" name="agency" placeholder="Agency Name"
+                value={formData.agency} onChange={handleChange}/>
             </div>
 
             <div className="input-group">
-              <input type="text" name="rera" placeholder="RERA Registration Number" value={formData.rera} onChange={handleChange}/>
+              <input type="text" name="rera" placeholder="RERA Number"
+                value={formData.rera} onChange={handleChange}/>
+              <span className="error">{errors.rera}</span>
             </div>
 
             <div className="input-group">
-              <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} autoComplete="new-password" required/>
+              <input type="password" name="password" placeholder="Password"
+                value={formData.password} onChange={handleChange}/>
+              <span className="error">{errors.password}</span>
             </div>
 
             <div className="checkbox-group">
-              <input type="checkbox" name="reraConfirm" checked={formData.reraConfirm} onChange={handleChange}/>
+              <input type="checkbox" name="reraConfirm"
+                checked={formData.reraConfirm}
+                onChange={handleChange}/>
               <label>I confirm that my RERA registration is valid</label>
             </div>
+
+            <span className="error">{errors.reraConfirm}</span>
 
             <button className="btn-signup">Register Broker</button>
           </form>
@@ -94,6 +149,7 @@ const SignUpBroker = () => {
           <div className="login-text">
             Already registered ? <Link to="/signin"> Login</Link>
           </div>
+
         </div>
       </div>
     </div>

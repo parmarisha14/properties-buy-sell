@@ -3,13 +3,13 @@
   background: #f5f7fa;
 }
 
-/* FIXED LOADING */
+
 .loading {
   text-align: center;
   margin-top: 50px;
 }
 
-/* QUOTE CARD */
+
 .quote-card {
   font-style: italic;
   text-align: center;
@@ -18,7 +18,7 @@
   font-weight: 500;
 }
 
-/* HEADER */
+
 .header {
   display: flex;
   gap: 20px;
@@ -64,9 +64,10 @@
   padding: 20px;
   border-radius: 12px;
   margin-bottom: 15px;
+  margin-top: 20px;
 }
 
-/* SERVICES */
+
 .service-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -84,10 +85,11 @@
 
 .service-icon {
   font-size: 22px;
-  color: teal;
+  color: #eef3f7;
+  background: #00695c !important;
 }
 
-/* CONTACT */
+
 .contact-item {
   display: flex;
   gap: 12px;

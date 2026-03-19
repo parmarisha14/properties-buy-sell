@@ -4,28 +4,63 @@ import axios from "axios";
 import { HiUser, HiOfficeBuilding } from "react-icons/hi";
 import "../../assets/css/Login.css";
 
-// Allow cookies for cross-origin requests
 axios.defaults.withCredentials = true;
 
 const SignIn = () => {
-  const [role, setRole] = useState("user"); // user/admin or broker
+  const [role, setRole] = useState("user");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
+
+  const [errors, setErrors] = useState({});
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const validate = () => {
+    let newErrors = {};
+
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      newErrors.email = "Invalid email format";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Minimum 6 characters required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setMsg("");
 
-    const email = e.target.email.value.trim();
-    const password = e.target.password.value;
+    if (!validate()) return;
+
+    setLoading(true);
 
     try {
-      // ✅ Login request with credentials for session cookie
       const res = await axios.post(
         "http://localhost:5000/api/auth/login",
-        { email, password, role },
-        { withCredentials: true } // MUST to save session
+        {
+          email: formData.email,
+          password: formData.password,
+          role
+        },
+        { withCredentials: true }
       );
 
       const user = res.data.user;
@@ -38,20 +73,15 @@ const SignIn = () => {
 
       setMsg("Login successful");
 
-      // SignIn.jsx
-if (user.role === "broker") {
-  // Broker dashboard runs on 5175
-  window.location.href = "http://localhost:5175/dashboard";
-} else if (user.role === "admin") {
-  // Admin dashboard runs on 5173
-  window.location.href = "http://localhost:5173/admin/dashboard";
-} else {
-  // Normal user stays in public app
-  window.location.href = "http://localhost:5173/";
-}
+      if (user.role === "broker") {
+        window.location.href = "http://localhost:5175/dashboard";
+      } else if (user.role === "admin") {
+        window.location.href = "http://localhost:5173/admin/dashboard";
+      } else {
+        window.location.href = "http://localhost:5173/";
+      }
 
     } catch (err) {
-      console.error("Login error:", err);
       setMsg(err.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
@@ -76,7 +106,6 @@ if (user.role === "broker") {
           </p>
         )}
 
-        {/* Role toggle */}
         <div className="role-toggle">
           <button
             type="button"
@@ -97,17 +126,19 @@ if (user.role === "broker") {
           </button>
         </div>
 
-        {/* Login form */}
         <form className="login-form" onSubmit={handleLogin}>
+
           <div className="form-group">
             <label>Email</label>
             <input
               type="email"
               name="email"
               placeholder="Enter email"
-              required
+              value={formData.email}
+              onChange={handleChange}
               disabled={loading}
             />
+            <span className="error">{errors.email}</span>
           </div>
 
           <div className="form-group">
@@ -116,9 +147,11 @@ if (user.role === "broker") {
               type="password"
               name="password"
               placeholder="Enter password"
-              required
+              value={formData.password}
+              onChange={handleChange}
               disabled={loading}
             />
+            <span className="error">{errors.password}</span>
           </div>
 
           <button type="submit" className="login-btn" disabled={loading}>
@@ -126,7 +159,6 @@ if (user.role === "broker") {
           </button>
         </form>
 
-        {/* Signup link */}
         <p className="signup-text">
           Don't have an account?{" "}
           <Link to={role === "user" ? "/signup-user" : "/signup-broker"}>

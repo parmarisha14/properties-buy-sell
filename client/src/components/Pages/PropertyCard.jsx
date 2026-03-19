@@ -6,45 +6,50 @@ import {
   FaMapMarkerAlt,
   FaPhoneAlt
 } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import "../../assets/css/PropertyCard.css";
 
 const PropertyCard = ({ property }) => {
+
+  const navigate = useNavigate();
+
+  const handleViewDetails = () => {
+    navigate(`/property/${property._id}`);
+  };
 
   return (
     <div className="property-card">
 
       {/* IMAGE */}
       <div className="property-image">
-
         <img
           src={
-            property.image
+            property?.image
               ? `http://localhost:5000/uploads/properties/${property.image}`
               : "https://via.placeholder.com/400x250"
           }
-          alt={property.name}
+          alt="property"
         />
 
         <span className="tag featured">Featured</span>
         <span className="tag sale">For Sale</span>
-
       </div>
 
       {/* DETAILS */}
       <div className="property-details">
 
-        <h2 className="price">₹ {property.price}</h2>
+        <h2 className="price">₹ {property?.price || "0"}</h2>
 
-        <h5 className="title">{property.name}</h5>
+        <h5 className="title">{property?.name || "No Title"}</h5>
 
         <p className="location">
-          <FaMapMarkerAlt /> {property.location}
+          <FaMapMarkerAlt /> {property?.location || "Unknown"}
         </p>
 
         <div className="info">
-          <span><FaBed /> {property.bedroom} Bed</span>
-          <span><FaBath /> {property.bathroom} Bath</span>
-          <span><FaRulerCombined /> {property.area} sqft</span>
+          <span><FaBed /> {property?.bedroom || 0} Bed</span>
+          <span><FaBath /> {property?.bathroom || 0} Bath</span>
+          <span><FaRulerCombined /> {property?.area || 0} sqft</span>
         </div>
 
         {/* BROKER */}
@@ -66,7 +71,7 @@ const PropertyCard = ({ property }) => {
           </div>
         </div>
 
-        <button className="view-btn">
+        <button className="view-btn" onClick={handleViewDetails}>
           View Details
         </button>
 

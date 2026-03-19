@@ -6,7 +6,7 @@ import {
   FaUserEdit,
   FaKey,
   FaHeart,
-  FaSignOutAlt
+  FaSignOutAlt,
 } from "react-icons/fa";
 import "../../assets/Css/Header.css";
 import logo from "../../assets/Images/logo.png";
@@ -19,10 +19,9 @@ const Header = () => {
 
   const fetchUser = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5000/api/auth/me",
-        { withCredentials: true }
-      );
+      const res = await axios.get("http://localhost:5000/api/auth/me", {
+        withCredentials: true,
+      });
 
       if (res.data && res.data.user) {
         setUser(res.data.user);
@@ -46,7 +45,7 @@ const Header = () => {
       await axios.post(
         "http://localhost:5000/api/auth/logout",
         {},
-        { withCredentials: true }
+        { withCredentials: true },
       );
     } catch (error) {
       console.log("Logout error:", error);
@@ -59,13 +58,10 @@ const Header = () => {
   return (
     <nav className="navbar navbar-expand-lg custom-navbar sticky-top">
       <div className="container">
-
-        {/* LOGO */}
         <NavLink className="navbar-brand brand-logo" to="/">
           <img src={logo} alt="Logo" className="logo-image" />
         </NavLink>
 
-        {/* TOGGLER */}
         <button
           className="navbar-toggler"
           type="button"
@@ -75,26 +71,60 @@ const Header = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse justify-content-between" id="navbarMenu">
-
-          {/* MENU */}
+        <div
+          className="collapse navbar-collapse justify-content-between"
+          id="navbarMenu"
+        >
           <ul className="navbar-nav mb-2 mb-lg-0 nav-links mx-auto">
-            <li className="nav-item"><NavLink className="nav-link custom-link" to="/">Home</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link custom-link" to="/about">About</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link custom-link" to="/properties">Properties</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link custom-link" to="/services">Services</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link custom-link" to="/agents">Agents</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link custom-link" to="/blog">Blog</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link custom-link" to="/contact">Contact</NavLink></li>
+            <li className="nav-item">
+              <NavLink className="nav-link custom-link" to="/">
+                Home
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link custom-link" to="/about">
+                About
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link custom-link" to="/properties">
+                Properties
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link custom-link" to="/services">
+                Services
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link custom-link" to="/agents">
+                Agents
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link custom-link" to="/blog">
+                Blog
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link custom-link" to="/contact">
+                Contact
+              </NavLink>
+            </li>
 
-            {/* ✅ NEW */}
-            <li className="nav-item"><NavLink className="nav-link custom-link" to="/terms">Terms</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link custom-link" to="/privacy">Privacy</NavLink></li>
+            <li className="nav-item">
+              <NavLink className="nav-link custom-link" to="/terms">
+                Terms
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link custom-link" to="/privacy">
+                Privacy
+              </NavLink>
+            </li>
           </ul>
 
-          {/* RIGHT SIDE */}
           <div className="d-flex align-items-center gap-3">
-
             {!user && !loading && (
               <NavLink to="/signin" className="get-started-btn">
                 Get Started
@@ -108,8 +138,11 @@ const Header = () => {
                 </NavLink>
 
                 <div className="dropdown d-flex align-items-center">
-
-                  <button className="profile-btn" type="button" data-bs-toggle="dropdown">
+                  <button
+                    className="profile-btn"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                  >
                     <FaUserCircle size={32} />
                   </button>
 
@@ -118,7 +151,6 @@ const Header = () => {
                   </span>
 
                   <ul className="dropdown-menu dropdown-menu-end shadow">
-
                     <li>
                       <NavLink className="dropdown-item" to="/profile">
                         <FaUserEdit className="me-2" />
@@ -140,20 +172,23 @@ const Header = () => {
                       </NavLink>
                     </li>
 
-                    <li><hr className="dropdown-divider" /></li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
 
                     <li>
-                      <button className="dropdown-item text-danger" onClick={handleLogout}>
+                      <button
+                        className="dropdown-item text-danger"
+                        onClick={handleLogout}
+                      >
                         <FaSignOutAlt className="me-2" />
                         Logout
                       </button>
                     </li>
-
                   </ul>
                 </div>
               </>
             )}
-
           </div>
         </div>
       </div>

@@ -1,14 +1,13 @@
-/* Page Layout */
 .profile-page {
   display: flex;
   justify-content: center;
   padding: 50px 20px;
   background: #f4f6f9;
   min-height: 100vh;
-  font-family: 'Poppins', sans-serif;
+  
 }
 
-/* Card */
+
 .profile-card {
   width: 750px;
   background: #fff;
@@ -17,7 +16,7 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-/* Header */
+
 .profile-header {
   text-align: center;
   margin-bottom: 35px;
@@ -44,7 +43,7 @@
   letter-spacing: 1px;
 }
 
-/* Sections */
+
 .profile-section {
   margin-bottom: 25px;
 }
@@ -70,13 +69,13 @@
   color: #3498db;
 }
 
-/* Quote */
+
 .quote {
   font-style: italic;
   color: #888;
 }
 
-/* Buttons */
+
 .profile-buttons {
   display: flex;
   justify-content: center;
@@ -113,7 +112,7 @@
   background: #d35400;
 }
 
-/* Loading */
+
 .loading {
   text-align: center;
   margin-top: 150px;
@@ -121,13 +120,3 @@
   color: #3498db;
 }
 
-/* Responsive */
-@media screen and (max-width: 800px) {
-  .profile-card {
-    width: 100%;
-    padding: 30px 20px;
-  }
-  .profile-section p {
-    font-size: 14px;
-  }
-}

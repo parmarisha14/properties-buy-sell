@@ -31,15 +31,6 @@
 }
 
 
-
-
-
-
-
-
-
-
-
 .hero-image {
   width: 100%;
   border-radius: 25px;
@@ -401,7 +392,6 @@
 .feature-icon {
   background-color: #256869;
   color: white;
-
   width: 40px;
   height: 40px;
   padding: 10px;
@@ -409,7 +399,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   font-size: 20px;
   margin-bottom: 12px;
 }

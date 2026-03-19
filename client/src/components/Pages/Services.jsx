@@ -7,6 +7,8 @@ import {
   FaHandshake,
   FaDollarSign,
   FaMapMarkedAlt,
+  FaKey,
+  FaTools
 } from "react-icons/fa";
 
 const Services = () => {
@@ -77,6 +79,28 @@ const Services = () => {
             <h4>Location Assistance</h4>
             <p>
               Find the perfect location based on your needs, budget, and future growth.
+            </p>
+          </div>
+
+          {/* ✅ New Card 1 */}
+          <div className="service-card">
+            <div className="service-icon">
+              <FaKey />
+            </div>
+            <h4>Property Rental</h4>
+            <p>
+              We help you find the best rental properties or tenants quickly and easily.
+            </p>
+          </div>
+
+          {/* ✅ New Card 2 */}
+          <div className="service-card">
+            <div className="service-icon">
+              <FaTools />
+            </div>
+            <h4>Property Maintenance</h4>
+            <p>
+              Get reliable maintenance and repair services to keep your property in top condition.
             </p>
           </div>
 

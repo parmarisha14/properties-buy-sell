@@ -6,6 +6,9 @@ import "../../assets/css/AllProperties.css";
 const AllProperties = () => {
 
   const [properties, setProperties] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const propertiesPerPage = 6;
 
   useEffect(() => {
     fetchProperties();
@@ -13,7 +16,6 @@ const AllProperties = () => {
 
   const fetchProperties = async () => {
     try {
-
       const res = await axios.get(
         "http://localhost:5000/api/property/approved"
       );
@@ -29,16 +31,23 @@ const AllProperties = () => {
     }
   };
 
+  // ✅ PAGINATION LOGIC
+  const indexOfLast = currentPage * propertiesPerPage;
+  const indexOfFirst = indexOfLast - propertiesPerPage;
+
+  const currentProperties = properties.slice(indexOfFirst, indexOfLast);
+
+  const totalPages = Math.ceil(properties.length / propertiesPerPage);
+
   return (
     <div className="main-container">
 
-      {/* LEFT SIDE - PROPERTIES */}
+      {/* LEFT SIDE */}
       <div className="property-section">
 
         <div className="property-grid">
-
-          {properties.length > 0 ? (
-            properties.map((property) => (
+          {currentProperties.length > 0 ? (
+            currentProperties.map((property) => (
               <PropertyCard
                 key={property._id}
                 property={property}
@@ -47,12 +56,40 @@ const AllProperties = () => {
           ) : (
             <h2>No Properties Found</h2>
           )}
+        </div>
+
+        {/* ✅ PAGINATION UI */}
+        <div className="pagination">
+
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage(currentPage - 1)}
+          >
+            Prev
+          </button>
+
+          {[...Array(totalPages)].map((_, i) => (
+            <button
+              key={i}
+              className={currentPage === i + 1 ? "active" : ""}
+              onClick={() => setCurrentPage(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
+
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage(currentPage + 1)}
+          >
+            Next
+          </button>
 
         </div>
 
       </div>
 
-      {/* RIGHT SIDE (STATIC FILTER UI only design) */}
+      {/* RIGHT SIDE FILTER */}
       <div className="filter-section">
 
         <h3>Filter Properties</h3>

@@ -11,7 +11,6 @@
 
 .register-card {
   width: 100%;
-
   background: #ffffff;
   border-radius: 30px;
   padding: 60px 70px;
@@ -85,4 +84,10 @@
 
 .login-text a:hover {
   text-decoration: underline;
+}
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
 }

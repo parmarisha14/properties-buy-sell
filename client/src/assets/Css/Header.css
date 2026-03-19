@@ -26,7 +26,7 @@
   gap: 20px;
 }
 
-/* NAV LINKS */
+
 .custom-link {
   font-weight: 600;
   color: #323b3b !important;
@@ -45,7 +45,7 @@
   color: #2c7a7b !important;
 }
 
-/* BUTTON */
+
 .get-started-btn {
   background: #2c7a7b !important;
   color: white !important;
@@ -59,7 +59,7 @@
   background: #245a52;
 }
 
-/* WISHLIST */
+
 .wishlist-icon {
   width: 35px;
   height: 35px;
@@ -79,7 +79,7 @@
   border-color: #2c7a7b;
 }
 
-/* PROFILE */
+
 .profile-btn {
   background: transparent;
   border: none;
@@ -90,7 +90,7 @@
   color: #245a52;
 }
 
-/* DROPDOWN FIX */
+
 .dropdown-menu {
   border-radius: 15px;
   padding: 10px;

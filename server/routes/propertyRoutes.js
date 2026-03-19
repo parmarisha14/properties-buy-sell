@@ -36,7 +36,7 @@ router.put(
   upload.single("image"),
   propertyController.updateProperty
 );
-
+router.get("/:id", propertyController.getSingleProperty);
 
 // =====================================
 // APPROVE PROPERTY (Admin)

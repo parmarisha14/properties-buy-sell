@@ -146,33 +146,25 @@ exports.getBrokerProperties = async (req, res) => {
 
 
 
-// ===============================
-// UPDATE PROPERTY
-// ===============================
 exports.updateProperty = async (req, res) => {
-
   try {
-
     const brokerId = req.session.user?._id;
 
     const property = await Property.findById(req.params.id);
 
     if (!property) {
-      return res.status(404).json({
-        message: "Property not found"
-      });
+      return res.status(404).json({ message: "Property not found" });
     }
 
     if (property.brokerId.toString() !== brokerId.toString()) {
-      return res.status(403).json({
-        message: "Unauthorized"
-      });
+      return res.status(403).json({ message: "Unauthorized" });
     }
 
+    // ================= FEATURES FIX =================
     let features = req.body.features || [];
 
     if (typeof features === "string") {
-      features = features.split(",");
+      features = features.split(",").map(f => f.trim());
     }
 
     const updatedData = {
@@ -187,32 +179,32 @@ exports.updateProperty = async (req, res) => {
       year: req.body.year,
       type: req.body.type,
       description: req.body.description,
-      features
+      features,
     };
 
     if (req.file) {
       updatedData.image = req.file.filename;
     }
 
-    await Property.findByIdAndUpdate(
+    const updated = await Property.findByIdAndUpdate(
       req.params.id,
-      updatedData
+      updatedData,
+      {
+        returnDocument: "after" // ✅ FIX MONGOOSE WARNING
+      }
     );
 
     res.json({
-      message: "Property Updated Successfully"
+      success: true,
+      message: "Property Updated Successfully",
+      property: updated,
     });
 
   } catch (error) {
-
-    res.status(500).json({
-      message: "Server Error"
-    });
-
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
   }
-
 };
-
 
 
 // ===============================
@@ -295,7 +287,31 @@ exports.getApprovedProperties = async (req, res) => {
     });
   }
 };
+exports.getSingleProperty = async (req, res) => {
+  try {
 
+    const property = await Property
+      .findById(req.params.id)
+      .populate("brokerId", "name phone brokerImage");
+
+    if (!property) {
+      return res.status(404).json({
+        message: "Property not found"
+      });
+    }
+
+    res.json({
+      success: true,
+      property
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Server Error"
+    });
+  }
+};
 
 // ===============================
 // APPROVE PROPERTY

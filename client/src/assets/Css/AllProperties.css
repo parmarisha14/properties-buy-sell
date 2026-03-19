@@ -4,7 +4,7 @@
   padding: 20px;
 }
 
-/* LEFT */
+
 .property-section {
   flex: 3;
 }
@@ -15,7 +15,7 @@
   gap: 20px;
 }
 
-/* RIGHT FILTER */
+
 .filter-section {
   flex: 1;
   background: #f8fafc;
@@ -49,4 +49,30 @@
   padding: 12px;
   border: none;
   border-radius: 8px;
+}
+/* PAGINATION */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 8px;
+}
+
+.pagination button {
+  padding: 8px 14px;
+  border: none;
+  background: #e2e8f0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.pagination button.active {
+  background: #0f766e;
+  color: white;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

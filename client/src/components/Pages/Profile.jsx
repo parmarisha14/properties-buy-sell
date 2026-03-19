@@ -9,7 +9,7 @@ const Profile = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // FETCH PROFILE
+ 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -28,7 +28,7 @@ const Profile = () => {
     <div className="container my-5">
       <div className="row justify-content-center">
 
-        {/* Left Column */}
+        
         <div className="col-md-4 text-center">
           <div className="profile-card">
             <img
@@ -68,7 +68,7 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Right Column */}
+        
         <div className="col-md-8">
           <div className="profile-card card-details">
             <h5>Personal Details</h5>

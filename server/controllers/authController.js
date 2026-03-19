@@ -175,6 +175,25 @@ exports.updateUserProfile = async (req, res) => {
 
     let updateData = req.body;
 
+    // ✅ EMAIL UPDATE CHECK (NEW)
+    if (updateData.email) {
+      const existingUser = await User.findOne({
+        email: updateData.email,
+        _id: { $ne: userId },
+      });
+
+      const existingBroker = await Broker.findOne({
+        email: updateData.email,
+        _id: { $ne: userId },
+      });
+
+      if (existingUser || existingBroker) {
+        return res.status(400).json({ message: "Email already in use" });
+      }
+
+      req.session.user.email = updateData.email; // update session email too
+    }
+
     if (req.body.languages) {
       if (typeof req.body.languages === "string") {
         updateData.languages = req.body.languages.split(",");
@@ -189,8 +208,7 @@ exports.updateUserProfile = async (req, res) => {
       }
     }
 
-    // ================= IMAGE =================
-
+    // IMAGE
     if (req.file) {
       if (req.session.user.role === "broker") {
         updateData.brokerImage = req.file.filename;
@@ -203,11 +221,11 @@ exports.updateUserProfile = async (req, res) => {
 
     if (req.session.user.role === "user") {
       updatedUser = await User.findByIdAndUpdate(userId, updateData, {
-        returnDocument: "after",
+        new: true,
       });
     } else {
       updatedUser = await Broker.findByIdAndUpdate(userId, updateData, {
-        returnDocument: "after",
+        new: true,
       });
     }
 
@@ -216,8 +234,6 @@ exports.updateUserProfile = async (req, res) => {
       user: updatedUser,
     });
   } catch (error) {
-    console.log("PROFILE UPDATE ERROR:", error);
-
     res.status(500).json({
       message: "Profile update failed",
       error: error.message,
