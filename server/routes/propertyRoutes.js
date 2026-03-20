@@ -4,11 +4,23 @@ const router = express.Router();
 const propertyController = require("../controllers/propertyController");
 const upload = require("../middleware/upload");
 
-
 // =====================================
 // ADD PROPERTY (Broker)
-// Add Property (Broker)
-router.post("/add", upload.single("image"), propertyController.addProperty);
+// =====================================
+router.post(
+  "/add",
+  upload.single("image"),
+  propertyController.addProperty
+);
+
+// =====================================
+// GET APPROVED PROPERTIES (USER WEBSITE)
+// ⚠️ IMPORTANT: always keep BEFORE :id route
+// =====================================
+router.get(
+  "/approved",
+  propertyController.getApprovedProperties
+);
 
 // =====================================
 // GET ALL PROPERTIES (Admin)
@@ -18,7 +30,6 @@ router.get(
   propertyController.getProperties
 );
 
-
 // =====================================
 // GET BROKER PROPERTIES
 // =====================================
@@ -27,6 +38,14 @@ router.get(
   propertyController.getBrokerProperties
 );
 
+// =====================================
+// GET SINGLE PROPERTY
+// ⚠️ ALWAYS KEEP LAST (dynamic route)
+// =====================================
+router.get(
+  "/:id",
+  propertyController.getSingleProperty
+);
 
 // =====================================
 // UPDATE PROPERTY (Broker)
@@ -36,7 +55,6 @@ router.put(
   upload.single("image"),
   propertyController.updateProperty
 );
-router.get("/:id", propertyController.getSingleProperty);
 
 // =====================================
 // APPROVE PROPERTY (Admin)
@@ -46,7 +64,6 @@ router.put(
   propertyController.approveProperty
 );
 
-
 // =====================================
 // REJECT PROPERTY (Admin)
 // =====================================
@@ -55,13 +72,6 @@ router.put(
   propertyController.rejectProperty
 );
 
-// APPROVE PROPERTY
-router.put(
-  "/approve/:id",
-  propertyController.approveProperty
-);
-router.get("/approved", propertyController.getApprovedProperties);
-
 // =====================================
 // DELETE PROPERTY
 // =====================================
@@ -69,6 +79,5 @@ router.delete(
   "/delete/:id",
   propertyController.deleteProperty
 );
-
 
 module.exports = router;
