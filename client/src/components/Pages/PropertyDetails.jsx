@@ -7,111 +7,104 @@ import {
   FaCheckCircle,
   FaPhoneAlt,
   FaCalendarAlt,
-  FaHome
 } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "../../assets/css/PropertyDetails.css";
 
 const PropertyDetails = () => {
-
   const { id } = useParams();
 
   const [property, setProperty] = useState(null);
-  const [activeImage, setActiveImage] = useState("");
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    date: "",
+    message: "",
+  });
 
   useEffect(() => {
-    if (id) fetchProperty();
-  }, [id]);
+    fetchProperty();
+  }, []);
 
   const fetchProperty = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:5000/api/property/${id}`
-      );
+    const res = await axios.get(`http://localhost:5000/api/property/${id}`);
+    setProperty(res.data.property);
+  };
 
-      const data = res.data.property;
-      setProperty(data);
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-      const imgs = data?.image ? [data.image] : [];
-      setActiveImage(imgs[0]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    } catch (error) {
-      console.log(error);
-    }
+    await axios.post("http://localhost:5000/api/inquiry", {
+      ...form,
+      propertyId: property._id,
+      brokerId: property.brokerId._id,
+    });
+
+    alert("Request Sent Successfully");
   };
 
   if (!property) return <h2>Loading...</h2>;
 
-  const images = property?.image ? [property.image] : [];
-
   return (
     <div className="details-container">
-
-      {/* LEFT */}
       <div className="left-section">
-
         <div className="main-image">
           <img
-            src={`http://localhost:5000/uploads/properties/${activeImage}`}
-            alt=""
+            src={`http://localhost:5000/uploads/properties/${property.image}`}
+            alt="property"
+            onError={(e) => {
+              e.target.src = "https://via.placeholder.com/800x400";
+            }}
           />
         </div>
 
-        {/* DESCRIPTION */}
         <div className="section">
-          <h3>About This Property</h3>
+          <h3>Description</h3>
           <p>{property.description}</p>
         </div>
 
-        {/* FEATURES */}
         <div className="section">
-          <h3>Amenities & Features</h3>
-
+          <h3>Features</h3>
           <div className="features-grid">
-            {property.features?.length > 0 ? (
-              property.features.map((item, i) => (
-                <div className="feature-item" key={i}>
-                  <FaCheckCircle /> {item}
-                </div>
-              ))
-            ) : (
-              <p>No Features</p>
-            )}
+            {property.features?.map((f, i) => (
+              <div key={i} className="feature-item">
+                <FaCheckCircle className="icon" /> {f}
+              </div>
+            ))}
           </div>
         </div>
-
       </div>
 
-      {/* RIGHT */}
       <div className="right-section">
+        <h2 className="price">₹ {property.price}</h2>
 
-        {/* PRICE */}
-        <div className="price-box">
-          <h2>₹ {property.price}</h2>
-      
-        </div>
-
-        {/* LOCATION */}
         <p className="location">
-          <FaMapMarkerAlt /> {property.location}, {property.city}, {property.state}
+          <FaMapMarkerAlt /> {property.location}, {property.city}
         </p>
 
-        {/* BASIC INFO */}
         <div className="info-box">
-          <span><FaBed /> {property.bedroom} Beds</span>
-          <span><FaBath /> {property.bathroom} Baths</span>
-          <span><FaRulerCombined /> {property.area} sqft</span>
+          <span className="fs-5">
+            <FaBed /> {property.bedroom} bedroom
+          </span>
+          <span className="fs-5">
+            <FaBath /> {property.bathroom} bathroom
+          </span>
+          <span className="fs-5">
+            <FaRulerCombined /> {property.area} area
+          </span>
         </div>
 
-        {/* EXTRA DETAILS */}
-        <div className="extra-details">
-          
-          <h3><FaCalendarAlt /> Year Built: {property.year}</h3>
-          
-        </div>
-
-        {/* AGENT */}
+        <h3 className="year">
+          <FaCalendarAlt /> {property.year}
+        </h3>
+        <h5 className="type mt-5">Type:{property.type}</h5>
         <div className="agent-box">
           <img
             src={
@@ -123,24 +116,46 @@ const PropertyDetails = () => {
           />
           <div>
             <h4>{property?.brokerId?.name}</h4>
-            <p><FaPhoneAlt /> {property?.brokerId?.phone}</p>
+            <p>
+              <FaPhoneAlt /> {property?.brokerId?.phone}
+            </p>
           </div>
         </div>
 
-        {/* CONTACT FORM */}
-        <div className="form-box">
-          <h4>Schedule a Tour</h4>
+        <form className="form-box" onSubmit={handleSubmit}>
+          <h3>Schedule a Tour</h3>
 
-          <input placeholder="Your Name" />
-          <input placeholder="Your Email" />
-          <input placeholder="Your Phone" />
-          <textarea placeholder="Message"></textarea>
+          <input
+            name="name"
+            placeholder="Your Name"
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="email"
+            placeholder="Your Email"
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="phone"
+            placeholder="Your Phone"
+            onChange={handleChange}
+            required
+          />
 
-          <button>Schedule Tour</button>
-        </div>
+          <label>Schedule a Tour for date:</label>
+          <input type="date" name="date" onChange={handleChange} required />
 
+          <textarea
+            name="message"
+            placeholder="Your Message"
+            onChange={handleChange}
+          ></textarea>
+
+          <button type="submit">Send Request</button>
+        </form>
       </div>
-
     </div>
   );
 };

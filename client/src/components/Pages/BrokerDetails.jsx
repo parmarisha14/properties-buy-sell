@@ -10,6 +10,8 @@ import {
   FaGem,
   FaChartLine,
   FaMapMarkerAlt,
+  FaClock,
+  FaLanguage,
 } from "react-icons/fa";
 
 import "../../assets/css/BrokerDetails.css";
@@ -37,27 +39,28 @@ const BrokerDetails = () => {
 
   return (
     <div className="details-container">
-      <div className="header">
-        <img
-          src={`http://localhost:5000/uploads/users/${broker.brokerImage}`}
-          alt="broker"
-        />
+      <div className="main">
+        <div className="left-profile">
+          <img
+            src={
+              broker.brokerImage
+                ? `http://localhost:5000/uploads/users/${broker.brokerImage}`
+                : "https://randomuser.me/api/portraits/men/1.jpg"
+            }
+            alt="broker"
+          />
 
-        <div>
-          <h1>{broker.name}</h1>
+          <h2>{broker.name}</h2>
           <p className="role">{broker.agency || "Real Estate Agent"}</p>
 
           <p className="location">
-            <FaMapMarkerAlt className="icon" />
-            {broker.address || "Location not available"}
+            <FaMapMarkerAlt /> {broker.address || "No location"}
           </p>
         </div>
-      </div>
 
-      <div className="main">
-        <div className="left">
+        <div className="right-content">
           <div className="card quote-card">
-            <p>"{broker.quotes || "No quote available"}"</p>
+            <p>"{broker.quotes || "Find your perfect rental"}"</p>
           </div>
 
           <div className="card">
@@ -66,53 +69,49 @@ const BrokerDetails = () => {
           </div>
 
           <div className="card">
-            <h3>Service Areas & Expertise</h3>
+            <h3>Broker Details</h3>
+
+            <p>
+              <strong>Agency:</strong> {broker.agency || "N/A"}
+            </p>
+            <p>
+              <strong>RERA:</strong> {broker.rera || "N/A"}
+            </p>
+            <p>
+              <strong>Experience:</strong> {broker.experienceYears || 0} Years
+            </p>
+            <p>
+              <strong>Office Location:</strong> {broker.officeLocation || "N/A"}
+            </p>
+          </div>
+
+          <div className="card">
+            <h3>
+              <FaLanguage /> Languages
+            </h3>
 
             <div className="service-grid">
-              <div className="service-box">
-                <div className="service-icon">
-                  <FaBuilding />
-                </div>
-                <div>
-                  <h4>Downtown District</h4>
-                  <p>High-rise condos and urban lofts</p>
-                </div>
-              </div>
-
-              <div className="service-box">
-                <div className="service-icon">
-                  <FaHome />
-                </div>
-                <div>
-                  <h4>Suburban Communities</h4>
-                  <p>Family homes and neighborhoods</p>
-                </div>
-              </div>
-
-              <div className="service-box">
-                <div className="service-icon">
-                  <FaGem />
-                </div>
-                <div>
-                  <h4>Luxury Properties</h4>
-                  <p>Premium estates and waterfront homes</p>
-                </div>
-              </div>
-
-              <div className="service-box">
-                <div className="service-icon">
-                  <FaChartLine />
-                </div>
-                <div>
-                  <h4>Investment Properties</h4>
-                  <p>Commercial and rental opportunities</p>
-                </div>
-              </div>
+              {broker.languages?.length > 0 ? (
+                broker.languages.map((lang, i) => (
+                  <div className="services-box" key={i}>
+                    <p>{lang}</p>
+                  </div>
+                ))
+              ) : (
+                <p>No languages available</p>
+              )}
             </div>
           </div>
-        </div>
 
-        <div className="right">
+          <div className="card">
+            <h3>
+              <FaClock /> Business Hours
+            </h3>
+
+            <p>Mon - Fri: {broker.businessHours?.mondayFriday || "N/A"}</p>
+            <p>Saturday: {broker.businessHours?.saturday || "N/A"}</p>
+            <p>Sunday: {broker.businessHours?.sunday || "Closed"}</p>
+          </div>
           <div className="card">
             <h3>Let's Connect</h3>
 
@@ -120,9 +119,7 @@ const BrokerDetails = () => {
               <FaPhone className="icon" />
               <div>
                 <p className="label">Phone</p>
-                <a href={`tel:${broker.phone}`} className="value">
-                  {broker.phone || "Not Available"}
-                </a>
+                <p className="value">{broker.phone || "Not available"}</p>
               </div>
             </div>
 
@@ -130,35 +127,55 @@ const BrokerDetails = () => {
               <FaEnvelope className="icon" />
               <div>
                 <p className="label">Email</p>
-                <a href={`mailto:${broker.email}`} className="value">
-                  {broker.email || "Not Available"}
-                </a>
+                <p className="value">{broker.email || "Not available"}</p>
               </div>
             </div>
           </div>
 
           <div className="card">
-            <h3>Business Hours</h3>
-            <p>
-              <strong>Mon-Fri:</strong>{" "}
-              {broker.businessHours?.mondayFriday || "N/A"}
-            </p>
-            <p>
-              <strong>Saturday:</strong>{" "}
-              {broker.businessHours?.saturday || "N/A"}
-            </p>
-            <p>
-              <strong>Sunday:</strong>{" "}
-              {broker.businessHours?.sunday || "Closed"}
-            </p>
-          </div>
+            <h3>Service Areas & Expertise</h3>
 
-          <div className="card">
-            <h3>Office Location</h3>
-            <p>
-              <FaMapMarkerAlt className="icon" />
-              {broker.officeLocation || "Not available"}
-            </p>
+            <div className="service-grid">
+              <div className="services-box">
+                <div className="services-icon">
+                  <FaBuilding />
+                </div>
+                <div>
+                  <h4>Downtown District</h4>
+                  <p>High-rise condos & urban living</p>
+                </div>
+              </div>
+
+              <div className="services-box">
+                <div className="services-icon">
+                  <FaHome />
+                </div>
+                <div>
+                  <h4>Suburban Homes</h4>
+                  <p>Family friendly communities</p>
+                </div>
+              </div>
+
+              <div className="services-box">
+                <div className="services-icon">
+                  <FaGem />
+                </div>
+                <div>
+                  <h4>Luxury Properties</h4>
+                  <p>Premium real estate deals</p>
+                </div>
+              </div>
+
+              <div className="services-box">
+                <div className="services-icon">
+                  <FaChartLine />
+                </div>
+                <div>
+                  <h4>Investments</h4>
+                  <p>Rental & commercial properties</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
