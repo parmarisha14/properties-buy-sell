@@ -8,13 +8,14 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import AddProperty from "./pages/AddProperty";
 import ManageProperty from "./pages/ManageProperty";
-
-
 import EditProperty from "./pages/EditProperty";
 
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
-import ChangePassword from "./pages/ChangePassword";   // ⭐ NEW IMPORT
+import ChangePassword from "./pages/ChangePassword";
+
+// ✅ NEW IMPORT (BROKER INQUIRIES)
+import BrokerInquiries from "./pages/BrokerInquiries";
 
 const App = () => {
   return (
@@ -50,10 +51,6 @@ const App = () => {
           }
         />
 
-        
-
-        
-
         <Route
           path="/edit-property/:id"
           element={
@@ -81,13 +78,21 @@ const App = () => {
           }
         />
 
-        {/* ⭐ NEW CHANGE PASSWORD ROUTE */}
-
         <Route
           path="/change-password"
           element={
             <ProtectedRoute>
               <ChangePassword />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ✅ NEW ROUTE (BROKER INQUIRIES) */}
+        <Route
+          path="/dashboard/inquiries"
+          element={
+            <ProtectedRoute>
+              <BrokerInquiries />
             </ProtectedRoute>
           }
         />

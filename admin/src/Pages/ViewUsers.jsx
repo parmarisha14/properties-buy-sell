@@ -19,7 +19,7 @@ const ViewUsers = () => {
     }
   };
 
-  // DELETE USER
+  
   const deleteUser = async (id) => {
     if (!window.confirm("Delete this user?")) return;
 
@@ -32,7 +32,7 @@ const ViewUsers = () => {
     }
   };
 
-  // EDIT USER
+  
   const editUser = (id) => {
     window.location.href = `/edit-user/${id}`;
   };

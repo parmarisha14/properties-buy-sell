@@ -101,7 +101,7 @@ const ViewProperties = () => {
                   : ""}
               </p>
 
-              {/* ✅ Updated to match backend populate */}
+              
               <p>
                 <b>Broker:</b> {property.brokerId?.name || "N/A"} (
                 {property.brokerId?.phone || "N/A"})

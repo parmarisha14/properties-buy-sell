@@ -36,8 +36,6 @@ const ViewBrokers = () => {
       <div className="broker-grid">
         {brokers.map((broker) => (
           <div className="broker-card" key={broker._id}>
-
-            {/* IMAGE */}
             <img
               src={
                 broker.brokerImage
@@ -48,7 +46,6 @@ const ViewBrokers = () => {
               className="broker-img"
             />
 
-            {/* BODY */}
             <div className="broker-body">
               <h3>{broker.name}</h3>
 
@@ -58,11 +55,19 @@ const ViewBrokers = () => {
               <p>{broker.phone}</p>
 
               <div className="broker-info">
-                <p><b>RERA:</b> {broker.rera}</p>
-                <p><b>Gender:</b> {broker.gender}</p>
-                <p><b>Experience:</b> {broker.experienceYears} Years</p>
-                <p><b>Location:</b> {broker.officeLocation}</p>
-                <p><b>Languages:</b> {broker.languages?.join(", ")}</p>
+                <p>
+                  <b>RERA:</b> {broker.rera}
+                </p>
+
+                <p>
+                  <b>Experience:</b> {broker.experienceYears} Years
+                </p>
+                <p>
+                  <b>Location:</b> {broker.officeLocation}
+                </p>
+                <p>
+                  <b>Languages:</b> {broker.languages?.join(", ")}
+                </p>
               </div>
 
               <p className="summary">
@@ -74,13 +79,14 @@ const ViewBrokers = () => {
               <p className="quote">"{broker.quotes}"</p>
 
               <div className="broker-info">
-                <p><b>Business Hours:</b></p>
+                <p>
+                  <b>Business Hours:</b>
+                </p>
                 <p>Mon-Fri: {broker.businessHours?.mondayFriday}</p>
                 <p>Sat: {broker.businessHours?.saturday}</p>
                 <p>Sun: {broker.businessHours?.sunday}</p>
               </div>
 
-              {/* BUTTONS */}
               <div className="action-buttons">
                 <button className="view-btn">View</button>
 
@@ -91,7 +97,6 @@ const ViewBrokers = () => {
                   Delete
                 </button>
               </div>
-
             </div>
           </div>
         ))}

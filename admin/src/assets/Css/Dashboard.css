@@ -1,91 +1,78 @@
-/* Dashboard container adjusted for sidebar */
-
-.dashboard-container{
-    padding:30px;
-    background:#f0f9ff;   /* match sidebar theme */
-    min-height:100vh;
-    margin-left:240px;
-    box-sizing:border-box;
+.dashboard-container {
+    padding: 30px;
+    background: #f0f9ff;
+    min-height: 100vh;
+    margin-left: 240px;
+    box-sizing: border-box;
 }
 
-/* Title */
 
-.dashboard-title{
-    font-weight:700;
-    margin-bottom:25px;
-    color:#075985;
+
+.dashboard-title {
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #075985;
 }
 
-/* Card Base */
 
-.dashboard-card{
-    padding:25px;
-    border-radius:12px;
-    text-align:center;
-    background:#ffffff;
-    box-shadow:0 4px 14px rgba(0,0,0,0.08);
-    transition:0.3s;
-    border-left:6px solid;
+
+.dashboard-card {
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    background: #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    transition: 0.3s;
+    border-left: 6px solid;
 }
 
-.dashboard-card h5{
-    color:#64748b;
-    font-size:15px;
+.dashboard-card h5 {
+    color: #64748b;
+    font-size: 15px;
 }
 
-.dashboard-card h2{
-    font-weight:700;
-    margin-top:10px;
+.dashboard-card h2 {
+    font-weight: 700;
+    margin-top: 10px;
 }
 
-/* Hover */
 
-.dashboard-card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 10px 22px rgba(0,0,0,0.12);
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
 }
 
-/* Card Colors */
 
-.users-card{
-    border-color:#0284c7;
+
+.users-card {
+    border-color: #0284c7;
 }
 
-.users-card h2{
-    color:#0284c7;
+.users-card h2 {
+    color: #0284c7;
 }
 
-.brokers-card{
-    border-color:#10b981;
+.brokers-card {
+    border-color: #10b981;
 }
 
-.brokers-card h2{
-    color:#10b981;
+.brokers-card h2 {
+    color: #10b981;
 }
 
-.properties-card{
-    border-color:#f59e0b;
+.properties-card {
+    border-color: #f59e0b;
 }
 
-.properties-card h2{
-    color:#f59e0b;
+.properties-card h2 {
+    color: #f59e0b;
 }
 
-.pending-card{
-    border-color:#ef4444;
+.pending-card {
+    border-color: #ef4444;
 }
 
-.pending-card h2{
-    color:#ef4444;
-}
-
-/* Responsive */
-
-@media (max-width:768px){
-
-.dashboard-container{
-    margin-left:60px;
-    padding:20px;
-}
-
+.pending-card h2 {
+    color: #ef4444;
 }

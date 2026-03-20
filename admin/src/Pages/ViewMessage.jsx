@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../assets/css/ViewUsers.css"; // same CSS use
+import "../assets/css/ViewUsers.css"; 
 
 const ViewMessage = () => {
   const [contacts, setContacts] = useState([]);
@@ -18,7 +18,7 @@ const ViewMessage = () => {
     }
   };
 
-  // DELETE CONTACT
+  
   const deleteContact = async (id) => {
     if (!window.confirm("Delete this message?")) return;
 

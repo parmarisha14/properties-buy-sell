@@ -93,7 +93,7 @@ const Sidebar = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/inquiry">
+              <NavLink to="/dashboard/inquiries">
                 <FaEnvelope /> Inquiries
               </NavLink>
             </li>

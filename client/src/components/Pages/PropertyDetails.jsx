@@ -8,14 +8,16 @@ import {
   FaPhoneAlt,
   FaCalendarAlt,
 } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../assets/css/PropertyDetails.css";
 
 const PropertyDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [property, setProperty] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -27,11 +29,40 @@ const PropertyDetails = () => {
 
   useEffect(() => {
     fetchProperty();
+    checkLogin();
   }, []);
 
   const fetchProperty = async () => {
-    const res = await axios.get(`http://localhost:5000/api/property/${id}`);
-    setProperty(res.data.property);
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/api/property/${id}`
+      );
+      setProperty(res.data.property);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const checkLogin = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/auth/me",
+        { withCredentials: true }
+      );
+
+      if (res.data.success) {
+        setIsLoggedIn(true);
+
+        setForm({
+          ...form,
+          name: res.data.user.name || "",
+          email: res.data.user.email || "",
+          phone: res.data.user.phone || "",
+        });
+      }
+    } catch (err) {
+      setIsLoggedIn(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -41,20 +72,44 @@ const PropertyDetails = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await axios.post("http://localhost:5000/api/inquiry", {
-      ...form,
-      propertyId: property._id,
-      brokerId: property.brokerId._id,
-    });
+    if (!isLoggedIn) {
+      alert("Please login first");
+      navigate("/signin");
+      return;
+    }
 
-    alert("Request Sent Successfully");
+    try {
+      await axios.post(
+        "http://localhost:5000/api/inquiry",
+        {
+          ...form,
+          propertyId: property._id,
+          brokerId: property.brokerId._id,
+        },
+        { withCredentials: true }
+      );
+
+      alert("Request Sent Successfully");
+
+      setForm({
+        ...form,
+        date: "",
+        message: "",
+      });
+
+    } catch (err) {
+      console.log(err);
+      alert("Error sending request");
+    }
   };
 
   if (!property) return <h2>Loading...</h2>;
 
   return (
     <div className="details-container">
+
       <div className="left-section">
+
         <div className="main-image">
           <img
             src={`http://localhost:5000/uploads/properties/${property.image}`}
@@ -80,9 +135,11 @@ const PropertyDetails = () => {
             ))}
           </div>
         </div>
+
       </div>
 
       <div className="right-section">
+
         <h2 className="price">₹ {property.price}</h2>
 
         <p className="location">
@@ -90,21 +147,15 @@ const PropertyDetails = () => {
         </p>
 
         <div className="info-box">
-          <span className="fs-5">
-            <FaBed /> {property.bedroom} bedroom
-          </span>
-          <span className="fs-5">
-            <FaBath /> {property.bathroom} bathroom
-          </span>
-          <span className="fs-5">
-            <FaRulerCombined /> {property.area} area
-          </span>
+          <span><FaBed /> {property.bedroom} bedroom</span>
+          <span><FaBath /> {property.bathroom} bathroom</span>
+          <span><FaRulerCombined /> {property.area} area</span>
         </div>
 
-        <h3 className="year">
-          <FaCalendarAlt /> {property.year}
-        </h3>
-        <h5 className="type mt-5">Type:{property.type}</h5>
+        <h3><FaCalendarAlt /> {property.year}</h3>
+
+        <h5 className="type mt-3">Type: {property.type}</h5>
+
         <div className="agent-box">
           <img
             src={
@@ -116,45 +167,68 @@ const PropertyDetails = () => {
           />
           <div>
             <h4>{property?.brokerId?.name}</h4>
-            <p>
-              <FaPhoneAlt /> {property?.brokerId?.phone}
-            </p>
+            <p><FaPhoneAlt /> {property?.brokerId?.phone}</p>
           </div>
         </div>
 
-        <form className="form-box" onSubmit={handleSubmit}>
-          <h3>Schedule a Tour</h3>
+        
+        {isLoggedIn ? (
+          <form className="form-box" onSubmit={handleSubmit}>
+            <h3>Schedule a Tour</h3>
 
-          <input
-            name="name"
-            placeholder="Your Name"
-            onChange={handleChange}
-            required
-          />
-          <input
-            name="email"
-            placeholder="Your Email"
-            onChange={handleChange}
-            required
-          />
-          <input
-            name="phone"
-            placeholder="Your Phone"
-            onChange={handleChange}
-            required
-          />
+            <input
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Your Name"
+              required
+            />
 
-          <label>Schedule a Tour for date:</label>
-          <input type="date" name="date" onChange={handleChange} required />
+            <input
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="Your Email"
+              required
+            />
 
-          <textarea
-            name="message"
-            placeholder="Your Message"
-            onChange={handleChange}
-          ></textarea>
+            <input
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
+              placeholder="Your Phone"
+              required
+            />
 
-          <button type="submit">Send Request</button>
-        </form>
+            <label>Schedule a Tour for date:</label>
+            <input
+              type="date"
+              name="date"
+              value={form.date}
+              onChange={handleChange}
+              required
+            />
+
+            <textarea
+              name="message"
+              value={form.message}
+              onChange={handleChange}
+              placeholder="Your Message"
+            ></textarea>
+
+            <button type="submit">Send Request</button>
+          </form>
+        ) : (
+          <div className="form-box">
+            <h3>Please Login</h3>
+            <p>You must login to send request</p>
+
+            <button onClick={() => navigate("/signin")}>
+              Go to Login
+            </button>
+          </div>
+        )}
+
       </div>
     </div>
   );

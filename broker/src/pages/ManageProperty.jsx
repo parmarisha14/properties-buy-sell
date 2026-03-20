@@ -10,7 +10,7 @@ import {
   FaCalendarAlt,
   FaTags,
   FaEdit,
-  FaTrash
+  FaTrash,
 } from "react-icons/fa";
 
 axios.defaults.withCredentials = true;
@@ -29,7 +29,7 @@ const ManageProperty = () => {
         "http://localhost:5000/api/property/broker",
         { withCredentials: true }
       );
-      setProperties(res.data.properties);
+      setProperties(res.data.properties || []);
     } catch (err) {
       console.log("Fetch Error:", err);
     }
@@ -37,8 +37,12 @@ const ManageProperty = () => {
 
   const deleteProperty = async (id) => {
     if (!window.confirm("Are you sure you want to delete this property?")) return;
+
     try {
-      await axios.delete(`http://localhost:5000/api/property/delete/${id}`, { withCredentials: true });
+      await axios.delete(
+        `http://localhost:5000/api/property/delete/${id}`,
+        { withCredentials: true }
+      );
       fetchProperties();
     } catch (err) {
       console.log("Delete Error:", err);
@@ -54,57 +58,108 @@ const ManageProperty = () => {
   return (
     <div className="app-layout">
       <Sidebar />
+
       <div className="main-content">
         <div className="page-header">
           <h2>Manage Properties</h2>
-          <button className="add-btn" onClick={() => navigate("/add-property")}>+ Add Property</button>
+
+          
         </div>
 
-        <div className="property-grid">
-          {properties.length === 0 && <p>No properties found.</p>}
+        <div className="property-grid ">
+          {properties.length === 0 ? (
+            <p>No properties found.</p>
+          ) : (
+            properties.map((p) => (
+              <div className="property-card" key={p._id}>
+                
+                {/* IMAGE */}
+                <img
+                  src={
+                    p.image
+                      ? `http://localhost:5000/uploads/properties/${p.image}`
+                      : "https://via.placeholder.com/300x200"
+                  }
+                  alt={p.name}
+                  className="property-img"
+                />
 
-          {properties.map((p) => (
-            <div className="property-card" key={p._id}>
-              <img
-                src={p.image ? `http://localhost:5000/uploads/properties/${p.image}` : "https://via.placeholder.com/300x200"}
-                alt={p.name}
-                className="property-img"
-              />
+                <div className="property-body">
 
-              <div className="property-body">
-                <div className="property-header">
-                  <h5>{p.name}</h5>
-                  <span className={`status-badge ${getStatusBadge(p.status)}`}>{p.status}</span>
-                </div>
-
-                <p className="property-price">₹ {p.price}</p>
-                <p className="property-location">{p.location}, {p.city}, {p.state}</p>
-
-                <div className="property-info">
-                  <span><FaBed /> {p.bedroom || 0}</span>
-                  <span><FaBath /> {p.bathroom || 0}</span>
-                  <span><FaRulerCombined /> {p.area || 0} sq.ft</span>
-                  <span><FaCalendarAlt /> {p.year || "N/A"}</span>
-                  <span><FaTags /> {p.type || "N/A"}</span>
-                </div>
-
-                {p.description && <p className="property-description">{p.description}</p>}
-
-                {p.features && p.features.length > 0 && (
-                  <div className="property-features">
-                    {p.features.map((f, i) => <span key={i} className="feature-badge">{f}</span>)}
+                  {/* HEADER */}
+                  <div className="property-header">
+                    <h5>{p.name || "No Name"}</h5>
+                    <span className={`status-badge ${getStatusBadge(p.status)}`}>
+                      {p.status || "pending"}
+                    </span>
                   </div>
-                )}
 
-                {p.brokerId && <p className="property-broker">Broker: {p.brokerId.fullName || p.brokerId.name}</p>}
+                  {/* PRICE */}
+                  <p className="property-price">
+                    ₹ {p.price || 0}
+                  </p>
 
-                <div className="property-buttons">
-                  <button className="edit-btn" onClick={() => navigate(`/edit-property/${p._id}`)}><FaEdit /> Edit</button>
-                  <button className="delete-btn" onClick={() => deleteProperty(p._id)}><FaTrash /> Delete</button>
+                  {/* LOCATION */}
+                  <p className="property-location">
+                    {p.location || "-"}, {p.city || "-"}, {p.state || "-"}
+                  </p>
+
+                  {/* INFO */}
+                  <div className="property-info">
+                    <span><FaBed /> {p.bedroom ?? 0}</span>
+                    <span><FaBath /> {p.bathroom ?? 0}</span>
+                    <span><FaRulerCombined /> {p.area ?? 0} sq.ft</span>
+                  </div>
+
+                  <div className="property-info">
+                    <span><FaCalendarAlt /> {p.year || "N/A"}</span>
+                    <span><FaTags /> {p.type || "N/A"}</span>
+                  </div>
+
+                  {/* DESCRIPTION */}
+                  {p.description && (
+                    <p className="property-description">
+                      {p.description}
+                    </p>
+                  )}
+
+                  {/* FEATURES */}
+                  {p.features && p.features.length > 0 && (
+                    <div className="property-features">
+                      {p.features.map((f, i) => (
+                        <span key={i} className="feature-badge">
+                          {f}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* BROKER */}
+                  <p className="property-broker">
+                    Broker: {p?.brokerId?.fullName || p?.brokerId?.name || "N/A"}
+                  </p>
+
+                  {/* BUTTONS */}
+                  <div className="property-buttons">
+                    <button
+                      className="edit-btn"
+                      onClick={() => navigate(`/edit-property/${p._id}`)}
+                    >
+                      <FaEdit /> Edit
+                    </button>
+
+                    <button
+                      className="delete-btn"
+                      onClick={() => deleteProperty(p._id)}
+                    >
+                      <FaTrash /> Delete
+                    </button>
+                  </div>
+
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>

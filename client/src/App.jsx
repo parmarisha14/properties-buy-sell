@@ -28,7 +28,7 @@ import BrokerDetails from "./components/Pages/BrokerDetails";
 
 import axios from "axios";
 
-// ✅ Allow cookies (important for auth)
+
 axios.defaults.withCredentials = true;
 
 const App = () => {

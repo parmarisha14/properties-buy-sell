@@ -1,4 +1,4 @@
-/* Sidebar */
+
 
 .sidebar{
     width:240px;
@@ -11,7 +11,7 @@
     left:0;
 }
 
-/* Title */
+
 
 .sidebar-title{
     text-align:center;
@@ -20,7 +20,7 @@
     color:#075985;
 }
 
-/* Menu */
+
 
 .sidebar-menu{
     list-style:none;
@@ -31,7 +31,7 @@
     margin-bottom:8px;
 }
 
-/* Links */
+
 
 .sidebar-link{
     display:flex;
@@ -45,14 +45,14 @@
     font-weight:500;
 }
 
-/* Hover */
+
 
 .sidebar-link:hover{
     background:#bae6fd;
     color:#0c4a6e;
 }
 
-/* Active link */
+
 
 .sidebar-link.active{
     background:#7dd3fc;
@@ -60,13 +60,13 @@
     font-weight:600;
 }
 
-/* Icons */
+
 
 .icon{
     font-size:18px;
 }
 
-/* Logout */
+
 
 .logout-btn{
     margin-top:40px;

@@ -71,24 +71,47 @@ exports.signupBroker = async (req, res) => {
 exports.signin = async (req, res) => {
   try {
     const { email, password, role } = req.body;
-    if (!role) return res.status(400).json({ message: "Role is required" });
+
+    if (!email || !password || !role) {
+      return res.status(400).json({
+        message: "All fields are required",
+      });
+    }
 
     let user;
-    if (role === "user" || role === "admin")
+
+    // ✅ FIND USER BASED ON ROLE
+    if (role === "broker") {
+      user = await Broker.findOne({ email });
+    } else {
       user = await User.findOne({ email });
-    if (role === "broker") user = await Broker.findOne({ email });
+    }
 
-    if (!user) return res.status(400).json({ message: `${role} not found` });
+    if (!user) {
+      return res.status(400).json({
+        message: "User not found",
+      });
+    }
 
+    // ✅ PASSWORD CHECK
     const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(400).json({ message: "Wrong password" });
 
-    // ✅ Save session
+    if (!match) {
+      return res.status(400).json({
+        message: "Wrong password",
+      });
+    }
+
+    // ✅ IMPORTANT FIX: TAKE ROLE FROM DATABASE
+    const userRole = user.role || role;
+
+    // ✅ SESSION SAVE
     req.session.user = {
       _id: user._id,
-      fullName: user.fullName || user.name,
+      name: user.name || user.fullName,
       email: user.email,
-      role,
+      phone: user.phone || "",
+      role: userRole,
     };
 
     res.json({
@@ -96,8 +119,14 @@ exports.signin = async (req, res) => {
       message: "Login successful",
       user: req.session.user,
     });
+
   } catch (err) {
-    res.status(500).json({ message: "Login failed", error: err.message });
+    console.log("LOGIN ERROR:", err);
+
+    res.status(500).json({
+      message: "Login failed",
+      error: err.message,
+    });
   }
 };
 

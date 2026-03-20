@@ -47,9 +47,9 @@ const PropertyCard = ({ property }) => {
         </p>
 
         <div className="info">
-          <span><FaBed /> {property?.bedroom || 0} Bed</span>
-          <span><FaBath /> {property?.bathroom || 0} Bath</span>
-          <span><FaRulerCombined /> {property?.area || 0} sqft</span>
+          <span><FaBed /> {property?.bedroom || 0} Bed </span> 
+          <span className="ms-2"><FaBath /> {property?.bathroom || 0} Bath</span>
+          <span className="ms-2"><FaRulerCombined /> {property?.area || 0} sqft</span>
         </div>
 
         {/* BROKER */}
