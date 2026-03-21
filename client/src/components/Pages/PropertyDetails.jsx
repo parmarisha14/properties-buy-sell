@@ -34,9 +34,7 @@ const PropertyDetails = () => {
 
   const fetchProperty = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:5000/api/property/${id}`
-      );
+      const res = await axios.get(`http://localhost:5000/api/property/${id}`);
       setProperty(res.data.property);
     } catch (err) {
       console.log(err);
@@ -45,10 +43,9 @@ const PropertyDetails = () => {
 
   const checkLogin = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5000/api/auth/me",
-        { withCredentials: true }
-      );
+      const res = await axios.get("http://localhost:5000/api/auth/me", {
+        withCredentials: true,
+      });
 
       if (res.data.success) {
         setIsLoggedIn(true);
@@ -86,7 +83,7 @@ const PropertyDetails = () => {
           propertyId: property._id,
           brokerId: property.brokerId._id,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       alert("Request Sent Successfully");
@@ -96,7 +93,6 @@ const PropertyDetails = () => {
         date: "",
         message: "",
       });
-
     } catch (err) {
       console.log(err);
       alert("Error sending request");
@@ -107,9 +103,7 @@ const PropertyDetails = () => {
 
   return (
     <div className="details-container">
-
       <div className="left-section">
-
         <div className="main-image">
           <img
             src={`http://localhost:5000/uploads/properties/${property.image}`}
@@ -135,11 +129,9 @@ const PropertyDetails = () => {
             ))}
           </div>
         </div>
-
       </div>
 
       <div className="right-section">
-
         <h2 className="price">₹ {property.price}</h2>
 
         <p className="location">
@@ -147,15 +139,24 @@ const PropertyDetails = () => {
         </p>
 
         <div className="info-box">
-          <span><FaBed /> {property.bedroom} bedroom</span>
-          <span><FaBath /> {property.bathroom} bathroom</span>
-          <span><FaRulerCombined /> {property.area} area</span>
+          <span>
+            <FaBed /> {property.bedroom} bedroom
+          </span>
+          <span>
+            <FaBath /> {property.bathroom} bathroom
+          </span>
+          <span>
+            <FaRulerCombined /> {property.area} area
+          </span>
         </div>
 
-        <h3><FaCalendarAlt /> {property.year}</h3>
+        <h3>
+          <FaCalendarAlt /> {property.year}
+        </h3>
 
         <h5 className="type mt-3">Type: {property.type}</h5>
-
+        <h5 className="type mt-3">city: {property.city}</h5>
+        <h5 className="type mt-3">state: {property.state}</h5>
         <div className="agent-box">
           <img
             src={
@@ -167,11 +168,12 @@ const PropertyDetails = () => {
           />
           <div>
             <h4>{property?.brokerId?.name}</h4>
-            <p><FaPhoneAlt /> {property?.brokerId?.phone}</p>
+            <p>
+              <FaPhoneAlt /> {property?.brokerId?.phone}
+            </p>
           </div>
         </div>
 
-        
         {isLoggedIn ? (
           <form className="form-box" onSubmit={handleSubmit}>
             <h3>Schedule a Tour</h3>
@@ -223,12 +225,9 @@ const PropertyDetails = () => {
             <h3>Please Login</h3>
             <p>You must login to send request</p>
 
-            <button onClick={() => navigate("/signin")}>
-              Go to Login
-            </button>
+            <button onClick={() => navigate("/signin")}>Go to Login</button>
           </div>
         )}
-
       </div>
     </div>
   );

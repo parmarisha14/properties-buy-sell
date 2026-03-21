@@ -10,7 +10,12 @@ import {
 } from "react-icons/fa";
 
 const Contact = () => {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,17 +33,15 @@ const Contact = () => {
         body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
+      await res.json();
 
-      console.log(data.message);
-
-      // form reset
       setFormData({
         name: "",
         email: "",
         subject: "",
         message: "",
       });
+
     } catch (err) {
       console.log(err.message);
     }
@@ -49,17 +52,15 @@ const Contact = () => {
       <section className="contact-info-section">
         <div className="container">
           <div className="row g-4">
+
             <div className="col-md-4">
               <div className="info-box">
                 <div className="icon-circle">
-                  <FaMapMarkerAlt className="contact-icon" />
+                  <FaMapMarkerAlt />
                 </div>
                 <div>
                   <h6>Our Address</h6>
-                  <p>
-                    Ruchi Harmony, Navsari <br />
-                    Gujarat 396427
-                  </p>
+                  <p>Ruchi Harmony, Navsari Gujarat 396427</p>
                 </div>
               </div>
             </div>
@@ -67,7 +68,7 @@ const Contact = () => {
             <div className="col-md-4">
               <div className="info-box">
                 <div className="icon-circle">
-                  <FaEnvelope className="contact-icon" />
+                  <FaEnvelope />
                 </div>
                 <div>
                   <h6>Email Address</h6>
@@ -79,17 +80,15 @@ const Contact = () => {
             <div className="col-md-4">
               <div className="info-box">
                 <div className="icon-circle">
-                  <FaClock className="contact-icon" />
+                  <FaClock />
                 </div>
                 <div>
-                  <h6>Hours of Operation</h6>
-                  <p>
-                    Sunday-Fri: 9 AM - 6 PM <br />
-                    Saturday: 9 AM - 4 PM
-                  </p>
+                  <h6>Hours</h6>
+                  <p>Sun-Fri: 9 AM - 6 PM<br />Sat: 9 AM - 4 PM</p>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </section>
@@ -98,23 +97,22 @@ const Contact = () => {
         <iframe
           title="map"
           src="https://www.google.com/maps?q=Ruchi+Harmony+Navsari+Gujarat+396427&output=embed"
-          loading="lazy"
-        ></iframe>
+        />
       </section>
 
-      {/* Contact Form */}
       <section className="contact-form-section">
         <div className="container">
           <div className="contact-form-wrapper">
+
             <h3 className="text-center fw-bold mb-4">Get in Touch</h3>
 
             <form onSubmit={handleSubmit}>
               <div className="row g-3">
+
                 <div className="col-md-6">
                   <div className="input-icon">
                     <FaUser />
                     <input
-                      type="text"
                       name="name"
                       placeholder="Full Name"
                       value={formData.name}
@@ -127,7 +125,6 @@ const Contact = () => {
                   <div className="input-icon">
                     <FaEnvelope />
                     <input
-                      type="email"
                       name="email"
                       placeholder="Email Address"
                       value={formData.email}
@@ -140,7 +137,6 @@ const Contact = () => {
                   <div className="input-icon">
                     <FaPaperPlane />
                     <input
-                      type="text"
                       name="subject"
                       placeholder="Subject"
                       value={formData.subject}
@@ -153,22 +149,22 @@ const Contact = () => {
                   <div className="input-icon textarea">
                     <FaCommentDots />
                     <textarea
-                      rows="5"
                       name="message"
+                      rows="5"
                       placeholder="Write Message..."
                       value={formData.message}
                       onChange={handleChange}
-                    ></textarea>
+                    />
                   </div>
                 </div>
 
                 <div className="col-12 text-center">
-                  <button type="submit" className="btn-main">
-                    SEND MESSAGE
-                  </button>
+                  <button className="btn-main">SEND MESSAGE</button>
                 </div>
+
               </div>
             </form>
+
           </div>
         </div>
       </section>

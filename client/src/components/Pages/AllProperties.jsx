@@ -6,110 +6,212 @@ import "../../assets/css/AllProperties.css";
 const AllProperties = () => {
 
   const [properties, setProperties] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [cities, setCities] = useState([]);
+  const [states, setStates] = useState([]); 
+  const [priceRanges, setPriceRanges] = useState([]);
 
-  const propertiesPerPage = 6;
+  const [filters, setFilters] = useState({
+    type: "",
+    priceRange: "",
+    city: "",
+    state: ""
+  });
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchProperties();
+    fetchLocations();
+    fetchPriceRange();
   }, []);
 
-  const fetchProperties = async () => {
+ 
+  const fetchProperties = async (params = {}) => {
+    setLoading(true);
+
     try {
+      console.log("API PARAMS:", params); 
+
       const res = await axios.get(
-        "http://localhost:5000/api/property/approved"
+        "http://localhost:5000/api/property/approved",
+        { params }
       );
 
-      if (res.data?.properties) {
-        setProperties(res.data.properties);
-      } else {
-        setProperties([]);
-      }
+      setProperties(res.data.properties || []);
 
-    } catch (error) {
-      console.log("ERROR:", error);
+    } catch (err) {
+      console.log(err);
+    }
+
+    setLoading(false);
+  };
+
+  
+  const fetchLocations = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/property/locations"
+      );
+
+      setCities(res.data.cities || []);
+      setStates(res.data.states || []);
+
+    } catch (err) {
+      console.log(err);
     }
   };
 
-  // ✅ PAGINATION LOGIC
-  const indexOfLast = currentPage * propertiesPerPage;
-  const indexOfFirst = indexOfLast - propertiesPerPage;
+  
+  const fetchPriceRange = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/property/price-range"
+      );
 
-  const currentProperties = properties.slice(indexOfFirst, indexOfLast);
+      const { minPrice, maxPrice } = res.data;
 
-  const totalPages = Math.ceil(properties.length / propertiesPerPage);
+      const step = Math.ceil((maxPrice - minPrice) / 5) || 1;
 
+      let ranges = [];
+
+      for (let i = minPrice; i < maxPrice; i += step) {
+        ranges.push({
+          min: i,
+          max: i + step
+        });
+      }
+
+      setPriceRanges(ranges);
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  
+  const handleChange = (e) => {
+    setFilters({
+      ...filters,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  
+  const applyFilters = () => {
+    let cleaned = {};
+
+    if (filters.type) cleaned.type = filters.type;
+    if (filters.city) cleaned.city = filters.city;
+    if (filters.state) cleaned.state = filters.state;
+
+    
+    if (filters.priceRange) {
+      const [min, max] = filters.priceRange.split("-");
+
+      cleaned.minPrice = Number(min);
+      cleaned.maxPrice = Number(max);
+    }
+
+    fetchProperties(cleaned);
+  };
+
+  
+  const resetFilters = () => {
+    setFilters({
+      type: "",
+      priceRange: "",
+      city: "",
+      state: ""
+    });
+
+    fetchProperties();
+  };
+
+  
   return (
     <div className="main-container">
 
-      {/* LEFT SIDE */}
+      
       <div className="property-section">
-
         <div className="property-grid">
-          {currentProperties.length > 0 ? (
-            currentProperties.map((property) => (
-              <PropertyCard
-                key={property._id}
-                property={property}
-              />
+          {loading ? (
+            <h2>Loading...</h2>
+          ) : properties.length > 0 ? (
+            properties.map((p) => (
+              <PropertyCard key={p._id} property={p} />
             ))
           ) : (
             <h2>No Properties Found</h2>
           )}
         </div>
-
-        {/* ✅ PAGINATION UI */}
-        <div className="pagination">
-
-          <button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage(currentPage - 1)}
-          >
-            Prev
-          </button>
-
-          {[...Array(totalPages)].map((_, i) => (
-            <button
-              key={i}
-              className={currentPage === i + 1 ? "active" : ""}
-              onClick={() => setCurrentPage(i + 1)}
-            >
-              {i + 1}
-            </button>
-          ))}
-
-          <button
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage(currentPage + 1)}
-          >
-            Next
-          </button>
-
-        </div>
-
       </div>
 
-      {/* RIGHT SIDE FILTER */}
+      
       <div className="filter-section">
 
         <h3>Filter Properties</h3>
 
-        <select>
-          <option>All Types</option>
-          <option>House</option>
-          <option>Apartment</option>
-        </select>
-
-        <div className="price">
-          <input type="number" placeholder="Min Price" />
-          <input type="number" placeholder="Max Price" />
+        
+        <div className="filter-group">
+          <label>Type</label>
+          <select name="type" value={filters.type} onChange={handleChange}>
+            <option value="">All</option>
+            <option value="House">House</option>
+            <option value="Apartment">Apartment</option>
+            <option value="Villa">Villa</option>
+          </select>
         </div>
 
-        <input placeholder="Enter city or neighborhood" />
+       
+        <div className="filter-group">
+          <label>Price Range</label>
+          <select
+            name="priceRange"
+            value={filters.priceRange}
+            onChange={handleChange}
+          >
+            <option value="">All</option>
 
-        <button className="apply-btn">
-          Apply Filters
-        </button>
+            {priceRanges.map((r, i) => (
+              <option key={i} value={`${r.min}-${r.max}`}>
+                ₹ {r.min.toLocaleString()} - ₹ {r.max.toLocaleString()}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        
+        <div className="filter-group">
+          <label>City</label>
+          <select name="city" value={filters.city} onChange={handleChange}>
+            <option value="">All</option>
+            {cities.map((c, i) => (
+              <option key={i} value={c}>{c}</option>
+            ))}
+          </select>
+        </div>
+
+        
+        <div className="filter-group">
+          <label>State</label>
+          <select name="state" value={filters.state} onChange={handleChange}>
+            <option value="">All</option>
+            {states.map((s, i) => (
+              <option key={i} value={s}>{s}</option>
+            ))}
+          </select>
+        </div>
+
+        
+        <div className="filter-actions">
+          <button className="apply-btn" onClick={applyFilters}>
+            Apply
+          </button>
+
+          <button className="reset-btn" onClick={resetFilters}>
+            Reset
+          </button>
+        </div>
 
       </div>
 

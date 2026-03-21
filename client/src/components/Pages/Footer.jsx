@@ -62,10 +62,19 @@ const Footer = () => {
               <h5 className="footer-title">Services</h5>
               <ul className="footer-links">
                 <li>
-                  <Link to="/buy-property">Buy Property</Link>
+                  <Link to="/properties">Buy Property</Link>
                 </li>
                 <li>
-                  <Link to="/sell-property">Sell Property</Link>
+                  <Link to="/my-requests">User Requests</Link>
+                </li>
+                <li>
+                  <Link to="/agents">Agents</Link>
+                </li>
+                <li>
+                  <Link to="/wishlist">Wishlist</Link>
+                </li>
+                <li>
+                  <Link to="/properties">Filter Properties</Link>
                 </li>
               </ul>
             </div>

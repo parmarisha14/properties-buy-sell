@@ -24,8 +24,9 @@ const inquirySchema = new mongoose.Schema(
     message: String,
 
     status: {
-      type: String,
-      default: "pending",
+     type: String,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending"
     },
   },
   { timestamps: true }

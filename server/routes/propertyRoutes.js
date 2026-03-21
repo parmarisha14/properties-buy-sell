@@ -22,6 +22,8 @@ router.get(
   propertyController.getApprovedProperties
 );
 
+router.get("/locations", propertyController.getLocations);
+router.get("/price-range", propertyController.getPriceRange);
 // =====================================
 // GET ALL PROPERTIES (Admin)
 // =====================================

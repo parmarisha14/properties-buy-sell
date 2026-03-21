@@ -2,7 +2,6 @@
   background: #f8f9fa;
 }
 
-
 .blog-card {
   background: #ffff;
   border-radius: 15px;
@@ -13,7 +12,6 @@
 .blog-card:hover {
   transform: translateY(-5px);
 }
-
 
 .blog-card img {
   width: 100%;

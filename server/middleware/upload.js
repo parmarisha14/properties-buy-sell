@@ -2,9 +2,9 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 
-// Ensure folder exists
+
 const ensureFolder = (folderPath) => {
-  if (!folderPath) return; // ❗ prevent crash
+  if (!folderPath) return; 
 
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath, { recursive: true });
@@ -14,7 +14,7 @@ const ensureFolder = (folderPath) => {
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
 
-    let folder = "uploads/others"; // ✅ DEFAULT FIX
+    let folder = "uploads/others"; 
 
     if (file.fieldname === "image") {
 
@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
         folder = "uploads/brokers";
       } 
       else if (req.originalUrl.includes("/user") || req.originalUrl.includes("/auth")) {
-        folder = "uploads/users";  // ✅ IMPORTANT FIX
+        folder = "uploads/users";  
       }
     }
 

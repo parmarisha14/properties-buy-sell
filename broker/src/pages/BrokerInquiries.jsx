@@ -3,6 +3,7 @@ import axios from "axios";
 import "../assets/css/BrokerInquiries.css";
 
 const BrokerInquiries = () => {
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,7 +17,6 @@ const BrokerInquiries = () => {
         "http://localhost:5000/api/inquiry/broker",
         { withCredentials: true }
       );
-
       setData(res.data.inquiries || []);
     } catch (err) {
       console.log(err);
@@ -25,6 +25,7 @@ const BrokerInquiries = () => {
     }
   };
 
+  // ✅ STATUS UPDATE
   const handleStatus = async (id, status) => {
     try {
       await axios.put(
@@ -38,20 +39,51 @@ const BrokerInquiries = () => {
     }
   };
 
+  // ✅ DELETE
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this inquiry?")) return;
+
+    try {
+      await axios.delete(
+        `http://localhost:5000/api/inquiry/delete/${id}`,
+        { withCredentials: true }
+      );
+      fetchData();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   if (loading) return <h2 className="loading">Loading...</h2>;
 
   return (
     <div className="main-content">
       <div className="inquiry-container">
-        <h2 className="title">All Property Inquiries</h2>
+
+        <h2 className="title">Property Inquiries</h2>
 
         {data.length === 0 ? (
           <p className="empty">No inquiries found</p>
         ) : (
           <div className="grid">
+
             {data.map((item) => (
+
               <div className="card" key={item._id}>
 
+                {/* PROPERTY IMAGE */}
+                <div className="property-img">
+                  <img
+                    src={
+                      item.propertyId?.image
+                        ? `http://localhost:5000/uploads/properties/${item.propertyId.image}`
+                        : "/default-property.jpg"
+                    }
+                    alt=""
+                  />
+                </div>
+
+                {/* HEADER */}
                 <div className="top">
                   <h3>{item.propertyId?.name}</h3>
                   <span className={`status ${item.status}`}>
@@ -59,27 +91,60 @@ const BrokerInquiries = () => {
                   </span>
                 </div>
 
+                {/* PROPERTY */}
                 <div className="section">
-                  <p><strong>Price:</strong> ₹ {item.propertyId?.price}</p>
-                  <p><strong>Location:</strong> {item.propertyId?.location}</p>
+                  <p><strong>₹ {item.propertyId?.price}</strong></p>
+                  <p>{item.propertyId?.location}</p>
+                  <p>{item.propertyId?.city}</p>
+                  <p>{item.propertyId?.state}</p>
                 </div>
 
-                <div className="section">
-                  <h4>User Details</h4>
-                  <p>{item.userId?.fullName || item.name}</p>
-                  <p>{item.userId?.email || item.email}</p>
-                  <p>{item.userId?.phone || item.phone}</p>
+                {/* USER */}
+                <div className="user-box">
+                  <img
+                    src={
+                      item.userId?.profileImage
+                        ? `http://localhost:5000/uploads/users/${item.userId.profileImage}`
+                        : "/default-user.png"
+                    }
+                    alt=""
+                  />
+
+                  <div>
+                    <h4>{item.userId?.fullName || item.name}</h4>
+                    <p>{item.userId?.phone || item.phone}</p>
+                    <p>{item.userId?.email || item.email}</p>
+                  </div>
                 </div>
 
+                {/* MESSAGE */}
                 <div className="section">
                   <p><strong>Date:</strong> {item.date}</p>
                   <p><strong>Message:</strong> {item.message}</p>
                 </div>
 
+                {/* BROKER */}
+                <div className="broker-box">
+                  <img
+                    src={
+                      item.brokerId?.brokerImage
+                        ? `http://localhost:5000/uploads/users/${item.brokerId.brokerImage}`
+                        : "/default-user.png"
+                    }
+                    alt=""
+                  />
+                  <div>
+                    <h4>{item.brokerId?.name}</h4>
+                    <p>{item.brokerId?.phone}</p>
+                  </div>
+                </div>
+
+                {/* ACTIONS */}
                 <div className="buttons">
+
                   <button
                     className="accept"
-                    onClick={() => handleStatus(item._id, "accepted")}
+                    onClick={() => handleStatus(item._id, "approved")}
                   >
                     Accept
                   </button>
@@ -90,12 +155,23 @@ const BrokerInquiries = () => {
                   >
                     Reject
                   </button>
+
+                  <button
+                    className="delete"
+                    onClick={() => handleDelete(item._id)}
+                  >
+                    Delete
+                  </button>
+
                 </div>
 
               </div>
+
             ))}
+
           </div>
         )}
+
       </div>
     </div>
   );

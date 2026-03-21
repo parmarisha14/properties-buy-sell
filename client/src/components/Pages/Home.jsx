@@ -124,8 +124,7 @@ const Home = () => {
           <h2 className="section-title">Featured Services</h2>
           <p className="section-subtitle">
             Our comprehensive real estate services are designed to simplify your
-            property journey. From finding your dream home to handling legal
-            documentation, we provide trusted support at every step.
+            property journey.
           </p>
 
           <div className="row mt-5 g-4">
@@ -136,52 +135,49 @@ const Home = () => {
                 </div>
                 <span className="number">01</span>
                 <h4>Property Search</h4>
-                <p className="features-text">
-                  Explore verified property listings with advanced filters to
-                  find homes that perfectly match your needs and budget.
-                </p>
 
-                <ul className="features-text">
+                <p>Explore verified listings with filters.</p>
+
+                <ul>
                   <li>
-                    <FaCheckCircle /> Advanced Search Filters
+                    <FaCheckCircle /> Advanced Filters
                   </li>
                   <li>
-                    <FaCheckCircle /> 360° Virtual Tours
+                    <FaCheckCircle /> Virtual Tours
                   </li>
                   <li>
-                    <FaCheckCircle /> Real-time Property Updates
+                    <FaCheckCircle /> Live Updates
                   </li>
                 </ul>
 
-                <button className="btn custom-btn">Explore Properties →</button>
+                <button className="custom-btn">Explore →</button>
               </div>
             </div>
 
             <div className="col-lg-3 col-md-6">
-              <div className="service-card active-card ">
+              <div className="service-card active-card">
                 <div className="icon-circle active-icon">
                   <FaChartLine />
                 </div>
-                <span className="number active-number">02</span>
-                <h4>Market Analysis</h4>
-                <p className="active-features-text">
-                  Get accurate market insights, price trends, and investment
-                  strategies to make informed property decisions.
-                </p>
+                <span className="number ">02</span>
 
-                <ul className="active-features-text">
+                <h4>Market Analysis</h4>
+
+                <p>Get accurate market insights.</p>
+
+                <ul>
                   <li>
-                    <FaCheckCircle /> Price Trend Reports
+                    <FaCheckCircle /> Price Trends
                   </li>
                   <li>
                     <FaCheckCircle /> Investment Insights
                   </li>
                   <li>
-                    <FaCheckCircle /> Market Forecasting
+                    <FaCheckCircle /> Forecasting
                   </li>
                 </ul>
 
-                <button className="btn active-btn">Get Analysis →</button>
+                <button className="active-btn">Get Analysis →</button>
               </div>
             </div>
 
@@ -191,25 +187,24 @@ const Home = () => {
                   <FaKey />
                 </div>
                 <span className="number">03</span>
-                <h4>Property Management</h4>
-                <p className="features-text">
-                  Complete property management solutions including tenant
-                  screening, maintenance, and rent collection services.
-                </p>
 
-                <ul className="features-text">
+                <h4>Property Management</h4>
+
+                <p>Complete management services.</p>
+
+                <ul>
                   <li>
                     <FaCheckCircle /> Tenant Screening
                   </li>
                   <li>
-                    <FaCheckCircle /> Rental Collection
+                    <FaCheckCircle /> Rent Collection
                   </li>
                   <li>
-                    <FaCheckCircle /> Maintenance Services
+                    <FaCheckCircle /> Maintenance
                   </li>
                 </ul>
 
-                <button className="btn custom-btn">Manage Now →</button>
+                <button className="custom-btn">Manage →</button>
               </div>
             </div>
 
@@ -219,25 +214,24 @@ const Home = () => {
                   <FaShieldAlt />
                 </div>
                 <span className="number">04</span>
-                <h4>Legal Support</h4>
-                <p className="features-text">
-                  Ensure safe and secure transactions with expert legal
-                  assistance and proper documentation handling.
-                </p>
 
-                <ul className="features-text">
+                <h4>Legal Support</h4>
+
+                <p>Safe transactions & legal help.</p>
+
+                <ul>
                   <li>
                     <FaCheckCircle /> Contract Review
                   </li>
                   <li>
-                    <FaCheckCircle /> Title Verification
+                    <FaCheckCircle /> Title Check
                   </li>
                   <li>
-                    <FaCheckCircle /> Legal Documentation
+                    <FaCheckCircle /> Documentation
                   </li>
                 </ul>
 
-                <button className="btn custom-btn">Learn More →</button>
+                <button className="custom-btn">Learn →</button>
               </div>
             </div>
           </div>

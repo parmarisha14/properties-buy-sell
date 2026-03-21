@@ -1,103 +1,188 @@
 .main-content {
   margin-left: 250px;
-  padding: 30px;
-  width: 100%;
-  background: #f5f7fa;
+  padding: 30px 40px;
+  width: calc(100% - 250px);
+  background: #f1f5f9;
   min-height: 100vh;
 }
 
+/* CONTAINER */
 .inquiry-container {
-  max-width: 1200px;
-  margin: auto;
+  width: 100%;
 }
 
+/* TITLE */
 .title {
-  font-size: 26px;
-  font-weight: 600;
-  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #0f172a;
 }
 
+/* GRID */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 25px;
 }
 
+/* CARD */
 .card {
   background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
   transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  padding:20px;
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
 }
 
+/* IMAGE */
+.property-img img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* CONTENT */
+.card-body {
+  padding: 18px;
+}
+
+/* HEADER */
 .top {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.section {
-  margin-top: 12px;
+.top h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 20px;
 }
 
-.section h4 {
-  margin-bottom: 5px;
-  color: #0f766e;
-}
-
+/* STATUS */
 .status {
-  padding: 6px 12px;
+  padding: 5px 12px;
   border-radius: 20px;
   font-size: 12px;
+  text-transform: capitalize;
+  margin-top: 20px;
 }
 
 .status.pending {
   background: #facc15;
 }
 
-.status.accepted {
+.status.approved {
   background: #22c55e;
-  color: white;
+  color: #fff;
 }
 
 .status.rejected {
   background: #ef4444;
-  color: white;
+  color: #fff;
 }
 
+/* SECTION */
+.section {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #475569;
+}
+
+/* USER + BROKER BOX */
+.user-box,
+.broker-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 10px;
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.user-box img,
+.broker-box img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-box h4,
+.broker-box h4 {
+  font-size: 14px;
+  margin: 0;
+}
+
+.user-box p,
+.broker-box p {
+  font-size: 12px;
+  margin: 0;
+  color: #64748b;
+}
+
+/* BUTTONS */
 .buttons {
   margin-top: 15px;
   display: flex;
   gap: 10px;
 }
 
-.accept {
+.accept,
+.reject {
   flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.accept {
   background: #22c55e;
   color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
-  cursor: pointer;
+}
+
+.accept:hover {
+  background: #16a34a;
 }
 
 .reject {
-  flex: 1;
   background: #ef4444;
   color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
-  cursor: pointer;
 }
 
+.reject:hover {
+  background: #dc2626;
+}
+
+/* EMPTY + LOADING */
 .loading,
 .empty {
   text-align: center;
   margin-top: 50px;
+  font-size: 18px;
+}
+.delete {
+  flex: 1;
+  background: #111827;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete:hover {
+  background: #000;
 }

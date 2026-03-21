@@ -82,7 +82,7 @@ const Services = () => {
             </p>
           </div>
 
-          {/* ✅ New Card 1 */}
+         
           <div className="service-card">
             <div className="service-icon">
               <FaKey />
@@ -93,7 +93,7 @@ const Services = () => {
             </p>
           </div>
 
-          {/* ✅ New Card 2 */}
+          
           <div className="service-card">
             <div className="service-icon">
               <FaTools />

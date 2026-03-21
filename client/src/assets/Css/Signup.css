@@ -8,7 +8,6 @@
   padding: 20px;
 }
 
-
 .register-card {
   width: 100%;
   background: #ffffff;
@@ -17,7 +16,6 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
-
 .signup-title {
   text-align: center;
   font-size: 32px;
@@ -25,7 +23,6 @@
   color: #2c7a7b;
   margin-bottom: 45px;
 }
-
 
 .form-row {
   display: flex;
@@ -49,7 +46,6 @@
   outline: none;
 }
 
-
 .signup-btn {
   width: 60%;
   display: block;
@@ -69,7 +65,6 @@
   background: #1f5e5f;
 }
 
-
 .login-text {
   text-align: center;
   margin-top: 25px;
@@ -85,6 +80,7 @@
 .login-text a:hover {
   text-decoration: underline;
 }
+
 .error {
   color: red;
   font-size: 12px;

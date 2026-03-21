@@ -13,7 +13,7 @@ const SignUpBroker = () => {
     agency: "",
     rera: "",
     password: "",
-    reraConfirm: false
+    reraConfirm: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -22,7 +22,7 @@ const SignUpBroker = () => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
@@ -47,14 +47,18 @@ const SignUpBroker = () => {
       newErrors.phone = "Phone must be 10 digits";
     }
 
+    if (!formData.rera) {
+      newErrors.rera = "RERA number is required";
+    }
+
+    
     if (!formData.password) {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    }
-
-    if (!formData.rera) {
-      newErrors.rera = "RERA number is required";
+      newErrors.password = "Minimum 6 characters required";
+    } else if (!/(?=.*[a-zA-Z])(?=.*[0-9])/.test(formData.password)) {
+      newErrors.password =
+        "Password must contain at least 1 letter and 1 number";
     }
 
     if (!formData.reraConfirm) {
@@ -74,7 +78,7 @@ const SignUpBroker = () => {
       const res = await axios.post(
         "http://localhost:5000/api/auth/register-broker",
         formData,
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       alert(res.data.message);
@@ -98,46 +102,78 @@ const SignUpBroker = () => {
           <h3>Create Broker Account</h3>
 
           <form onSubmit={handleSubmit}>
-
             <div className="input-group">
-              <input type="text" name="name" placeholder="Full Name"
-                value={formData.name} onChange={handleChange}/>
+              <input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                value={formData.name}
+                onChange={handleChange}
+              />
               <span className="error">{errors.name}</span>
             </div>
 
             <div className="input-group">
-              <input type="email" name="email" placeholder="Email"
-                value={formData.email} onChange={handleChange}/>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+              />
               <span className="error">{errors.email}</span>
             </div>
 
             <div className="input-group">
-              <input type="text" name="phone" placeholder="Phone Number"
-                value={formData.phone} onChange={handleChange}/>
+              <input
+                type="text"
+                name="phone"
+                placeholder="Phone Number"
+                value={formData.phone}
+                onChange={handleChange}
+              />
               <span className="error">{errors.phone}</span>
             </div>
 
             <div className="input-group">
-              <input type="text" name="agency" placeholder="Agency Name"
-                value={formData.agency} onChange={handleChange}/>
+              <input
+                type="text"
+                name="agency"
+                placeholder="Agency Name"
+                value={formData.agency}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="input-group">
-              <input type="text" name="rera" placeholder="RERA Number"
-                value={formData.rera} onChange={handleChange}/>
+              <input
+                type="text"
+                name="rera"
+                placeholder="RERA Number"
+                value={formData.rera}
+                onChange={handleChange}
+              />
               <span className="error">{errors.rera}</span>
             </div>
 
             <div className="input-group">
-              <input type="password" name="password" placeholder="Password"
-                value={formData.password} onChange={handleChange}/>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+              />
               <span className="error">{errors.password}</span>
             </div>
 
             <div className="checkbox-group">
-              <input type="checkbox" name="reraConfirm"
+              <input
+                type="checkbox"
+                name="reraConfirm"
                 checked={formData.reraConfirm}
-                onChange={handleChange}/>
+                onChange={handleChange}
+              />
               <label>I confirm that my RERA registration is valid</label>
             </div>
 
@@ -149,7 +185,6 @@ const SignUpBroker = () => {
           <div className="login-text">
             Already registered ? <Link to="/signin"> Login</Link>
           </div>
-
         </div>
       </div>
     </div>

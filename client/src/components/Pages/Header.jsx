@@ -133,7 +133,7 @@ const Header = () => {
 
             {user && (
               <>
-                <NavLink to="/wishlist" className="wishlist-icon">
+                <NavLink to="/wishlist" className="wishlist-icon ms-2">
                   <FaHeart size={18} />
                 </NavLink>
 
@@ -171,7 +171,12 @@ const Header = () => {
                         Wishlist
                       </NavLink>
                     </li>
-
+                    <li>
+                      <NavLink className="dropdown-item" to="/my-requests">
+                        <FaHeart className="me-2 text-dark" />
+                        PropertyList 
+                      </NavLink>
+                    </li>
                     <li>
                       <hr className="dropdown-divider" />
                     </li>

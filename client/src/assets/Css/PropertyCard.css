@@ -2,7 +2,7 @@
   background: #fff;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   transition: 0.3s ease;
 }
 
@@ -20,6 +20,45 @@
   height: 230px;
   object-fit: cover;
 }
+
+.wishlist-icons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #fff;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #555;
+  z-index: 10;
+  transition: 0.3s;
+}
+
+.wishlist-icons.active {
+  color: red;
+  background: #ffe5e5;
+  animation: pop 0.3s ease;
+}
+
+.wishlist-icons:hover {
+  transform: scale(1.1);
+  color: red;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.3);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
 
 
 .tag {
@@ -44,9 +83,9 @@
 
 
 .property-details {
-   padding: 16px;
-   
-} 
+  padding: 16px;
+
+}
 
 .price {
   color: #0f766e;
@@ -85,7 +124,7 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  object-fit: cover; 
+  object-fit: cover;
   border: 2px solid #0f766e;
 }
 
@@ -116,4 +155,24 @@
 
 .view-btn:hover {
   background: #0d5c56;
+}
+
+.wishlist-icons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: white;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #888;
+  transition: 0.3s;
+}
+
+.wishlist-icons.active {
+  color: red;
+}
+
+.wishlist-icons:hover {
+  transform: scale(1.1);
 }

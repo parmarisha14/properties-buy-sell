@@ -54,7 +54,7 @@ exports.signupBroker = async (req, res) => {
       rera,
       password: hashedPassword,
       role: "broker",
-      brokerImage: "default-broker.png",
+      brokerImage: "default-user.png",
       gender: "",
       address: "",
     });
@@ -67,7 +67,6 @@ exports.signupBroker = async (req, res) => {
   }
 };
 
-// ========== SIGNIN ==========
 exports.signin = async (req, res) => {
   try {
     const { email, password, role } = req.body;
@@ -80,7 +79,6 @@ exports.signin = async (req, res) => {
 
     let user;
 
-    // ✅ FIND USER BASED ON ROLE
     if (role === "broker") {
       user = await Broker.findOne({ email });
     } else {
@@ -93,7 +91,6 @@ exports.signin = async (req, res) => {
       });
     }
 
-    // ✅ PASSWORD CHECK
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
@@ -102,10 +99,8 @@ exports.signin = async (req, res) => {
       });
     }
 
-    // ✅ IMPORTANT FIX: TAKE ROLE FROM DATABASE
     const userRole = user.role || role;
 
-    // ✅ SESSION SAVE
     req.session.user = {
       _id: user._id,
       name: user.name || user.fullName,
@@ -119,7 +114,6 @@ exports.signin = async (req, res) => {
       message: "Login successful",
       user: req.session.user,
     });
-
   } catch (err) {
     console.log("LOGIN ERROR:", err);
 
@@ -130,7 +124,6 @@ exports.signin = async (req, res) => {
   }
 };
 
-// ========== ME ==========
 exports.me = (req, res) => {
   if (req.session.user) {
     return res.json({ success: true, user: req.session.user });
@@ -204,7 +197,6 @@ exports.updateUserProfile = async (req, res) => {
 
     let updateData = req.body;
 
-    // ✅ EMAIL UPDATE CHECK (NEW)
     if (updateData.email) {
       const existingUser = await User.findOne({
         email: updateData.email,
@@ -220,7 +212,7 @@ exports.updateUserProfile = async (req, res) => {
         return res.status(400).json({ message: "Email already in use" });
       }
 
-      req.session.user.email = updateData.email; // update session email too
+      req.session.user.email = updateData.email;
     }
 
     if (req.body.languages) {
@@ -237,7 +229,6 @@ exports.updateUserProfile = async (req, res) => {
       }
     }
 
-    // IMAGE
     if (req.file) {
       if (req.session.user.role === "broker") {
         updateData.brokerImage = req.file.filename;
@@ -288,7 +279,6 @@ exports.changePassword = async (req, res) => {
     if (!match)
       return res.status(400).json({ message: "Current password wrong" });
 
-    // Hash new password
     const hashed = await bcrypt.hash(newPassword, 10);
 
     user.password = hashed;
@@ -348,12 +338,10 @@ exports.deleteUser = async (req, res) => {
   res.json({ message: "User deleted" });
 };
 
-// DELETE BROKER + DELETE HIS PROPERTIES
 exports.deleteBroker = async (req, res) => {
   try {
     const brokerId = req.params.id;
 
-    // check broker
     const broker = await Broker.findById(brokerId);
 
     if (!broker) {
@@ -362,12 +350,10 @@ exports.deleteBroker = async (req, res) => {
       });
     }
 
-    // delete only properties added by this broker
     await Property.deleteMany({
       brokerId: brokerId,
     });
 
-    // delete broker
     await Broker.findByIdAndDelete(brokerId);
 
     res.json({

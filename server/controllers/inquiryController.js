@@ -1,6 +1,5 @@
 const Inquiry = require("../models/InquiryModel");
 
-// CREATE
 exports.createInquiry = async (req, res) => {
   try {
     const userId = req.session.user?._id;
@@ -21,35 +20,63 @@ exports.createInquiry = async (req, res) => {
     });
 
     res.json({ success: true, inquiry });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server Error" });
   }
 };
 
-// BROKER INQUIRIES
 exports.getBrokerInquiries = async (req, res) => {
   try {
     const brokerId = req.session.user?._id;
 
-    if (!brokerId) {
-      return res.status(401).json({ message: "Login required" });
-    }
-
     const inquiries = await Inquiry.find({ brokerId })
-      .populate("userId", "fullName email phone")
-      .populate("propertyId", "name price location");
+      .populate("userId", "fullName email phone profileImage")
+      .populate("propertyId", "name price location image")
+      .populate("brokerId", "name phone brokerImage");
 
     res.json({ success: true, inquiries });
-
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }
 };
 
-// USER INQUIRIES
 exports.getUserInquiries = async (req, res) => {
+  try {
+    const userId = req.session.user?._id;
+
+    const inquiries = await Inquiry.find({ userId })
+      .populate("propertyId", "name price location image city state")
+      .populate("brokerId", "name phone brokerImage");
+
+    res.json({ success: true, inquiries });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+exports.updateStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    if (!["pending", "approved", "rejected"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status" });
+    }
+
+    const inquiry = await Inquiry.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { returnDocument: "after" },
+    );
+
+    res.json({ success: true, inquiry });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+exports.deleteInquiry = async (req, res) => {
   try {
     const userId = req.session.user?._id;
 
@@ -57,31 +84,24 @@ exports.getUserInquiries = async (req, res) => {
       return res.status(401).json({ message: "Login required" });
     }
 
-    const inquiries = await Inquiry.find({ userId })
-      .populate("propertyId", "name price location")
-      .populate("brokerId", "name phone");
+    const inquiry = await Inquiry.findById(req.params.id);
 
-    res.json({ success: true, inquiries });
+    if (!inquiry) {
+      return res.status(404).json({ message: "Not found" });
+    }
 
-  } catch (error) {
-    res.status(500).json({ message: "Server Error" });
-  }
-};
+    if (
+      inquiry.userId.toString() !== userId.toString() &&
+      inquiry.brokerId.toString() !== userId.toString()
+    ) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
 
-// UPDATE STATUS
-exports.updateStatus = async (req, res) => {
-  try {
-    const { status } = req.body;
+    await Inquiry.findByIdAndDelete(req.params.id);
 
-    const inquiry = await Inquiry.findByIdAndUpdate(
-      req.params.id,
-      { status },
-      { new: true }
-    );
-
-    res.json({ success: true, inquiry });
-
-  } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+    res.json({ success: true, message: "Deleted successfully" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
   }
 };
