@@ -1,5 +1,6 @@
 const Inquiry = require("../models/InquiryModel");
 
+
 exports.createInquiry = async (req, res) => {
   try {
     const userId = req.session.user?._id;
@@ -20,11 +21,13 @@ exports.createInquiry = async (req, res) => {
     });
 
     res.json({ success: true, inquiry });
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server Error" });
   }
 };
+
 
 exports.getBrokerInquiries = async (req, res) => {
   try {
@@ -36,10 +39,12 @@ exports.getBrokerInquiries = async (req, res) => {
       .populate("brokerId", "name phone brokerImage");
 
     res.json({ success: true, inquiries });
+
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }
 };
+
 
 exports.getUserInquiries = async (req, res) => {
   try {
@@ -50,10 +55,12 @@ exports.getUserInquiries = async (req, res) => {
       .populate("brokerId", "name phone brokerImage");
 
     res.json({ success: true, inquiries });
+
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }
 };
+
 
 exports.updateStatus = async (req, res) => {
   try {
@@ -66,10 +73,11 @@ exports.updateStatus = async (req, res) => {
     const inquiry = await Inquiry.findByIdAndUpdate(
       req.params.id,
       { status },
-      { returnDocument: "after" },
+      { returnDocument: "after" } 
     );
 
     res.json({ success: true, inquiry });
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server Error" });
@@ -90,6 +98,7 @@ exports.deleteInquiry = async (req, res) => {
       return res.status(404).json({ message: "Not found" });
     }
 
+    
     if (
       inquiry.userId.toString() !== userId.toString() &&
       inquiry.brokerId.toString() !== userId.toString()
@@ -100,8 +109,23 @@ exports.deleteInquiry = async (req, res) => {
     await Inquiry.findByIdAndDelete(req.params.id);
 
     res.json({ success: true, message: "Deleted successfully" });
+
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server error" });
+  }
+};
+// ADMIN - GET ALL INQUIRIES
+exports.getAllInquiries = async (req, res) => {
+  try {
+    const inquiries = await Inquiry.find()
+      .populate("userId", "fullName email phone profileImage")
+      .populate("brokerId", "name phone brokerImage")
+      .populate("propertyId", "name price location image city state");
+
+    res.json({ success: true, inquiries });
+
+  } catch (err) {
+    res.status(500).json({ message: "Server Error" });
   }
 };

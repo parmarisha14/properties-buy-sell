@@ -1,0 +1,74 @@
+.meeting-container {
+  padding: 20px;
+}
+
+.meeting-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.meeting-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.property-img img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.status {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.status.confirmed {
+  background: #d4f8d4;
+  color: green;
+}
+
+.status.cancelled {
+  background: #ffd6d6;
+  color: red;
+}
+
+.status.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.people-box {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.user-box, .broker-box {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.delete-btn {
+  margin-top: 10px;
+  background: red;
+  color: white;
+  border: none;
+  padding: 8px;
+  width: 100%;
+  border-radius: 6px;
+  cursor: pointer;
+}

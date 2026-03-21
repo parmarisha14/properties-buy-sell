@@ -88,12 +88,17 @@ const Sidebar = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/booking">
-                <FaCalendarCheck /> Bookings
+              <NavLink to="/add-meeting">
+                <FaCalendarCheck /> Add Meetings
               </NavLink>
             </li>
             <li>
-              <NavLink to="/dashboard/inquiries">
+              <NavLink to="/broker/meetings">
+                <FaCalendarCheck /> View Meetings
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/inquiries">
                 <FaEnvelope /> Inquiries
               </NavLink>
             </li>

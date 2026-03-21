@@ -186,3 +186,17 @@
 .delete:hover {
   background: #000;
 }
+.add-meeting {
+  background: #6f42c1; /* purple professional */
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.add-meeting:hover {
+  background: #5936a2;
+}

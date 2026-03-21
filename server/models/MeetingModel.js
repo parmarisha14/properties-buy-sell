@@ -19,35 +19,19 @@ const meetingSchema = new mongoose.Schema({
     required: true
   },
 
-  name: {
-    type: String,
-    required: true
-  },
+  name: String,
+  phone: String,
 
-  phone: {
-    type: String,
-    required: true
-  },
-
-  date: {
-    type: String,
-    required: true
-  },
-
-  time: {
-    type: String,
-    required: true
-  },
-
-  message: {
-    type: String
-  },
+  date: String,
+  time: String,
+  message: String,
 
   status: {
     type: String,
-    enum: ["Pending", "Confirmed", "Cancelled"],
-    default: "Pending"
+    enum: ["pending", "confirmed", "cancelled"], // ✅ FIX
+    default: "pending"
   }
+
 }, { timestamps: true });
 
 module.exports = mongoose.model("Meeting", meetingSchema);

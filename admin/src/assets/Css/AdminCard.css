@@ -1,0 +1,14 @@
+.status {
+  margin-left: 8px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  color: white;
+  font-size: 12px;
+}
+
+.status.pending { background: orange; }
+.status.approved { background: green;color: aliceblue; }
+.status.rejected { background: red; }
+
+.status.confirmed { background: green; }
+.status.cancelled { background: red; }

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // ✅ ADD
 import "../assets/css/BrokerInquiries.css";
 
 const BrokerInquiries = () => {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // ✅ ADD
 
   useEffect(() => {
     fetchData();
@@ -25,7 +27,6 @@ const BrokerInquiries = () => {
     }
   };
 
-  // ✅ STATUS UPDATE
   const handleStatus = async (id, status) => {
     try {
       await axios.put(
@@ -39,7 +40,6 @@ const BrokerInquiries = () => {
     }
   };
 
-  // ✅ DELETE
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this inquiry?")) return;
 
@@ -52,6 +52,13 @@ const BrokerInquiries = () => {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  // ✅ NEW BUTTON FUNCTION
+  const handleAddMeeting = (item) => {
+    navigate("/add-meeting", {
+      state: { inquiry: item }
+    });
   };
 
   if (loading) return <h2 className="loading">Loading...</h2>;
@@ -147,6 +154,14 @@ const BrokerInquiries = () => {
                     onClick={() => handleStatus(item._id, "approved")}
                   >
                     Accept
+                  </button>
+
+                  {/* 🔥 NEW BUTTON */}
+                  <button
+                    className="add-meeting"
+                    onClick={() => handleAddMeeting(item)}
+                  >
+                    Add Meeting
                   </button>
 
                   <button

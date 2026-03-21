@@ -29,6 +29,7 @@ import BrokerDetails from "./components/Pages/BrokerDetails";
 import axios from "axios";
 import UserInquiries from "./components/Pages/UserInquiries";
 import Wishlist from "./components/Pages/Wishlist";
+import UserMeetings from "./components/Pages/UserMeetings";
 
 axios.defaults.withCredentials = true;
 
@@ -70,6 +71,7 @@ const App = () => {
         <Route path="/broker/:id" element={<BrokerDetails />} />
         <Route path="/my-requests" element={<UserInquiries />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/meeting" element={<UserMeetings />} />
       </Routes>
 
       <Footer />

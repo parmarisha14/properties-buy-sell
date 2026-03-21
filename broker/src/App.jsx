@@ -16,6 +16,8 @@ import ChangePassword from "./pages/ChangePassword";
 
 // ✅ NEW IMPORT (BROKER INQUIRIES)
 import BrokerInquiries from "./pages/BrokerInquiries";
+import AddMeeting from "./pages/AddMeeting";
+import BrokerMeetings from "./pages/BrokerMeetings";
 
 const App = () => {
   return (
@@ -87,12 +89,29 @@ const App = () => {
           }
         />
 
-        {/* ✅ NEW ROUTE (BROKER INQUIRIES) */}
+        
+        
         <Route
-          path="/dashboard/inquiries"
+          path="/inquiries"
           element={
             <ProtectedRoute>
               <BrokerInquiries />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/add-meeting"
+          element={
+            <ProtectedRoute>
+              <AddMeeting />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/broker/meetings"
+          element={
+            <ProtectedRoute>
+              <BrokerMeetings />
             </ProtectedRoute>
           }
         />

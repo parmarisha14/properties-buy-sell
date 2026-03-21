@@ -178,6 +178,12 @@ const Header = () => {
                       </NavLink>
                     </li>
                     <li>
+                      <NavLink className="dropdown-item" to="/meeting">
+                        {/* <FaHeart className="me-2 text-dark" /> */}
+                        Meeting
+                      </NavLink>
+                    </li>
+                    <li>
                       <hr className="dropdown-divider" />
                     </li>
 

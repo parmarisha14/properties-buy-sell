@@ -8,6 +8,8 @@ import ViewBrokers from "./Pages/ViewBrokers";
 import ViewProperties from "./Pages/ViewProperties";
 import AdminChangePassword from "./Pages/AdminChangePassword";
 import ViewMessage from "./Pages/ViewMessage";
+import AdminInquiries from "./Pages/AdminInquiries";
+import AdminMeetings from "./Pages/AdminMeetings";
 
 function App() {
   const [isOpen, setIsOpen] = useState(true);
@@ -35,6 +37,8 @@ function App() {
 
           <Route path="/change-password" element={<AdminChangePassword />} />
           <Route path="/contact-messages" element={<ViewMessage />} />
+          <Route path="/admin/inquiries" element={<AdminInquiries />} />
+<Route path="/admin/meetings" element={<AdminMeetings />} />
           <Route path="/" element={<ViewProperties />} />
         </Routes>
       </div>
