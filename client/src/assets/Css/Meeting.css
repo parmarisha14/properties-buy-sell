@@ -2,73 +2,101 @@
   padding: 20px;
 }
 
+/* 🔥 GRID FIX (THIS SOLVES FULL WIDTH ISSUE) */
 .meeting-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
 }
 
+/* CARD */
 .meeting-card {
   background: #fff;
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: 0.3s;
+  width: 30%;
 }
 
+.meeting-card:hover {
+  transform: translateY(-5px);
+}
+
+/* IMAGE */
 .property-img img {
   width: 100%;
   height: 180px;
   object-fit: cover;
-  border-radius: 10px;
 }
 
+/* HEADER */
 .card-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
+  padding: 10px;
 }
 
+/* BODY */
+.card-body {
+  padding: 10px;
+}
+
+/* BROKER */
+.broker-box {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  align-items: center;
+}
+
+.broker-box img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+/* STATUS */
 .status {
   padding: 5px 10px;
-  border-radius: 20px;
+  border-radius: 5px;
   font-size: 12px;
 }
 
-.status.confirmed {
-  background: #d4f8d4;
-  color: green;
-}
+.confirmed { background: green; color: #fff; }
+.cancelled { background: red; color: #fff; }
+.pending { background: orange; color: #fff; }
 
-.status.cancelled {
-  background: #ffd6d6;
-  color: red;
-}
-
-.status.pending {
-  background: #fff3cd;
-  color: #856404;
-}
-
-.people-box {
+/* BUTTONS */
+.action-buttons {
   display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+  gap: 10px;
+  padding: 10px;
 }
 
-.user-box, .broker-box {
-  display: flex;
-  gap: 8px;
-  align-items: center;
+.confirm-btn {
+  flex: 1;
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.cancel-btn {
+  flex: 1;
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
 }
 
 .delete-btn {
-  margin-top: 10px;
-  background: red;
-  color: white;
-  border: none;
-  padding: 8px;
   width: 100%;
-  border-radius: 6px;
+  padding: 10px;
+  background: black;
+  color: #fff;
+  border: none;
   cursor: pointer;
 }

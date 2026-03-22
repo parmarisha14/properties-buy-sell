@@ -1,14 +1,106 @@
-.status {
-  margin-left: 8px;
-  padding: 3px 8px;
-  border-radius: 6px;
-  color: white;
-  font-size: 12px;
+/* ===== LAYOUT FIX ===== */
+.app-layout {
+  display: flex;
 }
 
-.status.pending { background: orange; }
-.status.approved { background: green;color: aliceblue; }
-.status.rejected { background: red; }
+.main-content {
+  margin-left: 240px;   /* ✅ sidebar width */
+  width: 100%;
+  padding: 30px;
+  background: #f4f7fb;
+  min-height: 100vh;
+}
 
-.status.confirmed { background: green; }
-.status.cancelled { background: red; }
+/* ===== PAGE ===== */
+.page-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+/* ===== GRID ===== */
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;
+}
+
+/* ===== CARD ===== */
+.admin-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.admin-card:hover {
+  transform: translateY(-5px);
+}
+
+/* IMAGE */
+.property-img-box img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* BODY */
+.admin-body {
+  padding: 15px;
+}
+
+.price {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.location {
+  color: #777;
+  font-size: 14px;
+}
+
+/* USER + BROKER */
+.user-info,
+.broker-info {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.user-info img,
+.broker-info img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
+/* STATUS */
+.status-box {
+  margin-top: 10px;
+}
+
+.status {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status.approved {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status.rejected {
+  background: #f8d7da;
+  color: #721c24;
+}

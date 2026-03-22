@@ -10,49 +10,52 @@ exports.createMeeting = async (req, res) => {
     }
 
     const meeting = await Meeting.create({
-      ...req.body,
-      brokerId
+      propertyId: req.body.propertyId,
+      userId: req.body.userId,
+      brokerId,
+      date: req.body.date,
+      time: req.body.time,
+      message: req.body.message,
+      status: "pending"
     });
 
-    res.status(201).json(meeting);
+    res.json({ success: true, meeting });
 
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: err.message });
   }
 };
 
-// BROKER MEETINGS
+// BROKER
 exports.getBrokerMeetings = async (req, res) => {
   try {
-    const brokerId = req.session.user._id;
+    const meetings = await Meeting.find({ brokerId: req.session.user._id })
+      .populate("propertyId", "name price location image")
+      .populate("userId", "fullName phone email profileImage")
+      .populate("brokerId", "name phone email brokerImage");
 
-    const data = await Meeting.find({ brokerId })
-      .populate("propertyId")
-      .populate("userId");
+    res.json({ success: true, meetings });
 
-    res.json(data);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: "Server Error" });
   }
 };
 
-// USER MEETINGS
+// USER
 exports.getUserMeetings = async (req, res) => {
   try {
-    const userId = req.session.user._id;
+    const meetings = await Meeting.find({ userId: req.session.user._id })
+      .populate("propertyId", "name price location image")
+      .populate("brokerId", "name phone email brokerImage");
 
-    const data = await Meeting.find({ userId })
-      .populate("propertyId")
-      .populate("brokerId");
+    res.json({ success: true, meetings });
 
-    res.json(data);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: "Server Error" });
   }
 };
 
-// UPDATE STATUS
+// STATUS UPDATE
 exports.updateStatus = async (req, res) => {
   try {
     const meeting = await Meeting.findByIdAndUpdate(
@@ -61,18 +64,45 @@ exports.updateStatus = async (req, res) => {
       { new: true }
     );
 
-    res.json(meeting);
+    res.json({ success: true, meeting });
+
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: "Server Error" });
   }
 };
-// ADMIN - ALL MEETINGS
+
+// DELETE
+exports.deleteMeeting = async (req, res) => {
+  try {
+    const userId = req.session.user._id;
+    const role = req.session.user.role;
+
+    const meeting = await Meeting.findById(req.params.id);
+
+    if (!meeting) return res.status(404).json({ message: "Not found" });
+
+    if (
+      role !== "admin" &&
+      meeting.userId.toString() !== userId.toString() &&
+      meeting.brokerId.toString() !== userId.toString()
+    ) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    await Meeting.findByIdAndDelete(req.params.id);
+
+    res.json({ success: true });
+
+  } catch (err) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
 exports.getAllMeetings = async (req, res) => {
   try {
     const meetings = await Meeting.find()
       .populate("propertyId", "name price location image")
-      .populate("userId", "fullName phone profileImage")
-      .populate("brokerId", "name phone brokerImage");
+      .populate("userId", "fullName phone email profileImage")
+      .populate("brokerId", "name phone email brokerImage");
 
     res.json({ success: true, meetings });
 

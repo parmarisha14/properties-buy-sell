@@ -4,13 +4,10 @@ import {
   FaHome,
   FaMapMarkerAlt,
   FaPhone,
-  FaCalendarAlt,
-  FaClock,
+ 
   FaCheckCircle,
   FaTimesCircle,
   FaHourglassHalf,
-  FaUserTie,
-  FaUser,
   FaTrash,
 } from "react-icons/fa";
 
@@ -18,50 +15,56 @@ import "../../assets/css/Meeting.css";
 
 const UserMeetings = () => {
   const [meetings, setMeetings] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchMeetings();
   }, []);
 
-  // GET ALL USER MEETINGS
   const fetchMeetings = async () => {
-    setLoading(true);
     try {
-      const res = await axios.get("http://localhost:5000/api/meeting", {
-        withCredentials: true,
-      });
-      setMeetings(res.data || []);
+      const res = await axios.get(
+        "http://localhost:5000/api/meeting/user",
+        { withCredentials: true }
+      );
+      setMeetings(res.data.meetings || []);
     } catch (err) {
       console.log(err);
     }
-    setLoading(false);
   };
 
-  // DELETE MEETING
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure to delete this meeting?")) return;
-
+  const updateStatus = async (id, status) => {
     try {
-      await axios.delete(`http://localhost:5000/api/meeting/delete/${id}`, {
-        withCredentials: true,
-      });
+      await axios.put(
+        `http://localhost:5000/api/meeting/status/${id}`,
+        { status },
+        { withCredentials: true }
+      );
       fetchMeetings();
     } catch (err) {
       console.log(err);
     }
   };
 
-  // STATUS UI
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete meeting?")) return;
+
+    await axios.delete(
+      `http://localhost:5000/api/meeting/${id}`,
+      { withCredentials: true }
+    );
+
+    fetchMeetings();
+  };
+
   const getStatus = (status) => {
-    if (status === "Confirmed") {
+    if (status === "confirmed") {
       return (
         <span className="status confirmed">
           <FaCheckCircle /> Confirmed
         </span>
       );
     }
-    if (status === "Cancelled") {
+    if (status === "cancelled") {
       return (
         <span className="status cancelled">
           <FaTimesCircle /> Cancelled
@@ -79,16 +82,14 @@ const UserMeetings = () => {
     <div className="meeting-container">
       <h2 className="title">My Meetings</h2>
 
-      {loading ? (
-        <h3>Loading...</h3>
-      ) : meetings.length === 0 ? (
+      {meetings.length === 0 ? (
         <h3>No Meetings Found</h3>
       ) : (
         <div className="meeting-grid">
           {meetings.map((m) => (
             <div key={m._id} className="meeting-card">
 
-              {/* PROPERTY IMAGE */}
+              {/* IMAGE */}
               <div className="property-img">
                 <img
                   src={
@@ -108,53 +109,52 @@ const UserMeetings = () => {
                 {getStatus(m.status)}
               </div>
 
-              {/* PROPERTY INFO */}
+              {/* DETAILS */}
               <div className="card-body">
-                <p>
-                  <FaMapMarkerAlt /> {m.propertyId?.location}
-                </p>
-
-                <p>
-                  <strong>₹ {m.propertyId?.price}</strong>
-                </p>
-
-                <p>
-                  <FaCalendarAlt /> {m.date}
-                </p>
-
-                <p>
-                  <FaClock /> {m.time}
-                </p>
-
-                <p className="message">{m.message}</p>
+                <h5><FaMapMarkerAlt /> {m.propertyId?.location}</h5>
+                <h5 className="mt-2"><strong>₹ {m.propertyId?.price}</strong></h5>
+                <h5 className="mt-2">Date: {m.date}</h5>
+                <h5 className="mt-2">Time:{m.time}</h5>
+                <h5 className="message">Message:  {m.message}</h5>
               </div>
 
-              {/* USER + BROKER SECTION */}
-              <div className="people-box">
-
-                {/* USER */}
-                <div className="user-box">
-                  <FaUser />
-                  <div>
-                    <h4>{m.userId?.name}</h4>
-                    <p>{m.userId?.phone}</p>
-                  </div>
+              {/* BROKER */}
+              <div className="broker-box">
+                <img
+                  src={
+                    m.brokerId?.brokerImage
+                      ? `http://localhost:5000/uploads/users/${m.brokerId.brokerImage}`
+                      : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                  }
+                  alt=""
+                />
+                <div>
+                  <h4>{m.brokerId?.name}</h4>
+                  <p><FaPhone /> {m.brokerId?.phone}</p>
+                  <p>{m.brokerId?.email}</p>
                 </div>
-
-                {/* BROKER */}
-                <div className="broker-box">
-                  <FaUserTie />
-                  <div>
-                    <h4>{m.brokerId?.name}</h4>
-                    <p>
-                      <FaPhone /> {m.brokerId?.phone}
-                    </p>
-                  </div>
-                </div>
-
               </div>
 
-              {/* DELETE BUTTON */}
+              {/* ACTION BUTTONS */}
+              {m.status === "pending" && (
+                <div className="action-buttons">
+                  <button
+                    className="confirm-btn"
+                    onClick={() => updateStatus(m._id, "confirmed")}
+                  >
+                    Confirm
+                  </button>
+
+                  <button
+                    className="cancel-btn"
+                    onClick={() => updateStatus(m._id, "cancelled")}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              )}
+
+              {/* DELETE */}
               <button
                 className="delete-btn"
                 onClick={() => handleDelete(m._id)}

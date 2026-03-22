@@ -7,52 +7,150 @@ const AdminInquiries = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/inquiry/admin", {
-      withCredentials: true
-    }).then(res => setData(res.data.inquiries));
+    fetchData();
   }, []);
 
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/inquiry/admin",
+        { withCredentials: true }
+      );
+      setData(res.data.inquiries || []);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // ✅ STATUS UPDATE
+  const updateStatus = async (id, status) => {
+    try {
+      await axios.put(
+        `http://localhost:5000/api/inquiry/${id}`,
+        { status },
+        { withCredentials: true }
+      );
+      fetchData();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // ✅ DELETE FIX
+  const deleteInquiry = async (id) => {
+    if (!window.confirm("Are you sure to delete this inquiry?")) return;
+
+    try {
+      await axios.delete(
+        `http://localhost:5000/api/inquiry/${id}`,
+        { withCredentials: true }
+      );
+      fetchData();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <div className="broker-wrapper">
+    <div className="main-content">
 
       <h2 className="page-title">All Inquiries</h2>
 
-      <div className="broker-grid">
+      <div className="admin-grid">
 
         {data.map((item) => (
 
-          <div className="broker-card" key={item._id}>
+          <div className="admin-card" key={item._id}>
 
+            {/* PROPERTY */}
             <img
-              className="broker-img"
+              className="property-img"
               src={
                 item.propertyId?.image
                   ? `http://localhost:5000/uploads/properties/${item.propertyId.image}`
                   : "/default-property.jpg"
               }
+              alt=""
             />
 
-            <div className="broker-body">
+            <div className="card-body">
 
               <h3>{item.propertyId?.name}</h3>
-              <p className="agency">₹ {item.propertyId?.price}</p>
+              <p className="price">₹ {item.propertyId?.price}</p>
+              <p className="location">{item.propertyId?.location}</p>
 
-              <p className="broker-info">
-                📍 {item.propertyId?.location}
-              </p>
+              {/* ✅ DATE + MESSAGE FIX */}
+              <div className="date-time">
+                <p><b>Date:</b> {item.date || "-"}</p>
+                <p><b>Message:</b> {item.message || "-"}</p>
+              </div>
 
               <hr />
 
-              <p><strong>User:</strong> {item.userId?.fullName}</p>
-              <p>{item.userId?.phone}</p>
+              {/* USER */}
+              <div className="person-box">
+                <img
+                  src={
+                    item.userId?.profileImage
+                      ? `http://localhost:5000/uploads/users/${item.userId.profileImage}`
+                      : "/default-user.png"
+                  }
+                  alt=""
+                />
+                <div>
+                  <h4>{item.userId?.fullName}</h4>
+                  <p>{item.userId?.phone}</p>
+                </div>
+              </div>
 
-              <p><strong>Broker:</strong> {item.brokerId?.name}</p>
+              {/* BROKER */}
+              <div className="person-box">
+                <img
+                  src={
+                    item.brokerId?.brokerImage
+                      ? `http://localhost:5000/uploads/users/${item.brokerId.brokerImage}`
+                      : "/default-broker.png"
+                  }
+                  alt=""
+                />
+                <div>
+                  <h4>{item.brokerId?.name}</h4>
+                  <p>{item.brokerId?.phone}</p>
+                </div>
+              </div>
 
-              <p><strong>Status:</strong>
+              {/* STATUS */}
+              <div className="status-box">
                 <span className={`status ${item.status}`}>
                   {item.status}
                 </span>
-              </p>
+              </div>
+
+              {/* ACTIONS */}
+              <div className="action-buttons">
+
+                <button
+                  className="approve-btn"
+                  onClick={() => updateStatus(item._id, "approved")}
+                >
+                  Approve
+                </button>
+
+                <button
+                  className="reject-btn"
+                  onClick={() => updateStatus(item._id, "rejected")}
+                >
+                  Reject
+                </button>
+
+                <button
+                  className="delete-btn"
+                  onClick={() => deleteInquiry(item._id)}
+                >
+                  Delete
+                </button>
+
+              </div>
 
             </div>
 

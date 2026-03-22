@@ -91,7 +91,7 @@ const BrokerInquiries = () => {
                 </div>
 
                 {/* HEADER */}
-                <div className="top">
+                <div className="top mt-4">
                   <h3>{item.propertyId?.name}</h3>
                   <span className={`status ${item.status}`}>
                     {item.status}
@@ -101,9 +101,8 @@ const BrokerInquiries = () => {
                 {/* PROPERTY */}
                 <div className="section">
                   <p><strong>₹ {item.propertyId?.price}</strong></p>
-                  <p>{item.propertyId?.location}</p>
-                  <p>{item.propertyId?.city}</p>
-                  <p>{item.propertyId?.state}</p>
+                  <p>Location: {item.propertyId?.location}</p>
+                  
                 </div>
 
                 {/* USER */}

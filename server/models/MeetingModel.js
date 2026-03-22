@@ -9,7 +9,7 @@ const meetingSchema = new mongoose.Schema({
 
   brokerId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "Broker",
     required: true
   },
 
