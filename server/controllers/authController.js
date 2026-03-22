@@ -1,5 +1,6 @@
 const User = require("../models/UserModel");
 const Broker = require("../models/BrokerModel");
+const Admin = require("../models/AdminModel");
 const bcrypt = require("bcrypt");
 
 exports.signupUser = async (req, res) => {
@@ -67,23 +68,21 @@ exports.signupBroker = async (req, res) => {
   }
 };
 
+// ================= SIGNIN (🔥 FINAL FIX) =================
 exports.signin = async (req, res) => {
   try {
-    const { email, password, role } = req.body;
+    const { email, password } = req.body;
 
-    if (!email || !password || !role) {
+    if (!email || !password) {
       return res.status(400).json({
-        message: "All fields are required",
+        message: "Email & Password required",
       });
     }
 
-    let user;
-
-    if (role === "broker") {
-      user = await Broker.findOne({ email });
-    } else {
-      user = await User.findOne({ email });
-    }
+    // 🔍 SEARCH IN ALL COLLECTIONS
+    let user = await User.findOne({ email });
+    if (!user) user = await Broker.findOne({ email });
+    if (!user) user = await Admin.findOne({ email });
 
     if (!user) {
       return res.status(400).json({
@@ -91,39 +90,55 @@ exports.signin = async (req, res) => {
       });
     }
 
-    const match = await bcrypt.compare(password, user.password);
+    console.log("LOGIN USER:", user.email);
+    console.log("INPUT PASSWORD:", password);
+    console.log("DB PASSWORD:", user.password);
 
-    if (!match) {
+    // ✅ 🔥 MAIN FIX (handles ALL cases)
+    let isMatch = false;
+
+    if (user.password && user.password.startsWith("$2b$")) {
+      // hashed password
+      isMatch = await bcrypt.compare(password, user.password);
+    } else {
+      // plain password (admin + broker)
+      isMatch = password === user.password;
+    }
+
+    if (!isMatch) {
       return res.status(400).json({
         message: "Wrong password",
       });
     }
 
-    const userRole = user.role || role;
-
+    // ✅ SESSION STORE
     req.session.user = {
       _id: user._id,
-      name: user.name || user.fullName,
+      fullName: user.fullName || user.name,
       email: user.email,
-      phone: user.phone || "",
-      role: userRole,
+      role: user.role,
     };
 
-    res.json({
-      success: true,
-      message: "Login successful",
-      user: req.session.user,
+    req.session.save((err) => {
+      if (err) {
+        return res.status(500).json({ message: "Session error" });
+      }
+
+      res.json({
+        success: true,
+        message: "Login successful",
+        user: req.session.user,
+      });
     });
+
   } catch (err) {
     console.log("LOGIN ERROR:", err);
-
     res.status(500).json({
       message: "Login failed",
       error: err.message,
     });
   }
 };
-
 exports.me = (req, res) => {
   if (req.session.user) {
     return res.json({ success: true, user: req.session.user });

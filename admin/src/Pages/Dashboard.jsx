@@ -3,7 +3,6 @@ import axios from "axios";
 import "../assets/css/Dashboard.css";
 
 const Dashboard = () => {
-
   const [data, setData] = useState({
     totalUsers: 0,
     totalBrokers: 0,
@@ -18,7 +17,7 @@ const Dashboard = () => {
     totalMeetings: 0,
     confirmedMeetings: 0,
     cancelledMeetings: 0,
-    pendingMeetings: 0
+    pendingMeetings: 0,
   });
 
   const [loading, setLoading] = useState(true);
@@ -29,10 +28,9 @@ const Dashboard = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5000/api/dashboard",
-        { withCredentials: true }
-      );
+      const res = await axios.get("http://localhost:5000/api/dashboard", {
+        withCredentials: true,
+      });
       setData(res.data);
     } catch (err) {
       console.log("Dashboard Error:", err);
@@ -47,12 +45,9 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-
       <h3 className="dashboard-title">Admin Dashboard</h3>
 
       <div className="row g-4">
-
-        {/* USERS */}
         <div className="col-md-3">
           <div className="dashboard-card users-card">
             <h5>Total Users</h5>
@@ -60,7 +55,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* BROKERS */}
         <div className="col-md-3">
           <div className="dashboard-card brokers-card">
             <h5>Total Brokers</h5>
@@ -68,7 +62,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* PROPERTIES */}
         <div className="col-md-3">
           <div className="dashboard-card properties-card">
             <h5>Total Properties</h5>
@@ -76,7 +69,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* PENDING PROPERTY */}
         <div className="col-md-3">
           <div className="dashboard-card pending-card">
             <h5>Pending Properties</h5>
@@ -84,7 +76,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* APPROVED PROPERTY */}
         <div className="col-md-3">
           <div className="dashboard-card approved-card">
             <h5>Approved Properties</h5>
@@ -92,7 +83,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* REJECTED PROPERTY */}
         <div className="col-md-3">
           <div className="dashboard-card rejected-card">
             <h5>Rejected Properties</h5>
@@ -100,7 +90,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* INQUIRIES */}
         <div className="col-md-3">
           <div className="dashboard-card inquiry-card">
             <h5>Total Inquiries</h5>
@@ -108,7 +97,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* APPROVED INQUIRY */}
         <div className="col-md-3">
           <div className="dashboard-card approved-card">
             <h5>Approved Requests</h5>
@@ -116,7 +104,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* REJECTED INQUIRY */}
         <div className="col-md-3">
           <div className="dashboard-card rejected-card">
             <h5>Rejected Requests</h5>
@@ -124,7 +111,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* MEETINGS */}
         <div className="col-md-3">
           <div className="dashboard-card meeting-card">
             <h5>Total Meetings</h5>
@@ -132,7 +118,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* CONFIRMED */}
         <div className="col-md-3">
           <div className="dashboard-card confirm-card">
             <h5>Confirmed Meetings</h5>
@@ -140,7 +125,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* CANCELLED */}
         <div className="col-md-3">
           <div className="dashboard-card cancel-card">
             <h5>Cancelled Meetings</h5>
@@ -148,16 +132,13 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* PENDING MEETING */}
         <div className="col-md-3">
           <div className="dashboard-card pending-meeting">
             <h5>Pending Meetings</h5>
             <h2>{data.pendingMeetings}</h2>
           </div>
         </div>
-
       </div>
-
     </div>
   );
 };

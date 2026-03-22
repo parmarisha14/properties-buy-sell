@@ -87,7 +87,6 @@ exports.updateStatus = async (req, res) => {
 exports.deleteInquiry = async (req, res) => {
   try {
     const userId = req.session.user?._id;
-    const role = req.session.user?.role; // ✅ ADD ROLE
 
     if (!userId) {
       return res.status(401).json({ message: "Login required" });
@@ -99,9 +98,8 @@ exports.deleteInquiry = async (req, res) => {
       return res.status(404).json({ message: "Not found" });
     }
 
-    // ✅ ADMIN CAN DELETE ANY
+    
     if (
-      role !== "admin" &&
       inquiry.userId.toString() !== userId.toString() &&
       inquiry.brokerId.toString() !== userId.toString()
     ) {
@@ -117,6 +115,7 @@ exports.deleteInquiry = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+// ADMIN - GET ALL INQUIRIES
 exports.getAllInquiries = async (req, res) => {
   try {
     const inquiries = await Inquiry.find()

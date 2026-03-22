@@ -38,7 +38,7 @@ function App() {
           <Route path="/change-password" element={<AdminChangePassword />} />
           <Route path="/contact-messages" element={<ViewMessage />} />
           <Route path="/admin/inquiries" element={<AdminInquiries />} />
-<Route path="/admin/meetings" element={<AdminMeetings />} />
+          <Route path="/admin/meetings" element={<AdminMeetings />} />
           <Route path="/" element={<ViewProperties />} />
         </Routes>
       </div>

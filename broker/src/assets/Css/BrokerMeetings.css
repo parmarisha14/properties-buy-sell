@@ -3,19 +3,19 @@
   color: #1E3A5F;
 }
 
-/* 🔥 GRID FIX */
+
 .meeting-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 20px;
 }
 
-/* CARD */
+
 .meeting-card {
   background: #fff;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   transition: 0.3s;
   margin-top: 50px;
 }
@@ -24,14 +24,14 @@
   transform: translateY(-5px);
 }
 
-/* IMAGE */
+
 .property-img {
   width: 100%;
   height: 180px;
   object-fit: cover;
 }
 
-/* BODY */
+
 .card-body {
   padding: 15px;
 }
@@ -50,12 +50,12 @@
   color: #555;
 }
 
-/* USER */
+
 .user-box {
   margin-top: 10px;
 }
 
-/* BROKER */
+
 .broker-box {
   display: flex;
   align-items: center;
@@ -69,7 +69,7 @@
   border-radius: 50%;
 }
 
-/* STATUS */
+
 .status {
   display: inline-block;
   margin-top: 10px;
@@ -91,7 +91,7 @@
   background: red;
 }
 
-/* DELETE BUTTON */
+
 .delete-btn {
   width: 100%;
   margin-top: 10px;

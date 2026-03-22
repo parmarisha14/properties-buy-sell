@@ -1,24 +1,20 @@
-/* MAIN WRAPPER FIX */
 .admin-wrapper {
   padding: 20px;
-  margin-left: 250px; /* ✅ Sidebar width match */
+  margin-left: 250px;
 }
 
-/* TITLE */
 .page-title {
   margin-bottom: 20px;
   color: #1E3A5F;
   font-weight: 600;
 }
 
-/* GRID */
 .admin-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 20px;
 }
 
-/* CARD */
 .admin-card {
   background: #fff;
   border-radius: 14px;
@@ -31,14 +27,12 @@
   transform: translateY(-5px);
 }
 
-/* IMAGE */
 .property-img {
   width: 100%;
   height: 180px;
   object-fit: cover;
 }
 
-/* BODY */
 .card-body {
   padding: 15px;
 }
@@ -48,19 +42,16 @@
   font-size: 18px;
 }
 
-/* PRICE */
 .price {
   color: #28a745;
   font-weight: 600;
 }
 
-/* LOCATION */
 .location {
   font-size: 14px;
   color: #555;
 }
 
-/* DATE TIME */
 .date-time {
   display: flex;
   justify-content: space-between;
@@ -69,7 +60,6 @@
   color: #444;
 }
 
-/* USER + BROKER */
 .person-section {
   margin-top: 15px;
   display: flex;
@@ -107,7 +97,6 @@
   color: #888;
 }
 
-/* STATUS */
 .status {
   margin-top: 12px;
   padding: 6px;
@@ -128,6 +117,7 @@
 .status.cancelled {
   background: #e74c3c;
 }
+
 .delete-btn {
   margin-top: 12px;
   width: 100%;
@@ -144,6 +134,7 @@
 .delete-btn:hover {
   background: #c0392b;
 }
+
 .date-time {
   margin-top: 8px;
   font-size: 14px;

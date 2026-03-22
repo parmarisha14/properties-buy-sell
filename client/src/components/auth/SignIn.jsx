@@ -8,81 +8,64 @@ axios.defaults.withCredentials = true;
 
 const SignIn = () => {
   const [role, setRole] = useState("user");
-  const [formData, setFormData] = useState({
-    email: "",
-    password: ""
-  });
-
-  const [errors, setErrors] = useState({});
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
-
-  const validate = () => {
-    let newErrors = {};
-
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      newErrors.email = "Invalid email format";
-    }
-
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Minimum 6 characters required";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setMsg("");
 
-    if (!validate()) return;
+    const email = e.target.email.value.trim();
+    const password = e.target.password.value;
 
-    setLoading(true);
+    if (!email || !password) {
+      setMsg("Please enter email and password");
+      setLoading(false);
+      return;
+    }
 
     try {
       const res = await axios.post(
         "http://localhost:5000/api/auth/login",
-        {
-          email: formData.email,
-          password: formData.password,
-          role
-        },
+        { email, password },
         { withCredentials: true }
       );
 
-      const user = res.data.user;
-
-      if (!user) {
-        setMsg("Invalid credentials");
+      if (!res.data || !res.data.user) {
+        setMsg("Invalid login response");
         setLoading(false);
         return;
       }
 
+      const user = res.data.user;
+
       setMsg("Login successful");
 
-      if (user.role === "broker") {
-        window.location.href = "http://localhost:5175/dashboard";
-      } else if (user.role === "admin") {
-        window.location.href = "http://localhost:5173/admin/dashboard";
-      } else {
-        window.location.href = "http://localhost:5173/";
-      }
+      setTimeout(() => {
+        if (user.role === "admin") {
+          window.location.href = "http://localhost:5174/admin-dashboard"; // ✅ FIX
+        } else if (user.role === "broker") {
+          window.location.href = "http://localhost:5175/dashboard";
+        } else {
+          window.location.href = "/";
+        }
+      }, 500);
 
     } catch (err) {
-      setMsg(err.response?.data?.message || "Login failed");
+      console.error("Login error:", err);
+
+      if (err.response) {
+        if (err.response.status === 400) {
+          setMsg(err.response.data.message || "Invalid credentials");
+        } else if (err.response.status === 500) {
+          setMsg("Server error. Try again.");
+        } else {
+          setMsg("Something went wrong");
+        }
+      } else {
+        setMsg("Backend not running or network error");
+      }
     } finally {
       setLoading(false);
     }
@@ -97,7 +80,7 @@ const SignIn = () => {
         {msg && (
           <p
             style={{
-              color: msg.includes("successful") ? "green" : "red",
+              color: msg === "Login successful" ? "green" : "red",
               textAlign: "center",
               marginTop: "10px",
             }}
@@ -127,31 +110,14 @@ const SignIn = () => {
         </div>
 
         <form className="login-form" onSubmit={handleLogin}>
-
           <div className="form-group">
             <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter email"
-              value={formData.email}
-              onChange={handleChange}
-              disabled={loading}
-            />
-            <span className="error">{errors.email}</span>
+            <input type="email" name="email" required disabled={loading} />
           </div>
 
           <div className="form-group">
             <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter password"
-              value={formData.password}
-              onChange={handleChange}
-              disabled={loading}
-            />
-            <span className="error">{errors.password}</span>
+            <input type="password" name="password" required disabled={loading} />
           </div>
 
           <button type="submit" className="login-btn" disabled={loading}>

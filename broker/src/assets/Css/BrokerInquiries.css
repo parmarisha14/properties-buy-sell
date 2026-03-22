@@ -6,12 +6,12 @@
   min-height: 100vh;
 }
 
-/* CONTAINER */
+
 .inquiry-container {
   width: 100%;
 }
 
-/* TITLE */
+
 .title {
   font-size: 28px;
   font-weight: 700;
@@ -19,42 +19,41 @@
   color: #0f172a;
 }
 
-/* GRID */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 25px;
 }
 
-/* CARD */
+
 .card {
   background: #fff;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   transition: 0.3s;
   display: flex;
   flex-direction: column;
-  padding:20px;
+  padding: 20px;
 }
 
 .card:hover {
   transform: translateY(-6px);
 }
 
-/* IMAGE */
+
 .property-img img {
   width: 100%;
   height: 200px;
   object-fit: cover;
 }
 
-/* CONTENT */
+
 .card-body {
   padding: 18px;
 }
 
-/* HEADER */
+
 .top {
   display: flex;
   justify-content: space-between;
@@ -67,7 +66,7 @@
   margin-top: 20px;
 }
 
-/* STATUS */
+
 .status {
   padding: 5px 12px;
   border-radius: 20px;
@@ -90,14 +89,14 @@
   color: #fff;
 }
 
-/* SECTION */
+
 .section {
   margin-top: 12px;
   font-size: 14px;
   color: #475569;
 }
 
-/* USER + BROKER BOX */
+
 .user-box,
 .broker-box {
   display: flex;
@@ -130,7 +129,7 @@
   color: #64748b;
 }
 
-/* BUTTONS */
+
 .buttons {
   margin-top: 15px;
   display: flex;
@@ -166,13 +165,14 @@
   background: #dc2626;
 }
 
-/* EMPTY + LOADING */
+
 .loading,
 .empty {
   text-align: center;
   margin-top: 50px;
   font-size: 18px;
 }
+
 .delete {
   flex: 1;
   background: #111827;
@@ -186,8 +186,9 @@
 .delete:hover {
   background: #000;
 }
+
 .add-meeting {
-  background: #6f42c1; /* purple professional */
+  background: #6f42c1;
   color: white;
   border: none;
   padding: 8px 12px;

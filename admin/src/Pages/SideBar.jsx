@@ -40,12 +40,12 @@ const Sidebar = ({ handleLogout }) => {
             <FaHome className="icon" /> View Properties
           </NavLink>
         </li>
-      <li>
+        <li>
           <NavLink to="/contact-messages" className="sidebar-link">
             <FaHome className="icon" /> View Messages
           </NavLink>
         </li>
-         <li>
+        <li>
           <NavLink to="/admin/inquiries" className="sidebar-link">
             <FaHome className="icon" /> View Inquiries
           </NavLink>

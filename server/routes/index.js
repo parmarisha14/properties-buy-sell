@@ -8,6 +8,8 @@ const wishlistRoutes = require("./wishlistRoutes");
 const inquiryRoutes = require("./inquiryRoutes");
 const meetingRoutes = require("./meetingRoutes");
 const dashboardRoutes = require("./dashboardRoutes");
+const adminRoutes = require("./adminRoutes ");
+
 router.use("/contact", contactRoutes);
 router.use("/auth", authRoutes);
 router.use("/property", propertyRoutes);
@@ -15,4 +17,5 @@ router.use("/inquiry", inquiryRoutes);
 router.use("/wishlist", wishlistRoutes);
 router.use("/meeting", meetingRoutes);
 router.use("/dashboard", dashboardRoutes);
+router.use("/admin", adminRoutes);
 module.exports = router;
