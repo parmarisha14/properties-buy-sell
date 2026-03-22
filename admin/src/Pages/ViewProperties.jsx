@@ -4,6 +4,7 @@ import "../assets/css/ViewProperties.css";
 
 const ViewProperties = () => {
   const [properties, setProperties] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetchProperties();
@@ -37,22 +38,55 @@ const ViewProperties = () => {
   };
 
   const deleteProperty = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this property?"))
+      return;
+
     try {
       await axios.delete(`http://localhost:5000/api/property/delete/${id}`);
       fetchProperties();
+      alert("Property deleted successfully");
     } catch (error) {
       console.log(error);
+      alert("Delete failed");
     }
   };
+
+  const filteredProperties = properties.filter((p) => {
+    const key = search.toLowerCase();
+
+    return (
+      p.name?.toLowerCase().includes(key) ||
+      p.location?.toLowerCase().includes(key) ||
+      p.city?.toLowerCase().includes(key) ||
+      p.state?.toLowerCase().includes(key) ||
+      p.type?.toLowerCase().includes(key) ||
+      p.price?.toString().includes(key) ||
+      p.bedroom?.toString().includes(key) ||
+      p.bathroom?.toString().includes(key) ||
+      p.area?.toString().includes(key) ||
+      p.year?.toString().includes(key) ||
+      p.description?.toLowerCase().includes(key) ||
+      p.brokerId?.name?.toLowerCase().includes(key) ||
+      p.brokerId?.phone?.toString().includes(key)
+    );
+  });
 
   return (
     <div className="property-wrapper">
       <h2 className="page-title">All Properties</h2>
 
-      <div className="property-grid">
-        {properties.length === 0 && <p>No properties found</p>}
+      <input
+        type="text"
+        placeholder="Search properties..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="search-box"
+      />
 
-        {properties.map((property) => (
+      <div className="property-grid">
+        {filteredProperties.length === 0 && <p>No properties found</p>}
+
+        {filteredProperties.map((property) => (
           <div className="property-card" key={property._id}>
             <img
               src={
@@ -67,6 +101,7 @@ const ViewProperties = () => {
             <div className="property-body">
               <h3>{property.name}</h3>
               <p className="price">₹ {property.price}</p>
+
               <p>
                 <b>Location:</b> {property.location}
               </p>
@@ -86,14 +121,15 @@ const ViewProperties = () => {
                 <b>Area:</b> {property.area} sq.ft
               </p>
               <p>
-                <b>Year Built:</b> {property.year}
+                <b>Year:</b> {property.year}
               </p>
               <p>
-                <b>Property Type:</b> {property.type}
+                <b>Type:</b> {property.type}
               </p>
               <p>
                 <b>Description:</b> {property.description}
               </p>
+
               <p>
                 <b>Features:</b>{" "}
                 {Array.isArray(property.features)
@@ -101,7 +137,6 @@ const ViewProperties = () => {
                   : ""}
               </p>
 
-              
               <p>
                 <b>Broker:</b> {property.brokerId?.name || "N/A"} (
                 {property.brokerId?.phone || "N/A"})
@@ -116,12 +151,14 @@ const ViewProperties = () => {
                 >
                   Approve
                 </button>
+
                 <button
                   className="reject-btn"
                   onClick={() => rejectProperty(property._id)}
                 >
                   Reject
                 </button>
+
                 <button
                   className="delete-btn"
                   onClick={() => deleteProperty(property._id)}

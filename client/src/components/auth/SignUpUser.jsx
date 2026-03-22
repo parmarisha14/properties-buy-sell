@@ -20,11 +20,9 @@ const SignUpUser = () => {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-
     setFormData({
       ...formData,
-      [name]: value,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -60,14 +58,12 @@ const SignUpUser = () => {
       newErrors.phone = "Phone must be exactly 10 digits";
     }
 
-    
     if (!formData.password) {
       newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Minimum 6 characters required";
+    } else if (formData.password.length < 5) {
+      newErrors.password = "Minimum 5 characters required";
     } else if (!/(?=.*[a-zA-Z])(?=.*[0-9])/.test(formData.password)) {
-      newErrors.password =
-        "Password must contain at least 1 letter and 1 number";
+      newErrors.password = "Must contain at least 1 letter and 1 number";
     }
 
     if (!formData.confirmPassword) {
@@ -98,9 +94,7 @@ const SignUpUser = () => {
           phone: formData.phone,
           password: formData.password,
         },
-        {
-          withCredentials: true,
-        },
+        { withCredentials: true }
       );
 
       setMsg(res.data.message || "Registration Successful");
@@ -108,6 +102,7 @@ const SignUpUser = () => {
       setTimeout(() => {
         navigate("/signin");
       }, 1200);
+
     } catch (error) {
       setMsg(error.response?.data?.message || "Registration Failed");
     } finally {
@@ -158,6 +153,7 @@ const SignUpUser = () => {
                 name="dob"
                 value={formData.dob}
                 onChange={handleChange}
+                placeholder="Enter the Birthday Date "
               />
               <span className="error">{errors.dob}</span>
             </div>
@@ -204,7 +200,7 @@ const SignUpUser = () => {
         </form>
 
         <p className="login-text">
-          Already have an account ? <Link to="/signin">Login</Link>
+          Already have an account? <Link to="/signin">Login</Link>
         </p>
       </div>
     </div>

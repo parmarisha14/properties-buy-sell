@@ -50,6 +50,7 @@ const ChangePassword = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 name="currentPassword"
+                placeholder="Enter Current Password"
                 onChange={handleChange}
                 required
               />
@@ -69,6 +70,7 @@ const ChangePassword = () => {
                 type={showPassword ? "text" : "password"}
                 name="newPassword"
                 onChange={handleChange}
+                placeholder="Enter New Password"
                 required
               />
               <span
@@ -86,6 +88,7 @@ const ChangePassword = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 name="confirmPassword"
+                placeholder="Enter Confirm Password"
                 onChange={handleChange}
                 required
               />

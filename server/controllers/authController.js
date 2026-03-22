@@ -1,6 +1,7 @@
 const User = require("../models/UserModel");
 const Broker = require("../models/BrokerModel");
 const Admin = require("../models/AdminModel");
+const Property = require("../models/PropertyModel");
 const bcrypt = require("bcrypt");
 
 exports.signupUser = async (req, res) => {
@@ -68,7 +69,7 @@ exports.signupBroker = async (req, res) => {
   }
 };
 
-// ================= SIGNIN (🔥 FINAL FIX) =================
+
 exports.signin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -79,7 +80,7 @@ exports.signin = async (req, res) => {
       });
     }
 
-    // 🔍 SEARCH IN ALL COLLECTIONS
+    
     let user = await User.findOne({ email });
     if (!user) user = await Broker.findOne({ email });
     if (!user) user = await Admin.findOne({ email });
@@ -90,18 +91,16 @@ exports.signin = async (req, res) => {
       });
     }
 
-    console.log("LOGIN USER:", user.email);
-    console.log("INPUT PASSWORD:", password);
-    console.log("DB PASSWORD:", user.password);
+    
 
-    // ✅ 🔥 MAIN FIX (handles ALL cases)
+    
     let isMatch = false;
 
     if (user.password && user.password.startsWith("$2b$")) {
-      // hashed password
+      
       isMatch = await bcrypt.compare(password, user.password);
     } else {
-      // plain password (admin + broker)
+      
       isMatch = password === user.password;
     }
 
@@ -111,7 +110,7 @@ exports.signin = async (req, res) => {
       });
     }
 
-    // ✅ SESSION STORE
+    
     req.session.user = {
       _id: user._id,
       fullName: user.fullName || user.name,
@@ -361,25 +360,29 @@ exports.deleteBroker = async (req, res) => {
 
     if (!broker) {
       return res.status(404).json({
+        success: false,
         message: "Broker not found",
       });
     }
 
-    await Property.deleteMany({
-      brokerId: brokerId,
-    });
+   
+    await Property.deleteMany({ brokerId });
 
+    
     await Broker.findByIdAndDelete(brokerId);
 
-    res.json({
+    return res.status(200).json({
       success: true,
-      message: "Broker and his properties deleted",
+      message: "Broker deleted successfully",
     });
-  } catch (error) {
-    console.log(error);
 
-    res.status(500).json({
-      message: "Server Error",
+  } catch (error) {
+    console.log("DELETE BROKER ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error while deleting broker",
+      error: error.message,
     });
   }
 };

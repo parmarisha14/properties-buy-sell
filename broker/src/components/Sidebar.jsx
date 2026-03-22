@@ -87,7 +87,7 @@ const Sidebar = () => {
                 <FaHome /> Manage Property
               </NavLink>
             </li>
-            
+
             <li>
               <NavLink to="/broker/meetings">
                 <FaCalendarCheck /> View Meetings

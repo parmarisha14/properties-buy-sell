@@ -6,23 +6,23 @@ const Broker = require("../models/BrokerModel");
 exports.getDashboardStats = async (req, res) => {
   try {
 
-    // USERS
+   
     const totalUsers = await User.countDocuments({ role: "user" });
     const totalBrokers = await Broker.countDocuments({ role: "broker" });
 
-    // PROPERTIES
+    
     const totalProperties = await Property.countDocuments();
     const approvedProperties = await Property.countDocuments({ status: "approved" });
     const rejectedProperties = await Property.countDocuments({ status: "rejected" });
     const pendingProperties = await Property.countDocuments({ status: "pending" });
 
-    // INQUIRIES
+   
     const totalInquiries = await Inquiry.countDocuments();
     const approvedInquiries = await Inquiry.countDocuments({ status: "approved" });
     const rejectedInquiries = await Inquiry.countDocuments({ status: "rejected" });
     const pendingInquiries = await Inquiry.countDocuments({ status: "pending" });
 
-    // MEETINGS ✅ FIXED
+    
     const totalMeetings = await Meeting.countDocuments();
     const confirmedMeetings = await Meeting.countDocuments({ status: "confirmed" });
     const cancelledMeetings = await Meeting.countDocuments({ status: "cancelled" });

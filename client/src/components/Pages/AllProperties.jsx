@@ -4,41 +4,50 @@ import PropertyCard from "../../components/Pages/PropertyCard";
 import "../../assets/css/AllProperties.css";
 
 const AllProperties = () => {
-
   const [properties, setProperties] = useState([]);
   const [cities, setCities] = useState([]);
-  const [states, setStates] = useState([]); 
+  const [states, setStates] = useState([]);
   const [priceRanges, setPriceRanges] = useState([]);
+
+  const [page, setPage] = useState(1);
+  const limit = 6;
+  const [totalPages, setTotalPages] = useState(1);
 
   const [filters, setFilters] = useState({
     type: "",
     priceRange: "",
     city: "",
-    state: ""
+    state: "",
   });
 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchProperties();
     fetchLocations();
     fetchPriceRange();
   }, []);
 
- 
+  useEffect(() => {
+    fetchProperties();
+  }, [page]);
+
   const fetchProperties = async (params = {}) => {
     setLoading(true);
 
     try {
-      console.log("API PARAMS:", params); 
-
       const res = await axios.get(
         "http://localhost:5000/api/property/approved",
-        { params }
+        {
+          params: {
+            ...params,
+            page,
+            limit,
+          },
+        }
       );
 
       setProperties(res.data.properties || []);
-
+      setTotalPages(res.data.totalPages || 1);
     } catch (err) {
       console.log(err);
     }
@@ -46,7 +55,6 @@ const AllProperties = () => {
     setLoading(false);
   };
 
-  
   const fetchLocations = async () => {
     try {
       const res = await axios.get(
@@ -55,13 +63,11 @@ const AllProperties = () => {
 
       setCities(res.data.cities || []);
       setStates(res.data.states || []);
-
     } catch (err) {
       console.log(err);
     }
   };
 
-  
   const fetchPriceRange = async () => {
     try {
       const res = await axios.get(
@@ -69,7 +75,6 @@ const AllProperties = () => {
       );
 
       const { minPrice, maxPrice } = res.data;
-
       const step = Math.ceil((maxPrice - minPrice) / 5) || 1;
 
       let ranges = [];
@@ -77,26 +82,23 @@ const AllProperties = () => {
       for (let i = minPrice; i < maxPrice; i += step) {
         ranges.push({
           min: i,
-          max: i + step
+          max: i + step,
         });
       }
 
       setPriceRanges(ranges);
-
     } catch (err) {
       console.log(err);
     }
   };
 
-  
   const handleChange = (e) => {
     setFilters({
       ...filters,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  
   const applyFilters = () => {
     let cleaned = {};
 
@@ -104,34 +106,31 @@ const AllProperties = () => {
     if (filters.city) cleaned.city = filters.city;
     if (filters.state) cleaned.state = filters.state;
 
-    
     if (filters.priceRange) {
       const [min, max] = filters.priceRange.split("-");
-
       cleaned.minPrice = Number(min);
       cleaned.maxPrice = Number(max);
     }
 
+    setPage(1);
     fetchProperties(cleaned);
   };
 
-  
   const resetFilters = () => {
     setFilters({
       type: "",
       priceRange: "",
       city: "",
-      state: ""
+      state: "",
     });
 
+    setPage(1);
     fetchProperties();
   };
 
-  
   return (
     <div className="main-container">
 
-      
       <div className="property-section">
         <div className="property-grid">
           {loading ? (
@@ -144,14 +143,40 @@ const AllProperties = () => {
             <h2>No Properties Found</h2>
           )}
         </div>
+
+        {/* PAGINATION */}
+        <div className="pagination">
+
+          <button
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
+            Prev
+          </button>
+
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setPage(i + 1)}
+              className={page === i + 1 ? "active" : ""}
+            >
+              {i + 1}
+            </button>
+          ))}
+
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+          >
+            Next
+          </button>
+
+        </div>
       </div>
 
-      
       <div className="filter-section">
-
         <h3>Filter Properties</h3>
 
-        
         <div className="filter-group">
           <label>Type</label>
           <select name="type" value={filters.type} onChange={handleChange}>
@@ -162,7 +187,6 @@ const AllProperties = () => {
           </select>
         </div>
 
-       
         <div className="filter-group">
           <label>Price Range</label>
           <select
@@ -171,7 +195,6 @@ const AllProperties = () => {
             onChange={handleChange}
           >
             <option value="">All</option>
-
             {priceRanges.map((r, i) => (
               <option key={i} value={`${r.min}-${r.max}`}>
                 ₹ {r.min.toLocaleString()} - ₹ {r.max.toLocaleString()}
@@ -180,29 +203,30 @@ const AllProperties = () => {
           </select>
         </div>
 
-        
         <div className="filter-group">
           <label>City</label>
           <select name="city" value={filters.city} onChange={handleChange}>
             <option value="">All</option>
             {cities.map((c, i) => (
-              <option key={i} value={c}>{c}</option>
+              <option key={i} value={c}>
+                {c}
+              </option>
             ))}
           </select>
         </div>
 
-        
         <div className="filter-group">
           <label>State</label>
           <select name="state" value={filters.state} onChange={handleChange}>
             <option value="">All</option>
             {states.map((s, i) => (
-              <option key={i} value={s}>{s}</option>
+              <option key={i} value={s}>
+                {s}
+              </option>
             ))}
           </select>
         </div>
 
-        
         <div className="filter-actions">
           <button className="apply-btn" onClick={applyFilters}>
             Apply
@@ -212,7 +236,6 @@ const AllProperties = () => {
             Reset
           </button>
         </div>
-
       </div>
 
     </div>

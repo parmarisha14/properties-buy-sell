@@ -4,11 +4,10 @@ import {
   FaHome,
   FaMapMarkerAlt,
   FaPhone,
- 
   FaCheckCircle,
   FaTimesCircle,
   FaHourglassHalf,
-  FaTrash,
+  FaTrash
 } from "react-icons/fa";
 
 import "../../assets/css/Meeting.css";
@@ -22,10 +21,9 @@ const UserMeetings = () => {
 
   const fetchMeetings = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5000/api/meeting/user",
-        { withCredentials: true }
-      );
+      const res = await axios.get("http://localhost:5000/api/meeting/user", {
+        withCredentials: true,
+      });
       setMeetings(res.data.meetings || []);
     } catch (err) {
       console.log(err);
@@ -45,13 +43,25 @@ const UserMeetings = () => {
     }
   };
 
+  const handleInterest = async (id, interested) => {
+    try {
+      await axios.put(
+        `http://localhost:5000/api/meeting/interest/${id}`,
+        { interested },
+        { withCredentials: true }
+      );
+      fetchMeetings();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleDelete = async (id) => {
     if (!window.confirm("Delete meeting?")) return;
 
-    await axios.delete(
-      `http://localhost:5000/api/meeting/${id}`,
-      { withCredentials: true }
-    );
+    await axios.delete(`http://localhost:5000/api/meeting/${id}`, {
+      withCredentials: true,
+    });
 
     fetchMeetings();
   };
@@ -89,7 +99,6 @@ const UserMeetings = () => {
           {meetings.map((m) => (
             <div key={m._id} className="meeting-card">
 
-              {/* IMAGE */}
               <div className="property-img">
                 <img
                   src={
@@ -101,7 +110,6 @@ const UserMeetings = () => {
                 />
               </div>
 
-              {/* HEADER */}
               <div className="card-header">
                 <h3>
                   <FaHome /> {m.propertyId?.name}
@@ -109,16 +117,18 @@ const UserMeetings = () => {
                 {getStatus(m.status)}
               </div>
 
-              {/* DETAILS */}
               <div className="card-body">
-                <h5><FaMapMarkerAlt /> {m.propertyId?.location}</h5>
-                <h5 className="mt-2"><strong>₹ {m.propertyId?.price}</strong></h5>
-                <h5 className="mt-2">Date: {m.date}</h5>
-                <h5 className="mt-2">Time:{m.time}</h5>
-                <h5 className="message">Message:  {m.message}</h5>
+                <h5>
+                  <FaMapMarkerAlt /> {m.propertyId?.location}
+                </h5>
+                <h5>
+                  <strong>₹ {m.propertyId?.price}</strong>
+                </h5>
+                <h5>Date: {m.date}</h5>
+                <h5>Time: {m.time}</h5>
+                <h5 className="message">Message: {m.message}</h5>
               </div>
 
-              {/* BROKER */}
               <div className="broker-box">
                 <img
                   src={
@@ -130,12 +140,13 @@ const UserMeetings = () => {
                 />
                 <div>
                   <h4>{m.brokerId?.name}</h4>
-                  <p><FaPhone /> {m.brokerId?.phone}</p>
+                  <p>
+                    <FaPhone /> {m.brokerId?.phone}
+                  </p>
                   <p>{m.brokerId?.email}</p>
                 </div>
               </div>
 
-              {/* ACTION BUTTONS */}
               {m.status === "pending" && (
                 <div className="action-buttons">
                   <button
@@ -154,7 +165,31 @@ const UserMeetings = () => {
                 </div>
               )}
 
-              {/* DELETE */}
+              {m.status === "confirmed" && (
+                <div className="interest-box">
+                  <select
+                    className="interest-select"
+                    value={
+                      m.interested === true
+                        ? "yes"
+                        : m.interested === false
+                        ? "no"
+                        : ""
+                    }
+                    onChange={(e) =>
+                      handleInterest(
+                        m._id,
+                        e.target.value === "yes" ? true : false
+                      )
+                    }
+                  >
+                    <option value="">Select Interest</option>
+                    <option value="yes">Interested</option>
+                    <option value="no">Not Interested</option>
+                  </select>
+                </div>
+              )}
+
               <button
                 className="delete-btn"
                 onClick={() => handleDelete(m._id)}

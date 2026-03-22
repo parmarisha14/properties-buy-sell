@@ -1,6 +1,6 @@
 const Meeting = require("../models/MeetingModel");
 
-// CREATE
+
 exports.createMeeting = async (req, res) => {
   try {
     const brokerId = req.session.user?._id;
@@ -26,7 +26,7 @@ exports.createMeeting = async (req, res) => {
   }
 };
 
-// BROKER
+
 exports.getBrokerMeetings = async (req, res) => {
   try {
     const meetings = await Meeting.find({ brokerId: req.session.user._id })
@@ -41,7 +41,7 @@ exports.getBrokerMeetings = async (req, res) => {
   }
 };
 
-// USER
+
 exports.getUserMeetings = async (req, res) => {
   try {
     const meetings = await Meeting.find({ userId: req.session.user._id })
@@ -55,7 +55,7 @@ exports.getUserMeetings = async (req, res) => {
   }
 };
 
-// STATUS UPDATE
+
 exports.updateStatus = async (req, res) => {
   try {
     const meeting = await Meeting.findByIdAndUpdate(
@@ -71,7 +71,7 @@ exports.updateStatus = async (req, res) => {
   }
 };
 
-// DELETE
+
 exports.deleteMeeting = async (req, res) => {
   try {
     const userId = req.session.user._id;

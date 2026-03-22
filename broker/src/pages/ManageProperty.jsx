@@ -25,34 +25,31 @@ const ManageProperty = () => {
 
   const fetchProperties = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5000/api/property/broker",
-        { withCredentials: true }
-      );
+      const res = await axios.get("http://localhost:5000/api/property/broker", {
+        withCredentials: true,
+      });
       setProperties(res.data.properties || []);
     } catch (err) {
-      console.log("Fetch Error:", err);
+      console.log(err);
     }
   };
 
   const deleteProperty = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this property?")) return;
-
+    if (!window.confirm("Delete property?")) return;
     try {
-      await axios.delete(
-        `http://localhost:5000/api/property/delete/${id}`,
-        { withCredentials: true }
-      );
+      await axios.delete(`http://localhost:5000/api/property/delete/${id}`, {
+        withCredentials: true,
+      });
       fetchProperties();
     } catch (err) {
-      console.log("Delete Error:", err);
+      console.log(err);
     }
   };
 
-  const getStatusBadge = (status) => {
-    if (status === "approved") return "badge-approved";
-    if (status === "rejected") return "badge-rejected";
-    return "badge-pending";
+  const getStatusClass = (status) => {
+    if (status === "approved") return "status-approved";
+    if (status === "rejected") return "status-rejected";
+    return "status-pending";
   };
 
   return (
@@ -62,69 +59,64 @@ const ManageProperty = () => {
       <div className="main-content">
         <div className="page-header">
           <h2>Manage Properties</h2>
-
-          
         </div>
 
-        <div className="property-grid ">
+        <div className="property-grid">
           {properties.length === 0 ? (
-            <p>No properties found.</p>
+            <p>No properties found</p>
           ) : (
             properties.map((p) => (
               <div className="property-card" key={p._id}>
-                
-                {/* IMAGE */}
-                <img
-                  src={
-                    p.image
-                      ? `http://localhost:5000/uploads/properties/${p.image}`
-                      : "https://via.placeholder.com/300x200"
-                  }
-                  alt={p.name}
-                  className="property-img"
-                />
+                <div className="image-wrapper">
+                  <img
+                    src={
+                      p.image
+                        ? `http://localhost:5000/uploads/properties/${p.image}`
+                        : "https://via.placeholder.com/300x200"
+                    }
+                    alt={p.name}
+                    className="property-img"
+                  />
+                  <span className={`status-badge ${getStatusClass(p.status)}`}>
+                    {p.status || "pending"}
+                  </span>
+                </div>
 
                 <div className="property-body">
+                  <h5 className="property-title">{p.name}</h5>
 
-                  {/* HEADER */}
-                  <div className="property-header">
-                    <h5>{p.name || "No Name"}</h5>
-                    <span className={`status-badge ${getStatusBadge(p.status)}`}>
-                      {p.status || "pending"}
+                  <p className="property-price">₹ {p.price || 0}</p>
+
+                  <p className="property-location">
+                    {p.location}, {p.city}, {p.state}
+                  </p>
+
+                  <div className="property-info">
+                    <span>
+                      <FaBed /> {p.bedroom ?? 0}
+                    </span>
+                    <span>
+                      <FaBath /> {p.bathroom ?? 0}
+                    </span>
+                    <span>
+                      <FaRulerCombined /> {p.area ?? 0} sq.ft
                     </span>
                   </div>
 
-                  {/* PRICE */}
-                  <p className="property-price">
-                    ₹ {p.price || 0}
-                  </p>
-
-                  {/* LOCATION */}
-                  <p className="property-location">
-                    {p.location || "-"}, {p.city || "-"}, {p.state || "-"}
-                  </p>
-
-                  {/* INFO */}
                   <div className="property-info">
-                    <span><FaBed /> {p.bedroom ?? 0}</span>
-                    <span><FaBath /> {p.bathroom ?? 0}</span>
-                    <span><FaRulerCombined /> {p.area ?? 0} sq.ft</span>
+                    <span>
+                      <FaCalendarAlt /> {p.year || "N/A"}
+                    </span>
+                    <span>
+                      <FaTags /> {p.type || "N/A"}
+                    </span>
                   </div>
 
-                  <div className="property-info">
-                    <span><FaCalendarAlt /> {p.year || "N/A"}</span>
-                    <span><FaTags /> {p.type || "N/A"}</span>
-                  </div>
-
-                  {/* DESCRIPTION */}
                   {p.description && (
-                    <p className="property-description">
-                      {p.description}
-                    </p>
+                    <p className="property-description">{p.description}</p>
                   )}
 
-                  {/* FEATURES */}
-                  {p.features && p.features.length > 0 && (
+                  {p.features?.length > 0 && (
                     <div className="property-features">
                       {p.features.map((f, i) => (
                         <span key={i} className="feature-badge">
@@ -134,12 +126,10 @@ const ManageProperty = () => {
                     </div>
                   )}
 
-                  {/* BROKER */}
                   <p className="property-broker">
-                    Broker: {p?.brokerId?.fullName || p?.brokerId?.name || "N/A"}
+                    Broker: {p?.brokerId?.name || "N/A"}
                   </p>
 
-                  {/* BUTTONS */}
                   <div className="property-buttons">
                     <button
                       className="edit-btn"
@@ -155,7 +145,6 @@ const ManageProperty = () => {
                       <FaTrash /> Delete
                     </button>
                   </div>
-
                 </div>
               </div>
             ))

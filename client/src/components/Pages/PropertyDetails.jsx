@@ -20,7 +20,7 @@ const PropertyDetails = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [form, setForm] = useState({
-    name: "",
+    fullName: "",
     email: "",
     phone: "",
     date: "",
@@ -34,7 +34,9 @@ const PropertyDetails = () => {
 
   const fetchProperty = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/property/${id}`);
+      const res = await axios.get(
+        `http://localhost:5000/api/property/${id}`
+      );
       setProperty(res.data.property);
     } catch (err) {
       console.log(err);
@@ -48,14 +50,16 @@ const PropertyDetails = () => {
       });
 
       if (res.data.success) {
+        const user = res.data.user;
+
         setIsLoggedIn(true);
 
-        setForm({
-          ...form,
-          name: res.data.user.name || "",
-          email: res.data.user.email || "",
-          phone: res.data.user.phone || "",
-        });
+        setForm((prev) => ({
+          ...prev,
+          fullName: user.fullName || user.name || "",
+          email: user.email || "",
+          phone: user.phone || "",
+        }));
       }
     } catch (err) {
       setIsLoggedIn(false);
@@ -63,11 +67,16 @@ const PropertyDetails = () => {
   };
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const today = new Date().toISOString().split("T")[0];
 
     if (!isLoggedIn) {
       alert("Please login first");
@@ -75,24 +84,42 @@ const PropertyDetails = () => {
       return;
     }
 
+    if (!form.date) {
+      alert("Please select a date");
+      return;
+    }
+
+    if (form.date < today) {
+      alert("Past date not allowed. Please select today or future date.");
+      return;
+    }
+
     try {
       await axios.post(
         "http://localhost:5000/api/inquiry",
         {
-          ...form,
+          name: form.fullName,
+          email: form.email,
+          phone: form.phone,
+          date: form.date,
+          message: form.message,
           propertyId: property._id,
-          brokerId: property.brokerId._id,
+          brokerId: property.brokerId?._id,
         },
-        { withCredentials: true },
+        { withCredentials: true }
       );
 
       alert("Request Sent Successfully");
 
-      setForm({
-        ...form,
+      setForm((prev) => ({
+        ...prev,
         date: "",
         message: "",
-      });
+      }));
+
+      // ✅ REDIRECT AFTER SUCCESS
+      navigate("/my-requests");
+
     } catch (err) {
       console.log(err);
       alert("Error sending request");
@@ -100,6 +127,8 @@ const PropertyDetails = () => {
   };
 
   if (!property) return <h2>Loading...</h2>;
+
+  const todayDate = new Date().toISOString().split("T")[0];
 
   return (
     <div className="details-container">
@@ -154,9 +183,10 @@ const PropertyDetails = () => {
           <FaCalendarAlt /> {property.year}
         </h3>
 
-        <h5 className="type mt-3">Type: {property.type}</h5>
-        <h5 className="type mt-3">city: {property.city}</h5>
-        <h5 className="type mt-3">state: {property.state}</h5>
+        <h5>Type: {property.type}</h5>
+        <h5>City: {property.city}</h5>
+        <h5>State: {property.state}</h5>
+
         <div className="agent-box">
           <img
             src={
@@ -164,7 +194,7 @@ const PropertyDetails = () => {
                 ? `http://localhost:5000/uploads/users/${property.brokerId.brokerImage}`
                 : "https://randomuser.me/api/portraits/men/1.jpg"
             }
-            alt=""
+            alt="broker"
           />
           <div>
             <h4>{property?.brokerId?.name}</h4>
@@ -179,8 +209,8 @@ const PropertyDetails = () => {
             <h3>Schedule a Tour</h3>
 
             <input
-              name="name"
-              value={form.name}
+              name="fullName"
+              value={form.fullName}
               onChange={handleChange}
               placeholder="Your Name"
               required
@@ -202,12 +232,13 @@ const PropertyDetails = () => {
               required
             />
 
-            <label>Schedule a Tour for date:</label>
+            <label>Schedule Date (Today or Future Only)</label>
             <input
               type="date"
               name="date"
               value={form.date}
               onChange={handleChange}
+              min={todayDate}
               required
             />
 
@@ -216,7 +247,7 @@ const PropertyDetails = () => {
               value={form.message}
               onChange={handleChange}
               placeholder="Your Message"
-            ></textarea>
+            />
 
             <button type="submit">Send Request</button>
           </form>
@@ -225,7 +256,9 @@ const PropertyDetails = () => {
             <h3>Please Login</h3>
             <p>You must login to send request</p>
 
-            <button onClick={() => navigate("/signin")}>Go to Login</button>
+            <button onClick={() => navigate("/signin")}>
+              Go to Login
+            </button>
           </div>
         )}
       </div>

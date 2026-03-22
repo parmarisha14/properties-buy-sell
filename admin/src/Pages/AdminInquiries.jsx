@@ -26,16 +26,6 @@ const AdminInquiries = () => {
     fetchData();
   };
 
-  const deleteInquiry = async (id) => {
-    if (!window.confirm("Are you sure?")) return;
-
-    await axios.delete(`http://localhost:5000/api/inquiry/${id}`, {
-      withCredentials: true,
-    });
-
-    fetchData();
-  };
-
   return (
     <div className="main-content">
       <h2 className="page-title">All Inquiries</h2>

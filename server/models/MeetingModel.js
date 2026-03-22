@@ -28,7 +28,7 @@ const meetingSchema = new mongoose.Schema({
 
   status: {
     type: String,
-    enum: ["pending", "confirmed", "cancelled"], // ✅ FIX
+    enum: ["pending", "confirmed", "cancelled"], 
     default: "pending"
   }
 

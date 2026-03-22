@@ -1,7 +1,7 @@
 const Admin = require("../models/AdminModel");
 const bcrypt = require("bcrypt");
 
-// ================= CHANGE PASSWORD =================
+
 exports.changePassword = async (req, res) => {
   try {
     const adminId = req.session.user?._id;
@@ -50,7 +50,7 @@ exports.changePassword = async (req, res) => {
 };
 
 
-// ================= LOGOUT =================
+
 exports.logout = (req, res) => {
   try {
     req.session.destroy((err) => {

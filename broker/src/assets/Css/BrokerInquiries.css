@@ -6,11 +6,9 @@
   min-height: 100vh;
 }
 
-
 .inquiry-container {
   width: 100%;
 }
-
 
 .title {
   font-size: 28px;
@@ -25,54 +23,52 @@
   gap: 25px;
 }
 
-
 .card {
   background: #fff;
   border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  transition: 0.3s;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  transition: 0.3s;
 }
 
 .card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-5px);
 }
 
+.property-img {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 12px;
+}
 
 .property-img img {
   width: 100%;
-  height: 200px;
+  height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-
-.card-body {
-  padding: 18px;
-}
-
-
-.top {
+.inquires-property-name {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 12px;
 }
 
-.top h3 {
+.inquires-property-name h3 {
   font-size: 18px;
   font-weight: 600;
-  margin-top: 20px;
+  margin: 0;
 }
-
 
 .status {
   padding: 5px 12px;
   border-radius: 20px;
   font-size: 12px;
   text-transform: capitalize;
-  margin-top: 20px;
 }
 
 .status.pending {
@@ -89,13 +85,11 @@
   color: #fff;
 }
 
-
 .section {
-  margin-top: 12px;
+  margin-top: 10px;
   font-size: 14px;
   color: #475569;
 }
-
 
 .user-box,
 .broker-box {
@@ -116,88 +110,48 @@
   object-fit: cover;
 }
 
-.user-box h4,
-.broker-box h4 {
-  font-size: 14px;
-  margin: 0;
-}
-
-.user-box p,
-.broker-box p {
-  font-size: 12px;
-  margin: 0;
-  color: #64748b;
-}
-
-
 .buttons {
   margin-top: 15px;
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .accept,
-.reject {
+.reject,
+.delete,
+.add-meeting {
   flex: 1;
   padding: 10px;
-  border-radius: 8px;
   border: none;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
-  transition: 0.3s;
 }
 
 .accept {
   background: #22c55e;
-  color: white;
-}
-
-.accept:hover {
-  background: #16a34a;
+  color: #fff;
 }
 
 .reject {
   background: #ef4444;
-  color: white;
+  color: #fff;
 }
 
-.reject:hover {
-  background: #dc2626;
+.delete {
+  background: #111827;
+  color: #fff;
 }
 
+.add-meeting {
+  background: #6f42c1;
+  color: #fff;
+}
 
 .loading,
 .empty {
   text-align: center;
   margin-top: 50px;
   font-size: 18px;
-}
-
-.delete {
-  flex: 1;
-  background: #111827;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.delete:hover {
-  background: #000;
-}
-
-.add-meeting {
-  background: #6f42c1;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  margin: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.add-meeting:hover {
-  background: #5936a2;
 }

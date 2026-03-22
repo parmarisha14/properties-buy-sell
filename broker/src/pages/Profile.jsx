@@ -9,7 +9,7 @@ const Profile = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/auth/profile", { withCredentials: true }) // fixed API
+      .get("http://localhost:5000/api/auth/profile", { withCredentials: true })
       .then((res) => setUser(res.data))
       .catch((err) => console.log("Fetch profile error:", err));
   }, []);
@@ -37,15 +37,25 @@ const Profile = () => {
 
         <div className="profile-section">
           <h3>Basic Information</h3>
-          <p><strong>Email :</strong> {user.email || "Not Added"}</p>
-          <p><strong>Phone :</strong> {user.phone || "Not Added"}</p>
+          <p>
+            <strong>Email :</strong> {user.email || "Not Added"}
+          </p>
+          <p>
+            <strong>Phone :</strong> {user.phone || "Not Added"}
+          </p>
           {user.role === "broker" && (
             <>
-              <p><strong>Agency :</strong> {user.agency || "Not Added"}</p>
-              <p><strong>RERA :</strong> {user.rera || "Not Added"}</p>
+              <p>
+                <strong>Agency :</strong> {user.agency || "Not Added"}
+              </p>
+              <p>
+                <strong>RERA :</strong> {user.rera || "Not Added"}
+              </p>
             </>
           )}
-          <p><strong>Address :</strong> {user.address || "Not Added"}</p>
+          <p>
+            <strong>Address :</strong> {user.address || "Not Added"}
+          </p>
         </div>
 
         <div className="profile-section">
@@ -70,7 +80,11 @@ const Profile = () => {
 
         <div className="profile-section">
           <h3>Languages</h3>
-          <p>{user.languages?.length ? user.languages.join(", ") : "Not Added Yet"}</p>
+          <p>
+            {user.languages?.length
+              ? user.languages.join(", ")
+              : "Not Added Yet"}
+          </p>
         </div>
 
         {user.role === "broker" && (
@@ -83,10 +97,16 @@ const Profile = () => {
         )}
 
         <div className="profile-buttons">
-          <button className="btn-edit" onClick={() => navigate("/edit-profile")}>
+          <button
+            className="btn-edit"
+            onClick={() => navigate("/edit-profile")}
+          >
             Edit Profile
           </button>
-          <button className="btn-password" onClick={() => navigate("/change-password")}>
+          <button
+            className="btn-password"
+            onClick={() => navigate("/change-password")}
+          >
             Change Password
           </button>
         </div>

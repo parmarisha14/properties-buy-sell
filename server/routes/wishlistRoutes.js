@@ -3,7 +3,7 @@ const router = express.Router();
 
 const {
   toggleWishlist,
-  getWishlist
+  getWishlist,
 } = require("../controllers/wishlistController");
 
 router.post("/toggle", toggleWishlist);

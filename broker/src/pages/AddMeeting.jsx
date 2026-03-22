@@ -5,61 +5,77 @@ import Sidebar from "../components/Sidebar";
 import "../assets/css/AddMeeting.css";
 
 const AddMeeting = () => {
-
-  const { state } = useLocation();
   const navigate = useNavigate();
+  const { state } = useLocation();
   const inquiry = state?.inquiry;
 
+  const today = new Date().toISOString().split("T")[0];
+
   const [form, setForm] = useState({
-    date: "",
+    date: today,
     time: "",
-    message: ""
+    message: "",
   });
+
+  if (!inquiry) {
+    return <h2>No Inquiry Data Found</h2>;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await axios.post(
-      "http://localhost:5000/api/meeting/create",
-      {
-        propertyId: inquiry.propertyId._id,
-        userId: inquiry.userId._id,
-        name: inquiry.userId.fullName,
-        phone: inquiry.userId.phone,
-        date: form.date,
-        time: form.time,
-        message: form.message
-      },
-      { withCredentials: true }
-    );
+    if (!form.date || !form.time) {
+      alert("Please select date and time");
+      return;
+    }
 
-    alert("Meeting Created ✅");
-    navigate("/broker/meetings");
+    try {
+      await axios.post(
+        "http://localhost:5000/api/meeting/create",
+        {
+          propertyId: inquiry.propertyId?._id,
+          userId: inquiry.userId?._id,
+          name: inquiry.userId?.fullName,
+          phone: inquiry.userId?.phone,
+          date: form.date,
+          time: form.time,
+          message: form.message,
+        },
+        { withCredentials: true },
+      );
+
+      alert("Meeting Created Successfully");
+      navigate("/broker/meetings");
+    } catch (error) {
+      console.log(error);
+      alert("Error creating meeting");
+    }
   };
 
   return (
     <div className="app-layout">
-
       <Sidebar />
 
       <div className="main-content">
-
-        <div className="meeting-card">
-
-          <h2 className="page-title">📅 Schedule Meeting</h2>
+        <div className="meeting-wrapper">
+          <h2 className="page-title">Schedule Meeting</h2>
 
           <div className="info-box">
-            <p><strong>User:</strong> {inquiry?.userId?.fullName}</p>
-            <p><strong>Property:</strong> {inquiry?.propertyId?.name}</p>
+            <p>
+              <strong>User:</strong> {inquiry.userId?.fullName}
+            </p>
+            <p>
+              <strong>Property:</strong> {inquiry.propertyId?.name}
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="meeting-form">
-
             <div className="form-group">
               <label>Date</label>
               <input
                 type="date"
-                required
+                value={form.date}
+                min={today}
                 onChange={(e) => setForm({ ...form, date: e.target.value })}
               />
             </div>
@@ -68,7 +84,7 @@ const AddMeeting = () => {
               <label>Time</label>
               <input
                 type="time"
-                required
+                value={form.time}
                 onChange={(e) => setForm({ ...form, time: e.target.value })}
               />
             </div>
@@ -76,7 +92,7 @@ const AddMeeting = () => {
             <div className="form-group">
               <label>Message</label>
               <textarea
-                placeholder="Enter meeting details..."
+                value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
               />
             </div>
@@ -84,11 +100,8 @@ const AddMeeting = () => {
             <button type="submit" className="submit-btn">
               Create Meeting
             </button>
-
           </form>
-
         </div>
-
       </div>
     </div>
   );

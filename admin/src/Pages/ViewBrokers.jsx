@@ -4,6 +4,7 @@ import "../assets/css/ViewBrokers.css";
 
 const ViewBrokers = () => {
   const [brokers, setBrokers] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetchBrokers();
@@ -12,87 +13,111 @@ const ViewBrokers = () => {
   const fetchBrokers = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/auth/all-brokers");
-      setBrokers(res.data.brokers);
+      setBrokers(res.data.brokers || []);
     } catch (error) {
-      console.log("Error:", error);
+      console.log(error);
     }
   };
 
   const deleteBroker = async (id) => {
-    if (!window.confirm("Delete this broker?")) return;
+    if (!window.confirm("Are you sure you want to delete this broker?")) return;
 
     try {
       await axios.delete(`http://localhost:5000/api/auth/delete-broker/${id}`);
       fetchBrokers();
     } catch (error) {
-      console.log("Delete Error:", error);
+      console.log(error);
     }
   };
 
+  const filtered = brokers.filter((b) =>
+    [b.name, b.email, b.phone, b.agency, b.officeLocation, b.rera, b.gender]
+      .join(" ")
+      .toLowerCase()
+      .includes(search.toLowerCase()),
+  );
+
   return (
     <div className="broker-wrapper">
-      <h2 className="page-title">Brokers List</h2>
+      <div className="header">
+        <h2 className="title">Broker Management</h2>
+
+        <input
+          type="text"
+          placeholder="Search brokers..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="search-box"
+        />
+      </div>
 
       <div className="broker-grid">
-        {brokers.map((broker) => (
-          <div className="broker-card" key={broker._id}>
+        {filtered.map((b) => (
+          <div className="broker-card" key={b._id}>
             <img
               src={
-                broker.brokerImage
-                  ? `http://localhost:5000/uploads/users/${broker.brokerImage}`
+                b.brokerImage
+                  ? `http://localhost:5000/uploads/users/${b.brokerImage}`
                   : "/default.png"
               }
-              alt="broker"
               className="broker-img"
+              alt="broker"
             />
 
             <div className="broker-body">
-              <h3>{broker.name}</h3>
+              <h3>{b.name}</h3>
+              <p className="agency">{b.agency}</p>
 
-              <p className="agency">{broker.agency}</p>
-
-              <p>{broker.email}</p>
-              <p>{broker.phone}</p>
-
-              <div className="broker-info">
+              <div className="info">
                 <p>
-                  <b>RERA:</b> {broker.rera}
+                  <b>Email:</b> {b.email}
+                </p>
+                <p>
+                  <b>Phone:</b> {b.phone}
                 </p>
 
                 <p>
-                  <b>Experience:</b> {broker.experienceYears} Years
+                  <b>RERA:</b> {b.rera}
                 </p>
                 <p>
-                  <b>Location:</b> {broker.officeLocation}
+                  <b>Experience:</b> {b.experienceYears} Years
                 </p>
                 <p>
-                  <b>Languages:</b> {broker.languages?.join(", ")}
+                  <b>Office:</b> {b.officeLocation}
+                </p>
+                <p>
+                  <b>Address:</b> {b.address}
+                </p>
+
+                <p>
+                  <b>Languages:</b> {b.languages?.join(", ")}
+                </p>
+
+                <hr />
+
+                <p>
+                  <b>Business Hours:</b>
+                  <br />
+                  Mon-Fri: {b.businessHours?.mondayFriday || "N/A"}
+                  <br />
+                  Sat: {b.businessHours?.saturday || "N/A"}
+                  <br />
+                  Sun: {b.businessHours?.sunday || "N/A"}
                 </p>
               </div>
 
               <p className="summary">
-                {broker.professionalSummary
-                  ? broker.professionalSummary.substring(0, 100) + "..."
-                  : ""}
+                <b>Summary:</b> {b.professionalSummary}
               </p>
 
-              <p className="quote">"{broker.quotes}"</p>
-
-              <div className="broker-info">
-                <p>
-                  <b>Business Hours:</b>
-                </p>
-                <p>Mon-Fri: {broker.businessHours?.mondayFriday}</p>
-                <p>Sat: {broker.businessHours?.saturday}</p>
-                <p>Sun: {broker.businessHours?.sunday}</p>
-              </div>
+              <p className="quote">
+                <b>Quote:</b> "{b.quotes}"
+              </p>
 
               <div className="action-buttons">
-                <button className="view-btn">View</button>
-
                 <button
                   className="delete-btn"
-                  onClick={() => deleteBroker(broker._id)}
+                  onClick={() => deleteBroker(b._id)}
                 >
                   Delete
                 </button>

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // ✅ ADD
+import { useNavigate } from "react-router-dom";
 import "../assets/css/BrokerInquiries.css";
 
 const BrokerInquiries = () => {
-
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate(); // ✅ ADD
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -15,10 +14,9 @@ const BrokerInquiries = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5000/api/inquiry/broker",
-        { withCredentials: true }
-      );
+      const res = await axios.get("http://localhost:5000/api/inquiry/broker", {
+        withCredentials: true,
+      });
       setData(res.data.inquiries || []);
     } catch (err) {
       console.log(err);
@@ -32,7 +30,7 @@ const BrokerInquiries = () => {
       await axios.put(
         `http://localhost:5000/api/inquiry/${id}`,
         { status },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       fetchData();
     } catch (err) {
@@ -44,21 +42,37 @@ const BrokerInquiries = () => {
     if (!window.confirm("Delete this inquiry?")) return;
 
     try {
-      await axios.delete(
-        `http://localhost:5000/api/inquiry/delete/${id}`,
-        { withCredentials: true }
-      );
+      await axios.delete(`http://localhost:5000/api/inquiry/delete/${id}`, {
+        withCredentials: true,
+      });
       fetchData();
     } catch (err) {
       console.log(err);
     }
   };
 
-  // ✅ NEW BUTTON FUNCTION
   const handleAddMeeting = (item) => {
     navigate("/add-meeting", {
-      state: { inquiry: item }
+      state: { inquiry: item },
     });
+  };
+
+  const getPropertyImage = (property) => {
+    if (!property) return "/default-property.jpg";
+
+    if (property.image?.startsWith("http")) {
+      return property.image;
+    }
+
+    if (property.image) {
+      return `http://localhost:5000/uploads/properties/${property.image}`;
+    }
+
+    if (property.images?.length > 0) {
+      return `http://localhost:5000/uploads/properties/${property.images[0]}`;
+    }
+
+    return "/default-property.jpg";
   };
 
   if (loading) return <h2 className="loading">Loading...</h2>;
@@ -66,46 +80,30 @@ const BrokerInquiries = () => {
   return (
     <div className="main-content">
       <div className="inquiry-container">
-
         <h2 className="title">Property Inquiries</h2>
 
         {data.length === 0 ? (
           <p className="empty">No inquiries found</p>
         ) : (
           <div className="grid">
-
             {data.map((item) => (
-
               <div className="card" key={item._id}>
-
-                {/* PROPERTY IMAGE */}
                 <div className="property-img">
-                  <img
-                    src={
-                      item.propertyId?.image
-                        ? `http://localhost:5000/uploads/properties/${item.propertyId.image}`
-                        : "/default-property.jpg"
-                    }
-                    alt=""
-                  />
+                  <img src={getPropertyImage(item.propertyId)} alt="property" />
                 </div>
 
-                {/* HEADER */}
-                <div className="top mt-4">
+                <div className="inquires-property-name">
                   <h3>{item.propertyId?.name}</h3>
-                  <span className={`status ${item.status}`}>
-                    {item.status}
-                  </span>
+                  <span className={`status ${item.status}`}>{item.status}</span>
                 </div>
 
-                {/* PROPERTY */}
                 <div className="section">
-                  <p><strong>₹ {item.propertyId?.price}</strong></p>
-                  <p>Location: {item.propertyId?.location}</p>
-                  
+                  <p>
+                    <strong>₹ {item.propertyId?.price}</strong>
+                  </p>
+                  <p>{item.propertyId?.location}</p>
                 </div>
 
-                {/* USER */}
                 <div className="user-box">
                   <img
                     src={
@@ -115,21 +113,22 @@ const BrokerInquiries = () => {
                     }
                     alt=""
                   />
-
                   <div>
-                    <h4>{item.userId?.fullName || item.name}</h4>
-                    <p>{item.userId?.phone || item.phone}</p>
-                    <p>{item.userId?.email || item.email}</p>
+                    <h4>{item.userId?.fullName}</h4>
+                    <p>{item.userId?.phone}</p>
+                    <p>{item.userId?.email}</p>
                   </div>
                 </div>
 
-                {/* MESSAGE */}
                 <div className="section">
-                  <p><strong>Date:</strong> {item.date}</p>
-                  <p><strong>Message:</strong> {item.message}</p>
+                  <p>
+                    <b>Date:</b> {item.date}
+                  </p>
+                  <p>
+                    <b>Message:</b> {item.message}
+                  </p>
                 </div>
 
-                {/* BROKER */}
                 <div className="broker-box">
                   <img
                     src={
@@ -145,9 +144,7 @@ const BrokerInquiries = () => {
                   </div>
                 </div>
 
-                {/* ACTIONS */}
                 <div className="buttons">
-
                   <button
                     className="accept"
                     onClick={() => handleStatus(item._id, "approved")}
@@ -155,7 +152,6 @@ const BrokerInquiries = () => {
                     Accept
                   </button>
 
-                  {/* 🔥 NEW BUTTON */}
                   <button
                     className="add-meeting"
                     onClick={() => handleAddMeeting(item)}
@@ -176,16 +172,11 @@ const BrokerInquiries = () => {
                   >
                     Delete
                   </button>
-
                 </div>
-
               </div>
-
             ))}
-
           </div>
         )}
-
       </div>
     </div>
   );

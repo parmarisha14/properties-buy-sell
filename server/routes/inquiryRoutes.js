@@ -7,7 +7,7 @@ const {
   getUserInquiries,
   updateStatus,
   deleteInquiry,
-  getAllInquiries
+  getAllInquiries,
 } = require("../controllers/inquiryController");
 
 router.post("/", createInquiry);

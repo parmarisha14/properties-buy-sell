@@ -4,7 +4,6 @@ import Sidebar from "../components/Sidebar";
 import "../assets/css/BrokerMeetings.css";
 
 const BrokerMeetings = () => {
-
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -13,126 +12,116 @@ const BrokerMeetings = () => {
 
   const loadData = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5000/api/meeting/broker",
-        { withCredentials: true }
-      );
+      const res = await axios.get("http://localhost:5000/api/meeting/broker", {
+        withCredentials: true,
+      });
       setData(res.data.meetings || []);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
   };
 
   const deleteMeeting = async (id) => {
-    if (!window.confirm("Delete meeting?")) return;
+    if (!window.confirm("Are you sure to delete this meeting?")) return;
 
     try {
-      await axios.delete(
-        `http://localhost:5000/api/meeting/${id}`,
-        { withCredentials: true }
-      );
+      await axios.delete(`http://localhost:5000/api/meeting/${id}`, {
+        withCredentials: true,
+      });
       loadData();
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  const formatDate = (d) =>
-    new Date(d).toLocaleDateString("en-IN");
+  const formatDate = (d) => new Date(d).toLocaleDateString("en-IN");
 
   const formatTime = (t) =>
     new Date(`1970-01-01T${t}`).toLocaleTimeString("en-IN", {
       hour: "2-digit",
-      minute: "2-digit"
+      minute: "2-digit",
     });
+
+  const getPropertyImage = (property) => {
+    if (!property?.image) return "/default-property.jpg";
+    if (property.image.startsWith("http")) return property.image;
+    return `http://localhost:5000/uploads/properties/${property.image}`;
+  };
+
+  const normalizeStatus = (status) => status?.toLowerCase() || "pending";
 
   return (
     <div className="app-layout">
-
       <Sidebar />
 
       <div className="main-content">
-
-        <h2 className="page-title"> My Meetings</h2>
+        <h2 className="page-title">My Meetings</h2>
 
         <div className="meeting-grid">
-
           {data.length === 0 ? (
-            <p>No Meetings Found</p>
+            <div className="empty-box">No Meetings Found</div>
           ) : (
-
             data.map((m) => (
+              <div className="broker-meeting-card" key={m._id}>
+                <div className="image-wrapper">
+                  <img
+                    src={getPropertyImage(m.propertyId)}
+                    className="meeting-property-img"
+                    alt="property"
+                  />
 
-              <div className="meeting-card" key={m._id}>
+                  <span className={`status-badge ${normalizeStatus(m.status)}`}>
+                    {m.status || "pending"}
+                  </span>
+                </div>
 
-                {/* IMAGE */}
-                <img
-                  className="property-img"
-                  src={
-                    m.propertyId?.image
-                      ? `http://localhost:5000/uploads/properties/${m.propertyId.image}`
-                      : "/default-property.jpg"
-                  }
-                  alt=""
-                />
-
-                <div className="card-body">
-
-                  <h3>{m.propertyId?.name}</h3>
-                  <p className="price">₹ {m.propertyId?.price}</p>
-                  <p>Location: {m.propertyId?.location}</p>
-
-                  <hr />
-
-                  <p>Date: {formatDate(m.date)}</p>
-                  <p>Time: {formatTime(m.time)}</p>
-
-                  <p className="message">Message: {m.message || "-"}</p>
-
-                  <hr />
-
-                  <div className="user-box">
-                    <p><b>User:</b> {m.userId?.fullName}</p>
-                    <p>{m.userId?.phone}</p>
+                <div className="meeting-body">
+                  <div className="meeting-header">
+                    <h3>{m.propertyId?.name}</h3>
+                    <span className="price">₹ {m.propertyId?.price}</span>
                   </div>
 
-                  <div className="broker-box">
-                    <img
-                      src={
-                        m.brokerId?.brokerImage
-                          ? `http://localhost:5000/uploads/users/${m.brokerId.brokerImage}`
-                          : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                      }
-                      alt=""
-                    />
+                  <p className="location">{m.propertyId?.location}</p>
+
+                  <div className="user-card">
+                    <div className="user-avatar">
+                      {m.userId?.fullName?.charAt(0)}
+                    </div>
+
                     <div>
-                      <p>{m.brokerId?.name}</p>
-                      <p>{m.brokerId?.phone}</p>
+                      <p className="user-name">{m.userId?.fullName}</p>
+                      <p className="user-phone">{m.userId?.phone}</p>
                     </div>
                   </div>
 
-                  <span className={`status ${m.status}`}>
-                    {m.status}
-                  </span>
+                  <div className="info-section">
+                    <div className="info-row">
+                      <span className="label">Date: </span>
+                      <span className="value">{formatDate(m.date)}</span>
+                    </div>
 
-                  {/* ONLY DELETE */}
+                    <div className="info-row">
+                      <span className="label">Time: </span>
+                      <span className="value">{formatTime(m.time)}</span>
+                    </div>
+
+                    <div className="info-row message">
+                      <span className="label">Message: </span>
+                      <span className="value">{m.message || "No message"}</span>
+                    </div>
+                  </div>
+
                   <button
                     className="delete-btn"
                     onClick={() => deleteMeeting(m._id)}
                   >
-                    Delete
+                    Delete Meeting
                   </button>
-
                 </div>
-
               </div>
-
             ))
-
           )}
-
         </div>
-
       </div>
     </div>
   );

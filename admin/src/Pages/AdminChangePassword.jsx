@@ -13,7 +13,7 @@ const AdminChangePassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 🔹 Validation
+   
     if (!currentPassword || !newPassword || !confirmPassword) {
       alert("All fields are required");
       return;
@@ -31,7 +31,7 @@ const AdminChangePassword = () => {
 
     try {
       const res = await axios.put(
-        "http://localhost:5000/api/admin/change-password", // 🔹 admin route
+        "http://localhost:5000/api/admin/change-password", 
         {
           currentPassword,
           newPassword
@@ -43,7 +43,7 @@ const AdminChangePassword = () => {
 
       alert(res.data.message || "Admin password changed successfully");
 
-      // 🔹 Clear fields
+    
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");

@@ -432,9 +432,7 @@ const Home = () => {
             </div>
 
             <div className="col-lg-6">
-              <span className="badge why-badge mb-3">
-                <FaStar className="me-2" /> Why Elite Properties
-              </span>
+              
 
               <h2 className="main-heading">
                 Your Gateway to Exceptional Real Estate Experiences

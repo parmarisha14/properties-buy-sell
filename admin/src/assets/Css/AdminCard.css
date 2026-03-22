@@ -1,48 +1,65 @@
 .app-layout {
   display: flex;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
+
 .main-content {
+  flex: 1;
   margin-left: 240px;
-  width: 100%;
   padding: 30px;
   background: #f4f7fb;
   min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
+
 
 .page-title {
   font-size: 28px;
   font-weight: 600;
   margin-bottom: 25px;
+  text-align: center;
 }
+
 
 .admin-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 25px;
+  align-items: start;
+  width: 100%;
 }
+
 
 .admin-card {
   background: #fff;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   transition: 0.3s;
+  width: 100%;
 }
 
 .admin-card:hover {
   transform: translateY(-5px);
 }
 
+
 .property-img-box img {
   width: 100%;
   height: 200px;
   object-fit: cover;
+  display: block;
 }
+
 
 .admin-body {
   padding: 15px;
 }
+
 
 .price {
   color: #28a745;
@@ -53,6 +70,7 @@
   color: #777;
   font-size: 14px;
 }
+
 
 .user-info,
 .broker-info {
@@ -70,6 +88,7 @@
   object-fit: cover;
 }
 
+
 .status-box {
   margin-top: 10px;
 }
@@ -79,7 +98,6 @@
   border-radius: 20px;
   font-size: 12px;
   font-weight: bold;
-  text-transform: capitalize;
 }
 
 .status.pending {
@@ -95,4 +113,22 @@
 .status.rejected {
   background: #f8d7da;
   color: #721c24;
+}
+
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.approve-btn,
+.reject-btn,
+.delete-btn {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
 }

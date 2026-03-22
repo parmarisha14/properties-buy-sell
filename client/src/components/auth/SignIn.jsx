@@ -29,7 +29,7 @@ const SignIn = () => {
       const res = await axios.post(
         "http://localhost:5000/api/auth/login",
         { email, password },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       if (!res.data || !res.data.user) {
@@ -44,14 +44,13 @@ const SignIn = () => {
 
       setTimeout(() => {
         if (user.role === "admin") {
-          window.location.href = "http://localhost:5174/admin-dashboard"; // ✅ FIX
+          window.location.href = "http://localhost:5174/admin-dashboard";
         } else if (user.role === "broker") {
           window.location.href = "http://localhost:5175/dashboard";
         } else {
           window.location.href = "/";
         }
       }, 500);
-
     } catch (err) {
       console.error("Login error:", err);
 
@@ -96,7 +95,7 @@ const SignIn = () => {
             onClick={() => setRole("user")}
             disabled={loading}
           >
-            <HiUser /> User/Admin
+            <HiUser /> User
           </button>
 
           <button
@@ -112,12 +111,24 @@ const SignIn = () => {
         <form className="login-form" onSubmit={handleLogin}>
           <div className="form-group">
             <label>Email</label>
-            <input type="email" name="email" required disabled={loading} />
+            <input
+              type="email"
+              name="email"
+              required
+              disabled={loading}
+              placeholder="Enter The Your Email"
+            />
           </div>
 
           <div className="form-group">
             <label>Password</label>
-            <input type="password" name="password" required disabled={loading} />
+            <input
+              type="password"
+              name="password"
+              required
+              disabled={loading}
+              placeholder="Enter The Your Password"
+            />
           </div>
 
           <button type="submit" className="login-btn" disabled={loading}>
