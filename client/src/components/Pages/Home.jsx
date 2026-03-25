@@ -432,8 +432,6 @@ const Home = () => {
             </div>
 
             <div className="col-lg-6">
-              
-
               <h2 className="main-heading">
                 Your Gateway to Exceptional Real Estate Experiences
               </h2>

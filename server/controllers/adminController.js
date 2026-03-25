@@ -1,7 +1,6 @@
 const Admin = require("../models/AdminModel");
 const bcrypt = require("bcrypt");
 
-
 exports.changePassword = async (req, res) => {
   try {
     const adminId = req.session.user?._id;
@@ -38,7 +37,6 @@ exports.changePassword = async (req, res) => {
       success: true,
       message: "Password changed successfully",
     });
-
   } catch (error) {
     console.log("CHANGE PASSWORD ERROR:", error);
 
@@ -48,8 +46,6 @@ exports.changePassword = async (req, res) => {
     });
   }
 };
-
-
 
 exports.logout = (req, res) => {
   try {

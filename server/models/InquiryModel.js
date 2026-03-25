@@ -24,12 +24,12 @@ const inquirySchema = new mongoose.Schema(
     message: String,
 
     status: {
-     type: String,
-    enum: ["pending", "approved", "rejected"],
-    default: "pending"
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Inquiry", inquirySchema);

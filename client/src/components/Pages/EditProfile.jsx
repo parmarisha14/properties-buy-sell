@@ -20,8 +20,6 @@ const EditProfile = () => {
 
   const [image, setImage] = useState(null);
 
-  
-
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -44,8 +42,6 @@ const EditProfile = () => {
     fetchProfile();
   }, [navigate]);
 
- 
-
   const handleChange = (e) => {
     setUser({
       ...user,
@@ -56,8 +52,6 @@ const EditProfile = () => {
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
   };
-
- 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,7 +67,7 @@ const EditProfile = () => {
       formData.append("gender", user.gender);
 
       if (image) {
-        formData.append("image", image); 
+        formData.append("image", image);
       }
 
       await axios.put("http://localhost:5000/api/auth/profile", formData, {
@@ -89,8 +83,6 @@ const EditProfile = () => {
       alert("Failed to update profile");
     }
   };
-
-
 
   return (
     <div className="edit-profile-wrapper">

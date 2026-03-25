@@ -9,7 +9,6 @@ const Profile = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
- 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -27,8 +26,6 @@ const Profile = () => {
   return (
     <div className="container my-5">
       <div className="row justify-content-center">
-
-        
         <div className="col-md-4 text-center">
           <div className="profile-card">
             <img
@@ -68,30 +65,35 @@ const Profile = () => {
           </div>
         </div>
 
-        
         <div className="col-md-8">
           <div className="profile-card card-details">
             <h5>Personal Details</h5>
 
             <p>
-              <span className="label-bold">Full Name:</span> {user.fullName || "Not Provided"}
+              <span className="label-bold">Full Name:</span>{" "}
+              {user.fullName || "Not Provided"}
             </p>
 
             <p>
-              <span className="label-bold">Mobile:</span> {user.phone || "Not Provided"}
+              <span className="label-bold">Mobile:</span>{" "}
+              {user.phone || "Not Provided"}
             </p>
 
             <p>
-              <span className="label-bold">Address:</span> {user.address || "Not Provided"}
+              <span className="label-bold">Address:</span>{" "}
+              {user.address || "Not Provided"}
             </p>
 
             <p>
-              <span className="label-bold">Gender:</span> {user.gender || "Not Provided"}
+              <span className="label-bold">Gender:</span>{" "}
+              {user.gender || "Not Provided"}
             </p>
 
             <p>
               <span className="label-bold">Date of Birth:</span>{" "}
-              {user.dob ? new Date(user.dob).toLocaleDateString("en-GB") : "Not Provided"}
+              {user.dob
+                ? new Date(user.dob).toLocaleDateString("en-GB")
+                : "Not Provided"}
             </p>
 
             <p>
@@ -99,7 +101,6 @@ const Profile = () => {
             </p>
           </div>
         </div>
-
       </div>
     </div>
   );

@@ -5,7 +5,6 @@ import "../assets/Css/ChangePassword.css";
 axios.defaults.withCredentials = true;
 
 const AdminChangePassword = () => {
-
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -13,7 +12,6 @@ const AdminChangePassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-   
     if (!currentPassword || !newPassword || !confirmPassword) {
       alert("All fields are required");
       return;
@@ -31,23 +29,21 @@ const AdminChangePassword = () => {
 
     try {
       const res = await axios.put(
-        "http://localhost:5000/api/admin/change-password", 
+        "http://localhost:5000/api/admin/change-password",
         {
           currentPassword,
-          newPassword
+          newPassword,
         },
         {
-          withCredentials: true
-        }
+          withCredentials: true,
+        },
       );
 
       alert(res.data.message || "Admin password changed successfully");
 
-    
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-
     } catch (err) {
       alert(err.response?.data?.message || "Password change failed");
     }
@@ -58,7 +54,6 @@ const AdminChangePassword = () => {
       <h2>Admin Change Password</h2>
 
       <form onSubmit={handleSubmit}>
-
         <input
           type="password"
           placeholder="Current Password"
@@ -80,10 +75,7 @@ const AdminChangePassword = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
 
-        <button type="submit">
-          Change Password
-        </button>
-
+        <button type="submit">Change Password</button>
       </form>
     </div>
   );

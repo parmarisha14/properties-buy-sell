@@ -41,7 +41,6 @@ const Contact = () => {
         subject: "",
         message: "",
       });
-
     } catch (err) {
       console.log(err.message);
     }
@@ -52,7 +51,6 @@ const Contact = () => {
       <section className="contact-info-section">
         <div className="container">
           <div className="row g-4">
-
             <div className="col-md-4">
               <div className="info-box">
                 <div className="icon-circle">
@@ -84,11 +82,14 @@ const Contact = () => {
                 </div>
                 <div>
                   <h6>Hours</h6>
-                  <p>Sun-Fri: 9 AM - 6 PM<br />Sat: 9 AM - 4 PM</p>
+                  <p>
+                    Sun-Fri: 9 AM - 6 PM
+                    <br />
+                    Sat: 9 AM - 4 PM
+                  </p>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -103,12 +104,10 @@ const Contact = () => {
       <section className="contact-form-section">
         <div className="container">
           <div className="contact-form-wrapper">
-
             <h3 className="text-center fw-bold mb-4">Get in Touch</h3>
 
             <form onSubmit={handleSubmit}>
               <div className="row g-3">
-
                 <div className="col-md-6">
                   <div className="input-icon">
                     <FaUser />
@@ -161,10 +160,8 @@ const Contact = () => {
                 <div className="col-12 text-center">
                   <button className="btn-main">SEND MESSAGE</button>
                 </div>
-
               </div>
             </form>
-
           </div>
         </div>
       </section>

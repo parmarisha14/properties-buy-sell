@@ -17,7 +17,7 @@ const Blog = () => {
           <div className="col-lg-3">
             <div className="blog-card small-card mb-4">
               <div className="blog-img">
-                <span className="badge bg-danger">Market</span>
+                <span className="badge-blog bg-danger text-light">Market</span>
                 <img src={blog1} alt="market" />
               </div>
               <div className="blog-content">
@@ -30,7 +30,9 @@ const Blog = () => {
 
             <div className="blog-card small-card mb-4">
               <div className="blog-img">
-                <span className="badge bg-success">Investment</span>
+                <span className="badge-blog bg-success text-light">
+                  Investment
+                </span>
                 <img src={blog2} alt="investment" />
               </div>
               <div className="blog-content">
@@ -43,7 +45,7 @@ const Blog = () => {
 
             <div className="blog-card small-card">
               <div className="blog-img">
-                <span className="badge bg-info text-dark">Finance</span>
+                <span className="badge-blog bg-info text-light">Finance</span>
                 <img src={blog4} alt="finance" />
               </div>
               <div className="blog-content">
@@ -82,7 +84,9 @@ const Blog = () => {
           <div className="col-lg-3">
             <div className="blog-card small-card mb-4">
               <div className="blog-img">
-                <span className="badge bg-primary">Buying Tips</span>
+                <span className="badge-blog bg-primary text-light">
+                  Buying Tips
+                </span>
                 <img src={blog8} alt="buying" />
               </div>
               <div className="blog-content">
@@ -95,7 +99,9 @@ const Blog = () => {
 
             <div className="blog-card small-card mb-4">
               <div className="blog-img">
-                <span className="badge bg-warning text-dark">Lifestyle</span>
+                <span className="badge-blog bg-warning text-dark">
+                  Lifestyle
+                </span>
                 <img src={blog7} alt="lifestyle" />
               </div>
               <div className="blog-content">
@@ -108,7 +114,9 @@ const Blog = () => {
 
             <div className="blog-card small-card">
               <div className="blog-img">
-                <span className="badge bg-secondary">Construction</span>
+                <span className="badge-blog bg-secondary text-white">
+                  Construction
+                </span>
                 <img src={blog6} alt="construction" />
               </div>
               <div className="blog-content">

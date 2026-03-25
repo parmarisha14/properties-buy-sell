@@ -7,7 +7,8 @@ import {
   FaCheckCircle,
   FaTimesCircle,
   FaHourglassHalf,
-  FaTrash
+  FaHeart,
+  FaRegHeart,
 } from "react-icons/fa";
 
 import "../../assets/css/Meeting.css";
@@ -35,7 +36,7 @@ const UserMeetings = () => {
       await axios.put(
         `http://localhost:5000/api/meeting/status/${id}`,
         { status },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       fetchMeetings();
     } catch (err) {
@@ -44,26 +45,22 @@ const UserMeetings = () => {
   };
 
   const handleInterest = async (id, interested) => {
+    const confirmMsg = interested
+      ? "Are you sure you want to mark this as Interested?"
+      : "Are you sure you are Not Interested?";
+
+    if (!window.confirm(confirmMsg)) return;
+
     try {
       await axios.put(
         `http://localhost:5000/api/meeting/interest/${id}`,
         { interested },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       fetchMeetings();
     } catch (err) {
       console.log(err);
     }
-  };
-
-  const handleDelete = async (id) => {
-    if (!window.confirm("Delete meeting?")) return;
-
-    await axios.delete(`http://localhost:5000/api/meeting/${id}`, {
-      withCredentials: true,
-    });
-
-    fetchMeetings();
   };
 
   const getStatus = (status) => {
@@ -98,7 +95,6 @@ const UserMeetings = () => {
         <div className="meeting-grid">
           {meetings.map((m) => (
             <div key={m._id} className="meeting-card">
-
               <div className="property-img">
                 <img
                   src={
@@ -143,7 +139,6 @@ const UserMeetings = () => {
                   <p>
                     <FaPhone /> {m.brokerId?.phone}
                   </p>
-                  <p>{m.brokerId?.email}</p>
                 </div>
               </div>
 
@@ -164,39 +159,43 @@ const UserMeetings = () => {
                   </button>
                 </div>
               )}
+              <div className="mt-2 p-2 fs-5">
+                Are Your Confirm This Property is Fixed{" "}
+              </div>
 
               {m.status === "confirmed" && (
                 <div className="interest-box">
-                  <select
-                    className="interest-select"
-                    value={
-                      m.interested === true
-                        ? "yes"
-                        : m.interested === false
-                        ? "no"
-                        : ""
-                    }
-                    onChange={(e) =>
-                      handleInterest(
-                        m._id,
-                        e.target.value === "yes" ? true : false
-                      )
-                    }
-                  >
-                    <option value="">Select Interest</option>
-                    <option value="yes">Interested</option>
-                    <option value="no">Not Interested</option>
-                  </select>
+                  {m.interested === undefined && (
+                    <>
+                      <button
+                        className="interest-btn yes"
+                        onClick={() => handleInterest(m._id, true)}
+                      >
+                        <FaHeart /> Interested
+                      </button>
+
+                      <button
+                        className="interest-btn no"
+                        onClick={() => handleInterest(m._id, false)}
+                      >
+                        <FaRegHeart /> Not Interested
+                      </button>
+                    </>
+                  )}
+
+                  {m.interested === true && (
+                    <button className="interest-btn yes active">
+                      <FaHeart /> Interested
+                    </button>
+                  )}
+
+                  {m.interested === false && (
+                    <button className="interest-btn no active">
+                      <FaRegHeart /> Not Interested
+                    </button>
+                  )}
                 </div>
               )}
-
-              <button
-                className="delete-btn"
-                onClick={() => handleDelete(m._id)}
-              >
-                <FaTrash /> Delete
-              </button>
-
             </div>
           ))}
         </div>

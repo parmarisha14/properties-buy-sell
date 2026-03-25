@@ -21,8 +21,19 @@ const AdminInquiries = () => {
     await axios.put(
       `http://localhost:5000/api/inquiry/${id}`,
       { status },
-      { withCredentials: true },
+      { withCredentials: true }
     );
+    fetchData();
+  };
+
+  const deleteInquiry = async (id) => {
+    if (!window.confirm("Delete this inquiry?")) return;
+
+    await axios.delete(
+      `http://localhost:5000/api/inquiry/delete/${id}`,
+      { withCredentials: true }
+    );
+
     fetchData();
   };
 
@@ -47,17 +58,13 @@ const AdminInquiries = () => {
             <div className="admin-body">
               <h3>{item.propertyId?.name}</h3>
               <p className="price">₹ {item.propertyId?.price}</p>
-              <p className="location"> {item.propertyId?.location}</p>
+              <p className="location">{item.propertyId?.location}</p>
 
               <hr />
 
               <div className="extra-info">
-                <p>
-                  <b>Date:</b> {item.date || "N/A"}
-                </p>
-                <p>
-                  <b>Message:</b> {item.message || "No message"}
-                </p>
+                <p><b>Date:</b> {item.date || "N/A"}</p>
+                <p><b>Message:</b> {item.message || "No message"}</p>
               </div>
 
               <hr />
@@ -93,7 +100,9 @@ const AdminInquiries = () => {
               </div>
 
               <div className="status-box">
-                <span className={`status ${item.status}`}>{item.status}</span>
+                <span className={`status ${item.status}`}>
+                  {item.status}
+                </span>
               </div>
 
               <div className="action-buttons">
@@ -109,6 +118,13 @@ const AdminInquiries = () => {
                   onClick={() => updateStatus(item._id, "rejected")}
                 >
                   Reject
+                </button>
+
+                <button
+                  className="delete-btn"
+                  onClick={() => deleteInquiry(item._id)}
+                >
+                  Delete
                 </button>
               </div>
             </div>

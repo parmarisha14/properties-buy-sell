@@ -16,6 +16,13 @@ const Dashboard = () => {
     rejected: 0,
   });
 
+  const [meetingStats, setMeetingStats] = useState({
+    total: 0,
+    confirmed: 0,
+    pending: 0,
+    cancelled: 0,
+  });
+
   useEffect(() => {
     fetchProperties();
     fetchMeetings();
@@ -23,9 +30,7 @@ const Dashboard = () => {
 
   const fetchProperties = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/property/broker", {
-        withCredentials: true,
-      });
+      const res = await axios.get("http://localhost:5000/api/property/broker");
 
       const data = res.data.properties || [];
       setProperties(data);
@@ -43,10 +48,17 @@ const Dashboard = () => {
 
   const fetchMeetings = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/meeting/broker", {
-        withCredentials: true,
+      const res = await axios.get("http://localhost:5000/api/meeting/broker");
+
+      const meetingData = res.data.meetings || [];
+      setMeetings(meetingData);
+
+      setMeetingStats({
+        total: meetingData.length,
+        confirmed: meetingData.filter((m) => m.status === "confirmed").length,
+        pending: meetingData.filter((m) => m.status === "pending").length,
+        cancelled: meetingData.filter((m) => m.status === "cancelled").length,
       });
-      setMeetings(res.data.meetings || []);
     } catch (err) {
       console.error(err);
     }
@@ -78,13 +90,30 @@ const Dashboard = () => {
         <h2>Broker Dashboard</h2>
 
         <div className="stats-container">
-          <div className="stat-card stat-total">Total {stats.total}</div>
-          <div className="stat-card stat-approved">
-            Approved {stats.approved}
+          <div className="stat-card stat-total">
+            Total Property {stats.total}
           </div>
-          <div className="stat-card stat-pending">Pending {stats.pending}</div>
+          <div className="stat-card stat-approved">
+            Approved Property {stats.approved}
+          </div>
+          <div className="stat-card stat-pending">
+            Pending Property {stats.pending}
+          </div>
           <div className="stat-card stat-rejected">
-            Rejected {stats.rejected}
+            Rejected Property {stats.rejected}
+          </div>
+
+          <div className="stat-card stat-total">
+            Meetings {meetingStats.total}
+          </div>
+          <div className="stat-card stat-approved">
+            Confirmed {meetingStats.confirmed}
+          </div>
+          <div className="stat-card stat-pending">
+            Pending Meetings {meetingStats.pending}
+          </div>
+          <div className="stat-card stat-rejected">
+            Cancelled {meetingStats.cancelled}
           </div>
         </div>
 
@@ -159,7 +188,9 @@ const Dashboard = () => {
                     <td>{m.date}</td>
                     <td>{m.time}</td>
                     <td>
-                      <span className={`status status-${m.status}`}>
+                      <span
+                        className={`status status-${m.status || "pending"}`}
+                      >
                         {m.status || "pending"}
                       </span>
                     </td>

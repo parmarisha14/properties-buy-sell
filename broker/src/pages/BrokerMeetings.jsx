@@ -55,7 +55,7 @@ const BrokerMeetings = () => {
       <Sidebar />
 
       <div className="main-content">
-        <h2 className="page-title">My Meetings</h2>
+        <h2 className="meeting-title">My Meetings</h2>
 
         <div className="meeting-grid">
           {data.length === 0 ? (

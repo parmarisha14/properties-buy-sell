@@ -20,6 +20,19 @@ const AdminMeetings = () => {
     }
   };
 
+  const deleteMeeting = async (id) => {
+    if (!window.confirm("Delete this meeting?")) return;
+
+    try {
+      await axios.delete(`http://localhost:5000/api/meeting/delete/${id}`, {
+        withCredentials: true,
+      });
+      loadData();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="admin-wrapper">
       <h2 className="page-title">All Meetings</h2>
@@ -42,27 +55,25 @@ const AdminMeetings = () => {
               <p className="price">₹ {m.propertyId?.price}</p>
               <p className="location">{m.propertyId?.location}</p>
 
-              <div className="date-time d-flex flex-column ">
-                <h5>Date: {m.date}</h5>
-                <h5>Time: {m.time}</h5>
-                <h5>Message: {m.message}</h5>
+              <div className="date-time">
+                <p>Date: {m.date}</p>
+                <p>Time: {m.time}</p>
+                <p>Message: {m.message}</p>
               </div>
-
-              <hr />
 
               <div className="person-box">
                 <img
                   src={
                     m.userId?.profileImage
                       ? `http://localhost:5000/uploads/users/${m.userId.profileImage}`
-                      : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                      : "/default-user.png"
                   }
                   alt=""
                 />
                 <div>
                   <h4>{m.userId?.fullName}</h4>
                   <p>{m.userId?.phone}</p>
-                  <p className="email">{m.userId?.email}</p>
+                  <p>{m.userId?.email}</p>
                 </div>
               </div>
 
@@ -71,18 +82,27 @@ const AdminMeetings = () => {
                   src={
                     m.brokerId?.brokerImage
                       ? `http://localhost:5000/uploads/users/${m.brokerId.brokerImage}`
-                      : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                      : "/default-user.png"
                   }
                   alt=""
                 />
                 <div>
                   <h4>{m.brokerId?.name}</h4>
                   <p>{m.brokerId?.phone}</p>
-                  <p className="email">{m.brokerId?.email}</p>
+                  <p>{m.brokerId?.email}</p>
                 </div>
               </div>
 
-              <div className={`status ${m.status}`}>{m.status}</div>
+              <div className={`status ${m.status}`}>
+                {m.status}
+              </div>
+
+              <button
+                className="delete-btn"
+                onClick={() => deleteMeeting(m._id)}
+              >
+                Delete
+              </button>
             </div>
           </div>
         ))}

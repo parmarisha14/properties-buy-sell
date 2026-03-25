@@ -9,10 +9,6 @@ const AllProperties = () => {
   const [states, setStates] = useState([]);
   const [priceRanges, setPriceRanges] = useState([]);
 
-  const [page, setPage] = useState(1);
-  const limit = 6;
-  const [totalPages, setTotalPages] = useState(1);
-
   const [filters, setFilters] = useState({
     type: "",
     priceRange: "",
@@ -20,34 +16,38 @@ const AllProperties = () => {
     state: "",
   });
 
+  const [appliedFilters, setAppliedFilters] = useState({});
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchLocations();
-    fetchPriceRange();
+
+    setPriceRanges([
+      { min: 0, max: 1000000 },
+      { min: 1000000, max: 2500000 },
+      { min: 2500000, max: 5000000 },
+      { min: 5000000, max: 10000000 },
+      { min: 10000000, max: 20000000 },
+      { min: 20000000, max: 50000000 },
+    ]);
   }, []);
 
   useEffect(() => {
     fetchProperties();
-  }, [page]);
+  }, [appliedFilters]);
 
-  const fetchProperties = async (params = {}) => {
+  const fetchProperties = async () => {
     setLoading(true);
 
     try {
       const res = await axios.get(
         "http://localhost:5000/api/property/approved",
         {
-          params: {
-            ...params,
-            page,
-            limit,
-          },
-        }
+          params: appliedFilters,
+        },
       );
 
       setProperties(res.data.properties || []);
-      setTotalPages(res.data.totalPages || 1);
     } catch (err) {
       console.log(err);
     }
@@ -58,35 +58,11 @@ const AllProperties = () => {
   const fetchLocations = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/property/locations"
+        "http://localhost:5000/api/property/locations",
       );
 
       setCities(res.data.cities || []);
       setStates(res.data.states || []);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const fetchPriceRange = async () => {
-    try {
-      const res = await axios.get(
-        "http://localhost:5000/api/property/price-range"
-      );
-
-      const { minPrice, maxPrice } = res.data;
-      const step = Math.ceil((maxPrice - minPrice) / 5) || 1;
-
-      let ranges = [];
-
-      for (let i = minPrice; i < maxPrice; i += step) {
-        ranges.push({
-          min: i,
-          max: i + step,
-        });
-      }
-
-      setPriceRanges(ranges);
     } catch (err) {
       console.log(err);
     }
@@ -107,13 +83,17 @@ const AllProperties = () => {
     if (filters.state) cleaned.state = filters.state;
 
     if (filters.priceRange) {
-      const [min, max] = filters.priceRange.split("-");
-      cleaned.minPrice = Number(min);
-      cleaned.maxPrice = Number(max);
+      const parts = filters.priceRange.split("-");
+
+      if (parts.length === 2) {
+        cleaned.minPrice = parseInt(parts[0]);
+        cleaned.maxPrice = parseInt(parts[1]);
+      }
     }
 
-    setPage(1);
-    fetchProperties(cleaned);
+    console.log("Applied Filters:", cleaned);
+
+    setAppliedFilters(cleaned);
   };
 
   const resetFilters = () => {
@@ -124,53 +104,20 @@ const AllProperties = () => {
       state: "",
     });
 
-    setPage(1);
-    fetchProperties();
+    setAppliedFilters({});
   };
 
   return (
     <div className="main-container">
-
       <div className="property-section">
         <div className="property-grid">
           {loading ? (
             <h2>Loading...</h2>
           ) : properties.length > 0 ? (
-            properties.map((p) => (
-              <PropertyCard key={p._id} property={p} />
-            ))
+            properties.map((p) => <PropertyCard key={p._id} property={p} />)
           ) : (
             <h2>No Properties Found</h2>
           )}
-        </div>
-
-        {/* PAGINATION */}
-        <div className="pagination">
-
-          <button
-            disabled={page === 1}
-            onClick={() => setPage(page - 1)}
-          >
-            Prev
-          </button>
-
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button
-              key={i}
-              onClick={() => setPage(i + 1)}
-              className={page === i + 1 ? "active" : ""}
-            >
-              {i + 1}
-            </button>
-          ))}
-
-          <button
-            disabled={page === totalPages}
-            onClick={() => setPage(page + 1)}
-          >
-            Next
-          </button>
-
         </div>
       </div>
 
@@ -180,10 +127,12 @@ const AllProperties = () => {
         <div className="filter-group">
           <label>Type</label>
           <select name="type" value={filters.type} onChange={handleChange}>
-            <option value="">All</option>
+            <option value="">Select Type</option>
             <option value="House">House</option>
             <option value="Apartment">Apartment</option>
             <option value="Villa">Villa</option>
+            <option value="Plot">Plot</option>
+            <option value="Penthouse">Penthouse</option>
           </select>
         </div>
 
@@ -194,7 +143,7 @@ const AllProperties = () => {
             value={filters.priceRange}
             onChange={handleChange}
           >
-            <option value="">All</option>
+            <option value="">Select Price Range</option>
             {priceRanges.map((r, i) => (
               <option key={i} value={`${r.min}-${r.max}`}>
                 ₹ {r.min.toLocaleString()} - ₹ {r.max.toLocaleString()}
@@ -206,7 +155,7 @@ const AllProperties = () => {
         <div className="filter-group">
           <label>City</label>
           <select name="city" value={filters.city} onChange={handleChange}>
-            <option value="">All</option>
+            <option value="">Select City</option>
             {cities.map((c, i) => (
               <option key={i} value={c}>
                 {c}
@@ -218,7 +167,7 @@ const AllProperties = () => {
         <div className="filter-group">
           <label>State</label>
           <select name="state" value={filters.state} onChange={handleChange}>
-            <option value="">All</option>
+            <option value="">Select State</option>
             {states.map((s, i) => (
               <option key={i} value={s}>
                 {s}
@@ -237,7 +186,6 @@ const AllProperties = () => {
           </button>
         </div>
       </div>
-
     </div>
   );
 };

@@ -1,5 +1,5 @@
 const Property = require("../models/PropertyModel");
-
+const Meeting = require("../models/MeetingModel");
 exports.addProperty = async (req, res) => {
   try {
     const brokerId = req.session.user?._id;
@@ -201,32 +201,25 @@ exports.getApprovedProperties = async (req, res) => {
     let filter = { status: "approved" };
 
     if (type) {
-      filter.type = {
-        $regex: `^${type}$`,
-        $options: "i",
-      };
+      filter.type = type;
     }
 
-    if (minPrice || maxPrice) {
-      filter.price = {};
-
-      if (minPrice) filter.price.$gte = Number(minPrice);
-      if (maxPrice) filter.price.$lte = Number(maxPrice);
+    if (minPrice && maxPrice) {
+      filter.price = {
+        $gte: Number(minPrice),
+        $lte: Number(maxPrice),
+      };
     }
 
     if (city) {
-      filter.city = {
-        $regex: `^${city}$`,
-        $options: "i",
-      };
+      filter.city = city;
     }
 
     if (state) {
-      filter.state = {
-        $regex: `^${state}$`,
-        $options: "i",
-      };
+      filter.state = state;
     }
+
+    console.log("FILTER:", filter);
 
     const properties = await Property.find(filter).populate(
       "brokerId",
@@ -239,7 +232,9 @@ exports.getApprovedProperties = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({
+      message: "Server Error",
+    });
   }
 };
 
@@ -334,5 +329,56 @@ exports.deleteProperty = async (req, res) => {
     res.status(500).json({
       message: "Server Error",
     });
+  }
+};
+
+exports.markAsSold = async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id);
+
+    if (!property) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    property.status = "sold";
+    await property.save();
+
+    res.json({
+      success: true,
+      message: "Property marked as SOLD",
+      property,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+exports.getSoldPropertiesWithUsers = async (req, res) => {
+  try {
+    const brokerId = req.session.user?._id;
+
+    const soldProperties = await Property.find({
+      brokerId,
+      status: "sold",
+    });
+
+    const result = [];
+
+    for (let property of soldProperties) {
+      const meetings = await Meeting.find({
+        propertyId: property._id,
+      }).populate("userId", "fullName phone");
+
+      result.push({
+        property,
+        users: meetings,
+      });
+    }
+
+    res.json({
+      success: true,
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Server Error" });
   }
 };

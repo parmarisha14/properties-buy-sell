@@ -8,7 +8,6 @@ import {
   FaCheckCircle,
   FaTimesCircle,
   FaClock,
-  FaTrash,
 } from "react-icons/fa";
 
 import "../../assets/css/UserInquiries.css";
@@ -32,19 +31,6 @@ const UserInquiries = () => {
       console.log(err);
     }
     setLoading(false);
-  };
-
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure to delete?")) return;
-
-    try {
-      await axios.delete(`http://localhost:5000/api/inquiry/delete/${id}`, {
-        withCredentials: true,
-      });
-      fetchInquiries();
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   const getStatus = (status) => {
@@ -81,7 +67,6 @@ const UserInquiries = () => {
         <div className="inquiry-grid">
           {inquiries.map((inq) => (
             <div key={inq._id} className="inquiry-card">
-              {/* IMAGE */}
               <div className="property-img">
                 <img
                   src={
@@ -104,8 +89,8 @@ const UserInquiries = () => {
                 <p>
                   <FaMapMarkerAlt /> {inq.propertyId?.location}
                 </p>
-                <h5> City:{inq.propertyId?.city}</h5>
-                <h5 className="mt-2">State: {inq.propertyId?.state}</h5>
+                <h5>City: {inq.propertyId?.city}</h5>
+                <h5>State: {inq.propertyId?.state}</h5>
                 <p>
                   <strong>₹ {inq.propertyId?.price}</strong>
                 </p>
@@ -132,12 +117,7 @@ const UserInquiries = () => {
                 </div>
               </div>
 
-              <button
-                className="delete-btn"
-                onClick={() => handleDelete(inq._id)}
-              >
-                <FaTrash /> Delete
-              </button>
+              {/* ❌ DELETE BUTTON REMOVED */}
             </div>
           ))}
         </div>

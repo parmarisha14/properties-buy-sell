@@ -33,8 +33,9 @@
   background: white;
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   transition: 0.3s;
+  margin-top: 80px;
 }
 
 .property-card:hover {
@@ -147,4 +148,9 @@
 
 .delete-btn {
   background: #ef4444;
+}
+
+.status-sold {
+  background: #111827;
+  color: #fff;
 }

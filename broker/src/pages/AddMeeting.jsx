@@ -77,6 +77,7 @@ const AddMeeting = () => {
                 value={form.date}
                 min={today}
                 onChange={(e) => setForm({ ...form, date: e.target.value })}
+                required
               />
             </div>
 
@@ -86,6 +87,7 @@ const AddMeeting = () => {
                 type="time"
                 value={form.time}
                 onChange={(e) => setForm({ ...form, time: e.target.value })}
+                required
               />
             </div>
 
@@ -94,6 +96,7 @@ const AddMeeting = () => {
               <textarea
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
+                required
               />
             </div>
 

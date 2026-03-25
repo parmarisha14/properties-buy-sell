@@ -49,6 +49,7 @@ const ManageProperty = () => {
   const getStatusClass = (status) => {
     if (status === "approved") return "status-approved";
     if (status === "rejected") return "status-rejected";
+    if (status === "sold") return "status-sold";
     return "status-pending";
   };
 
@@ -77,8 +78,9 @@ const ManageProperty = () => {
                     alt={p.name}
                     className="property-img"
                   />
+
                   <span className={`status-badge ${getStatusClass(p.status)}`}>
-                    {p.status || "pending"}
+                    {p.status === "sold" ? "SOLD" : p.status || "pending"}
                   </span>
                 </div>
 
@@ -133,6 +135,7 @@ const ManageProperty = () => {
                   <div className="property-buttons">
                     <button
                       className="edit-btn"
+                      disabled={p.status === "sold"}
                       onClick={() => navigate(`/edit-property/${p._id}`)}
                     >
                       <FaEdit /> Edit
@@ -140,6 +143,7 @@ const ManageProperty = () => {
 
                     <button
                       className="delete-btn"
+                      disabled={p.status === "sold"}
                       onClick={() => deleteProperty(p._id)}
                     >
                       <FaTrash /> Delete

@@ -6,8 +6,6 @@
     box-sizing: border-box;
 }
 
-
-
 .page-title {
     text-align: center;
     margin-bottom: 30px;
@@ -16,14 +14,19 @@
     color: #0369a1;
 }
 
+.search-box {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
 
 .property-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
 }
-
-
 
 .property-card {
     background: #ffffff;
@@ -39,16 +42,12 @@
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
 }
 
-
-
 .property-img {
     width: 100%;
     height: 200px;
     object-fit: cover;
     border-bottom: 1px solid #e6f4ff;
 }
-
-
 
 .property-body {
     padding: 15px;
@@ -73,42 +72,39 @@
     color: #475569;
 }
 
-
-
 .status {
     display: inline-block;
-    padding: 4px 10px;
-    border-radius: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
     font-size: 12px;
     text-transform: capitalize;
     margin-top: 8px;
+    font-weight: 600;
 }
-
-
 
 .status.pending {
     background: #fef9c3;
     color: #854d0e;
 }
 
-
-
 .status.approved {
     background: #dcfce7;
     color: #166534;
 }
-
-
 
 .status.rejected {
     background: #fee2e2;
     color: #991b1b;
 }
 
-
+.status.sold {
+    background: #dbeafe;
+    color: #1e40af;
+}
 
 .action-buttons {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     margin-top: 12px;
 }
@@ -120,11 +116,6 @@
     padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 13px;
-}
-
-.approve-btn:hover {
-    background: #bbf7d0;
 }
 
 .reject-btn {
@@ -134,11 +125,15 @@
     padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 13px;
 }
 
-.reject-btn:hover {
-    background: #fde68a;
+.sold-btn {
+    background: #dbeafe;
+    color: #1e40af;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
 .delete-btn {
@@ -148,9 +143,4 @@
     padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 13px;
-}
-
-.delete-btn:hover {
-    background: #fca5a5;
 }

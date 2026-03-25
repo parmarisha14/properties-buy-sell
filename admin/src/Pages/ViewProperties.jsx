@@ -37,9 +37,17 @@ const ViewProperties = () => {
     }
   };
 
+  const markSold = async (id) => {
+    try {
+      await axios.put(`http://localhost:5000/api/property/sold/${id}`);
+      fetchProperties();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const deleteProperty = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this property?"))
-      return;
+    if (!window.confirm("Are you sure you want to delete this property?")) return;
 
     try {
       await axios.delete(`http://localhost:5000/api/property/delete/${id}`);
@@ -102,33 +110,15 @@ const ViewProperties = () => {
               <h3>{property.name}</h3>
               <p className="price">₹ {property.price}</p>
 
-              <p>
-                <b>Location:</b> {property.location}
-              </p>
-              <p>
-                <b>City:</b> {property.city}
-              </p>
-              <p>
-                <b>State:</b> {property.state}
-              </p>
-              <p>
-                <b>Bedrooms:</b> {property.bedroom}
-              </p>
-              <p>
-                <b>Bathrooms:</b> {property.bathroom}
-              </p>
-              <p>
-                <b>Area:</b> {property.area} sq.ft
-              </p>
-              <p>
-                <b>Year:</b> {property.year}
-              </p>
-              <p>
-                <b>Type:</b> {property.type}
-              </p>
-              <p>
-                <b>Description:</b> {property.description}
-              </p>
+              <p><b>Location:</b> {property.location}</p>
+              <p><b>City:</b> {property.city}</p>
+              <p><b>State:</b> {property.state}</p>
+              <p><b>Bedrooms:</b> {property.bedroom}</p>
+              <p><b>Bathrooms:</b> {property.bathroom}</p>
+              <p><b>Area:</b> {property.area} sq.ft</p>
+              <p><b>Year:</b> {property.year}</p>
+              <p><b>Type:</b> {property.type}</p>
+              <p><b>Description:</b> {property.description}</p>
 
               <p>
                 <b>Features:</b>{" "}
@@ -142,7 +132,9 @@ const ViewProperties = () => {
                 {property.brokerId?.phone || "N/A"})
               </p>
 
-              <p className={`status ${property.status}`}>{property.status}</p>
+              <p className={`status ${property.status}`}>
+                {property.status}
+              </p>
 
               <div className="action-buttons">
                 <button
@@ -157,6 +149,13 @@ const ViewProperties = () => {
                   onClick={() => rejectProperty(property._id)}
                 >
                   Reject
+                </button>
+
+                <button
+                  className="sold-btn"
+                  onClick={() => markSold(property._id)}
+                >
+                  Sold
                 </button>
 
                 <button

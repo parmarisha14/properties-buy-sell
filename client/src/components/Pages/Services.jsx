@@ -8,7 +8,7 @@ import {
   FaDollarSign,
   FaMapMarkedAlt,
   FaKey,
-  FaTools
+  FaTools,
 } from "react-icons/fa";
 
 const Services = () => {
@@ -18,7 +18,6 @@ const Services = () => {
         <h2>Our Services</h2>
 
         <div className="services-container">
-
           <div className="service-card">
             <div className="service-icon">
               <FaHome />
@@ -47,7 +46,8 @@ const Services = () => {
             </div>
             <h4>Property Search</h4>
             <p>
-              Search and discover your ideal property easily using our advanced tools.
+              Search and discover your ideal property easily using our advanced
+              tools.
             </p>
           </div>
 
@@ -68,7 +68,8 @@ const Services = () => {
             </div>
             <h4>Property Valuation</h4>
             <p>
-              Know the exact value of your property with our accurate market analysis.
+              Know the exact value of your property with our accurate market
+              analysis.
             </p>
           </div>
 
@@ -78,32 +79,32 @@ const Services = () => {
             </div>
             <h4>Location Assistance</h4>
             <p>
-              Find the perfect location based on your needs, budget, and future growth.
+              Find the perfect location based on your needs, budget, and future
+              growth.
             </p>
           </div>
 
-         
           <div className="service-card">
             <div className="service-icon">
               <FaKey />
             </div>
             <h4>Property Rental</h4>
             <p>
-              We help you find the best rental properties or tenants quickly and easily.
+              We help you find the best rental properties or tenants quickly and
+              easily.
             </p>
           </div>
 
-          
           <div className="service-card">
             <div className="service-icon">
               <FaTools />
             </div>
             <h4>Property Maintenance</h4>
             <p>
-              Get reliable maintenance and repair services to keep your property in top condition.
+              Get reliable maintenance and repair services to keep your property
+              in top condition.
             </p>
           </div>
-
         </div>
       </div>
     </section>

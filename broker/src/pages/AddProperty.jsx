@@ -98,6 +98,7 @@ const AddProperty = () => {
               value={property.year}
               onChange={handleChange}
               placeholder="Ex: 2023"
+              required
             />
           </div>
 
@@ -109,12 +110,18 @@ const AddProperty = () => {
               value={property.name}
               onChange={handleChange}
               placeholder="Ex: Sea View Villa"
+              required
             />
           </div>
 
           <div className="form-group">
             <label>Property Type *</label>
-            <select name="type" value={property.type} onChange={handleChange}>
+            <select
+              name="type"
+              value={property.type}
+              onChange={handleChange}
+              required
+            >
               <option value="">Select Type</option>
               <option>Villa</option>
               <option>Apartment</option>
@@ -132,6 +139,7 @@ const AddProperty = () => {
               value={property.price}
               onChange={handleChange}
               placeholder="Ex: 5000000"
+              required
             />
           </div>
 
@@ -143,6 +151,7 @@ const AddProperty = () => {
               value={property.location}
               onChange={handleChange}
               placeholder="Street/Area"
+              required
             />
           </div>
 
@@ -154,6 +163,7 @@ const AddProperty = () => {
               value={property.city}
               onChange={handleChange}
               placeholder="City Name"
+              required
             />
           </div>
 
@@ -165,6 +175,7 @@ const AddProperty = () => {
               value={property.state}
               onChange={handleChange}
               placeholder="State Name"
+              required
             />
           </div>
 
@@ -176,6 +187,7 @@ const AddProperty = () => {
               value={property.bedroom}
               onChange={handleChange}
               placeholder="Ex: 3"
+              required
             />
           </div>
 
@@ -187,6 +199,7 @@ const AddProperty = () => {
               value={property.bathroom}
               onChange={handleChange}
               placeholder="Ex: 2"
+              required
             />
           </div>
 
@@ -198,6 +211,7 @@ const AddProperty = () => {
               value={property.area}
               onChange={handleChange}
               placeholder="Ex: 1200"
+              required
             />
           </div>
 
@@ -208,6 +222,7 @@ const AddProperty = () => {
               value={property.description}
               onChange={handleChange}
               placeholder="Write a short description of the property..."
+              required
             />
           </div>
 
@@ -219,6 +234,7 @@ const AddProperty = () => {
                 value={featureInput}
                 onChange={(e) => setFeatureInput(e.target.value)}
                 placeholder="Ex: Swimming Pool"
+                required
               />
               <button type="button" onClick={addFeature}>
                 Add

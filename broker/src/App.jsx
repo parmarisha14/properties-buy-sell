@@ -14,7 +14,6 @@ import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 import ChangePassword from "./pages/ChangePassword";
 
-
 import BrokerInquiries from "./pages/BrokerInquiries";
 import AddMeeting from "./pages/AddMeeting";
 import BrokerMeetings from "./pages/BrokerMeetings";

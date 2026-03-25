@@ -34,9 +34,7 @@ const PropertyDetails = () => {
 
   const fetchProperty = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:5000/api/property/${id}`
-      );
+      const res = await axios.get(`http://localhost:5000/api/property/${id}`);
       setProperty(res.data.property);
     } catch (err) {
       console.log(err);
@@ -106,7 +104,7 @@ const PropertyDetails = () => {
           propertyId: property._id,
           brokerId: property.brokerId?._id,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       alert("Request Sent Successfully");
@@ -117,9 +115,7 @@ const PropertyDetails = () => {
         message: "",
       }));
 
-      // ✅ REDIRECT AFTER SUCCESS
       navigate("/my-requests");
-
     } catch (err) {
       console.log(err);
       alert("Error sending request");
@@ -256,9 +252,7 @@ const PropertyDetails = () => {
             <h3>Please Login</h3>
             <p>You must login to send request</p>
 
-            <button onClick={() => navigate("/signin")}>
-              Go to Login
-            </button>
+            <button onClick={() => navigate("/signin")}>Go to Login</button>
           </div>
         )}
       </div>

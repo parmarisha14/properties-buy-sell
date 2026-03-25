@@ -29,4 +29,6 @@ router.put("/reject/:id", propertyController.rejectProperty);
 
 router.delete("/delete/:id", propertyController.deleteProperty);
 
+router.put("/sold/:id", propertyController.markAsSold);
+router.get("/sold-users", propertyController.getSoldPropertiesWithUsers);
 module.exports = router;

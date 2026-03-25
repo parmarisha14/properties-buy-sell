@@ -5,7 +5,6 @@ import { FaLanguage, FaEnvelope } from "react-icons/fa";
 import "../../assets/css/ExpertTeam.css";
 
 const ExpertTeam = () => {
-
   const [brokers, setBrokers] = useState([]);
   const navigate = useNavigate();
 
@@ -33,7 +32,6 @@ const ExpertTeam = () => {
       <div className="team-container">
         {brokers.map((broker) => (
           <div className="team-card" key={broker._id}>
-
             <div className="img-box">
               <img
                 src={`http://localhost:5000/uploads/users/${broker.brokerImage}`}
@@ -60,7 +58,6 @@ const ExpertTeam = () => {
                 View Details
               </button>
             </div>
-
           </div>
         ))}
       </div>

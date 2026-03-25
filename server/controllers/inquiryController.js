@@ -1,6 +1,5 @@
 const Inquiry = require("../models/InquiryModel");
 
-
 exports.createInquiry = async (req, res) => {
   try {
     const userId = req.session.user?._id;
@@ -21,13 +20,11 @@ exports.createInquiry = async (req, res) => {
     });
 
     res.json({ success: true, inquiry });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server Error" });
   }
 };
-
 
 exports.getBrokerInquiries = async (req, res) => {
   try {
@@ -39,12 +36,10 @@ exports.getBrokerInquiries = async (req, res) => {
       .populate("brokerId", "name phone brokerImage");
 
     res.json({ success: true, inquiries });
-
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }
 };
-
 
 exports.getUserInquiries = async (req, res) => {
   try {
@@ -55,12 +50,10 @@ exports.getUserInquiries = async (req, res) => {
       .populate("brokerId", "name phone brokerImage");
 
     res.json({ success: true, inquiries });
-
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }
 };
-
 
 exports.updateStatus = async (req, res) => {
   try {
@@ -73,11 +66,10 @@ exports.updateStatus = async (req, res) => {
     const inquiry = await Inquiry.findByIdAndUpdate(
       req.params.id,
       { status },
-      { returnDocument: "after" } 
+      { returnDocument: "after" },
     );
 
     res.json({ success: true, inquiry });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server Error" });
@@ -86,9 +78,9 @@ exports.updateStatus = async (req, res) => {
 
 exports.deleteInquiry = async (req, res) => {
   try {
-    const userId = req.session.user?._id;
+    const user = req.session.user;
 
-    if (!userId) {
+    if (!user) {
       return res.status(401).json({ message: "Login required" });
     }
 
@@ -98,24 +90,24 @@ exports.deleteInquiry = async (req, res) => {
       return res.status(404).json({ message: "Not found" });
     }
 
-    
     if (
-      inquiry.userId.toString() !== userId.toString() &&
-      inquiry.brokerId.toString() !== userId.toString()
+      inquiry.brokerId.toString() !== user._id.toString() &&
+      user.role !== "admin"
     ) {
       return res.status(403).json({ message: "Unauthorized" });
     }
 
     await Inquiry.findByIdAndDelete(req.params.id);
 
-    res.json({ success: true, message: "Deleted successfully" });
-
+    res.json({
+      success: true,
+      message: "Deleted successfully",
+    });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: "Server error" });
   }
 };
-// ADMIN - GET ALL INQUIRIES
+
 exports.getAllInquiries = async (req, res) => {
   try {
     const inquiries = await Inquiry.find()
@@ -124,7 +116,6 @@ exports.getAllInquiries = async (req, res) => {
       .populate("propertyId", "name price location image city state");
 
     res.json({ success: true, inquiries });
-
   } catch (err) {
     res.status(500).json({ message: "Server Error" });
   }

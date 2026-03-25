@@ -11,5 +11,5 @@ router.get("/admin", ctrl.getAllMeetings);
 router.put("/status/:id", ctrl.updateStatus);
 
 router.delete("/:id", ctrl.deleteMeeting);
-
+router.put("/interest/:id", ctrl.updateInterest);
 module.exports = router;

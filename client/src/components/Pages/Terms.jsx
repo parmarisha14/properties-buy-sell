@@ -1,13 +1,12 @@
 import React from "react";
 import "../../assets/Css/Terms.css";
-import {FaEnvelope,FaBell,} from "react-icons/fa";
+import { FaEnvelope, FaBell } from "react-icons/fa";
 import { NavLink } from "react-router";
 
 const Terms = () => {
   return (
     <section className="terms-section py-5">
       <div className="container">
-        
         <div className="text-center mb-5">
           <h1 className="fw-semibold main-title">Terms of Service</h1>
           <p className="text-muted">
@@ -16,7 +15,6 @@ const Terms = () => {
           </p>
         </div>
 
-        
         <div className="mb-5">
           <h3 className="section-title">1. Property Listings</h3>
           <p className="text-muted fs-5">
@@ -26,7 +24,6 @@ const Terms = () => {
           </p>
         </div>
 
-       
         <div className="mb-5">
           <h3 className="section-title">2. Buying & Selling Responsibility</h3>
           <p className="text-muted fs-5">
@@ -36,7 +33,6 @@ const Terms = () => {
           </p>
         </div>
 
-        
         <div className="mb-5">
           <h3 className="section-title">3. User Accounts</h3>
           <p className="text-muted fs-5">
@@ -46,7 +42,6 @@ const Terms = () => {
           </p>
         </div>
 
-        
         <div className="mb-5">
           <h3 className="section-title">4. Prohibited Activities</h3>
           <ul className="custom-list mt-3 fs-5">
@@ -57,7 +52,6 @@ const Terms = () => {
           </ul>
         </div>
 
-        
         <div className="mb-5">
           <h3 className="section-title">5. Disclaimers</h3>
           <p className="text-muted fs-5">
@@ -67,7 +61,6 @@ const Terms = () => {
           </p>
         </div>
 
-        
         <div className="mb-4">
           <h3 className="section-title">6. Limitation of Liability</h3>
           <p className="text-muted fs-5">
@@ -76,7 +69,6 @@ const Terms = () => {
           </p>
         </div>
 
-        
         <div className="mb-4">
           <h3 className="section-title">7. Indemnification</h3>
           <p className="text-muted fs-5">
@@ -85,7 +77,6 @@ const Terms = () => {
           </p>
         </div>
 
-        
         <div className="mb-4">
           <h3 className="section-title">8. Termination</h3>
           <p className="text-muted fs-5">
@@ -94,7 +85,6 @@ const Terms = () => {
           </p>
         </div>
 
-       
         <div className="mb-4">
           <h3 className="section-title">9. Governing Law</h3>
           <p className="text-muted fs-5">
@@ -103,7 +93,6 @@ const Terms = () => {
           </p>
         </div>
 
-        
         <div className="mb-4">
           <h3 className="section-title">10. Changes to Terms</h3>
           <p className="text-muted  fs-5">
@@ -112,7 +101,6 @@ const Terms = () => {
           </p>
         </div>
 
-        
         <div className="revision-alert d-flex align-items-center p-3 mt-4">
           <FaBell className="me-3" />
           <span>
@@ -121,7 +109,6 @@ const Terms = () => {
           </span>
         </div>
 
-       
         <div className="contact-box mt-5 p-4 d-flex justify-content-between align-items-center flex-wrap">
           <div className="d-flex align-items-center">
             <div className="contact-icon me-3">
@@ -144,6 +131,6 @@ const Terms = () => {
       </div>
     </section>
   );
-}
+};
 
 export default Terms;

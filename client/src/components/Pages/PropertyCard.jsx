@@ -33,7 +33,7 @@ const PropertyCard = ({ property }) => {
 
       setLiked(!!exists);
     } catch (err) {
-      console.log("Wishlist check error:", err);
+      console.log(err);
     }
   };
 
@@ -48,7 +48,6 @@ const PropertyCard = ({ property }) => {
       setLiked(res.data.action === "added");
     } catch (err) {
       alert("Please login first!");
-      console.log(err);
     }
   };
 
@@ -76,7 +75,6 @@ const PropertyCard = ({ property }) => {
         </div>
 
         <span className="tag featured">Featured</span>
-        <span className="tag sale">For Sale</span>
       </div>
 
       <div className="property-details">
