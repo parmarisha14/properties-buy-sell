@@ -18,6 +18,7 @@ const Dashboard = () => {
     confirmedMeetings: 0,
     cancelledMeetings: 0,
     pendingMeetings: 0,
+    soldProperties: 0,
   });
 
   const [loading, setLoading] = useState(true);
@@ -91,6 +92,13 @@ const Dashboard = () => {
         </div>
 
         <div className="col-md-3">
+          <div className="dashboard-card sold-card">
+            <h5>Sold Properties</h5>
+            <h2>{data.soldProperties}</h2>
+          </div>
+        </div>
+
+        <div className="col-md-3">
           <div className="dashboard-card inquiry-card">
             <h5>Total Inquiries</h5>
             <h2>{data.totalInquiries}</h2>
@@ -108,6 +116,13 @@ const Dashboard = () => {
           <div className="dashboard-card rejected-card">
             <h5>Rejected Requests</h5>
             <h2>{data.rejectedInquiries}</h2>
+          </div>
+        </div>
+
+        <div className="col-md-3">
+          <div className="dashboard-card pending-card">
+            <h5>Pending Requests</h5>
+            <h2>{data.pendingInquiries}</h2>
           </div>
         </div>
 

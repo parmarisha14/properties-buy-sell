@@ -21,7 +21,7 @@ const AdminInquiries = () => {
     await axios.put(
       `http://localhost:5000/api/inquiry/${id}`,
       { status },
-      { withCredentials: true }
+      { withCredentials: true },
     );
     fetchData();
   };
@@ -29,10 +29,9 @@ const AdminInquiries = () => {
   const deleteInquiry = async (id) => {
     if (!window.confirm("Delete this inquiry?")) return;
 
-    await axios.delete(
-      `http://localhost:5000/api/inquiry/delete/${id}`,
-      { withCredentials: true }
-    );
+    await axios.delete(`http://localhost:5000/api/inquiry/delete/${id}`, {
+      withCredentials: true,
+    });
 
     fetchData();
   };
@@ -63,8 +62,12 @@ const AdminInquiries = () => {
               <hr />
 
               <div className="extra-info">
-                <p><b>Date:</b> {item.date || "N/A"}</p>
-                <p><b>Message:</b> {item.message || "No message"}</p>
+                <p>
+                  <b>Date:</b> {item.date || "N/A"}
+                </p>
+                <p>
+                  <b>Message:</b> {item.message || "No message"}
+                </p>
               </div>
 
               <hr />
@@ -100,9 +103,7 @@ const AdminInquiries = () => {
               </div>
 
               <div className="status-box">
-                <span className={`status ${item.status}`}>
-                  {item.status}
-                </span>
+                <span className={`status ${item.status}`}>{item.status}</span>
               </div>
 
               <div className="action-buttons">

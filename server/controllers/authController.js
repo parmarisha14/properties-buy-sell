@@ -69,7 +69,6 @@ exports.signupBroker = async (req, res) => {
   }
 };
 
-
 exports.signin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -80,7 +79,6 @@ exports.signin = async (req, res) => {
       });
     }
 
-    
     let user = await User.findOne({ email });
     if (!user) user = await Broker.findOne({ email });
     if (!user) user = await Admin.findOne({ email });
@@ -91,16 +89,11 @@ exports.signin = async (req, res) => {
       });
     }
 
-    
-
-    
     let isMatch = false;
 
     if (user.password && user.password.startsWith("$2b$")) {
-      
       isMatch = await bcrypt.compare(password, user.password);
     } else {
-      
       isMatch = password === user.password;
     }
 
@@ -110,7 +103,6 @@ exports.signin = async (req, res) => {
       });
     }
 
-    
     req.session.user = {
       _id: user._id,
       fullName: user.fullName || user.name,
@@ -129,7 +121,6 @@ exports.signin = async (req, res) => {
         user: req.session.user,
       });
     });
-
   } catch (err) {
     console.log("LOGIN ERROR:", err);
     res.status(500).json({
@@ -365,17 +356,14 @@ exports.deleteBroker = async (req, res) => {
       });
     }
 
-   
     await Property.deleteMany({ brokerId });
 
-    
     await Broker.findByIdAndDelete(brokerId);
 
     return res.status(200).json({
       success: true,
       message: "Broker deleted successfully",
     });
-
   } catch (error) {
     console.log("DELETE BROKER ERROR:", error);
 

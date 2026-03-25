@@ -3,6 +3,7 @@ const Property = require("../models/PropertyModel");
 const Inquiry = require("../models/InquiryModel");
 const Meeting = require("../models/MeetingModel");
 const Broker = require("../models/BrokerModel");
+
 exports.getDashboardStats = async (req, res) => {
   try {
     const totalUsers = await User.countDocuments({ role: "user" });
@@ -18,6 +19,7 @@ exports.getDashboardStats = async (req, res) => {
     const pendingProperties = await Property.countDocuments({
       status: "pending",
     });
+    const soldProperties = await Property.countDocuments({ status: "sold" });
 
     const totalInquiries = await Inquiry.countDocuments();
     const approvedInquiries = await Inquiry.countDocuments({
@@ -47,6 +49,7 @@ exports.getDashboardStats = async (req, res) => {
       approvedProperties,
       rejectedProperties,
       pendingProperties,
+      soldProperties,
 
       totalInquiries,
       approvedInquiries,
@@ -59,7 +62,6 @@ exports.getDashboardStats = async (req, res) => {
       pendingMeetings,
     });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: "Server Error" });
   }
 };

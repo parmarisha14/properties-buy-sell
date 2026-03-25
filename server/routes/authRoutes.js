@@ -39,5 +39,5 @@ router.get("/all-brokers", getAllBrokers);
 router.get("/broker/:id", getSingleBroker);
 router.delete("/delete-user/:id", deleteUser);
 router.delete("/delete-broker/:id", deleteBroker);
-
+router.get("/check", me);
 module.exports = router;

@@ -40,3 +40,29 @@ exports.getContacts = async (req, res) => {
     });
   }
 };
+exports.deleteContact = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const contact = await Contact.findById(id);
+
+    if (!contact) {
+      return res.status(404).json({
+        success: false,
+        message: "Message not found",
+      });
+    }
+
+    await Contact.findByIdAndDelete(id);
+
+    res.json({
+      success: true,
+      message: "Message deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

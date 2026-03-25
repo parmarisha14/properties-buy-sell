@@ -89,11 +89,12 @@ exports.deleteMeeting = async (req, res) => {
     }
 
     if (
-      meeting.userId.toString() !== user._id.toString() &&
-      meeting.brokerId.toString() !== user._id.toString() &&
-      user.role !== "admin"
+      user.role !== "admin" &&
+      meeting.brokerId.toString() !== user._id.toString()
     ) {
-      return res.status(403).json({ message: "Unauthorized" });
+      return res
+        .status(403)
+        .json({ message: "Only admin or broker can delete" });
     }
 
     await Meeting.findByIdAndDelete(req.params.id);
@@ -106,6 +107,7 @@ exports.deleteMeeting = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+
 exports.getAllMeetings = async (req, res) => {
   try {
     const meetings = await Meeting.find()

@@ -68,3 +68,10 @@
 .pending-card h2 {
   color: #ef4444;
 }
+.sold-card {
+  border-color: #22c55e;
+}
+
+.sold-card h2 {
+  color: #22c55e;
+}
