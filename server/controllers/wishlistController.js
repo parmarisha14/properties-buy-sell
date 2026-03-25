@@ -1,6 +1,6 @@
 const Wishlist = require("../models/WishlistModel");
 
-// TOGGLE WISHLIST
+
 exports.toggleWishlist = async (req, res) => {
   try {
     const userId = req.session.user?._id;

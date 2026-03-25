@@ -23,7 +23,9 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(express.static("client/build"));
+app.use("/admin", express.static("admin/build"));
+app.use("/broker", express.static("broker/build"));
 app.use(
   session({
     secret: "realestate-secret",
@@ -50,3 +52,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
